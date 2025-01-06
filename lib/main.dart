@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/loginpage.dart'; // Corrected import path for LoginPage
-
+import 'screens/loginpage.dart';
+import 'screens/registerpage.dart';
 void main() => runApp(MutualFundApp());
 
 class MutualFundApp extends StatelessWidget {
