@@ -110,7 +110,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 20.0),
+              padding: const EdgeInsets.only(top: 22.0),
               child: _buildPortfolioSyncCard(),
             ),
           ],
