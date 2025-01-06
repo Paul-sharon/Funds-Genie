@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'registerpage.dart'; // Ensure you import the RegisterPage file
+import 'dashboard.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -136,7 +137,14 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 30),
                       GestureDetector(
-                        onTap: _login,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Dashboard(),
+                            ),
+                          );
+                        },
                         child: Container(
                           height: 55,
                           width: 300,

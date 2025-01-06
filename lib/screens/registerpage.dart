@@ -166,7 +166,14 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(height: 30),
                       GestureDetector(
-                        onTap: _register,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LoginPage(),
+                            ),
+                          );
+                        },
                         child: Container(
                           height: 55,
                           width: 300,
