@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -9,9 +10,30 @@ class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    if (index == 2) {
+      // Navigate to Invest page
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Invest()),
+      );
+    }
+    else if(index == 1){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Portfolio()),
+      );
+    }
+    else if(index == 3){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => More()),
+      );
+    }
+    else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -167,6 +189,62 @@ class _DashboardState extends State<Dashboard> {
           SizedBox(height: 10),
         ],
       ),
+    );
+  }
+}
+
+// Placeholder page for the Invest section
+class Invest extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Invest'),
+        backgroundColor: Color(0xFF2A2E34),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to Invest Page!',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+      backgroundColor: Colors.black,
+    );
+  }
+}
+class Portfolio extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Portfolio'),
+        backgroundColor: Color(0xFF2A2E34),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to Portfolio Page!',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+      backgroundColor: Colors.black,
+    );
+  }
+}
+class More extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('More'),
+        backgroundColor: Color(0xFF2A2E34),
+      ),
+      body: Center(
+        child: Text(
+          'Welcome to More Page!',
+          style: TextStyle(color: Colors.white, fontSize: 18),
+        ),
+      ),
+      backgroundColor: Colors.black,
     );
   }
 }
