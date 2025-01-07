@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dynamicasset.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -279,15 +279,7 @@ class _CategoryButtonsRowState extends State<CategoryButtonsRow> {
 }
 
 // Placeholder pages for navigation
-class DynamicAsset extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Dynamic Asset')),
-      body: Center(child: Text('Dynamic Asset Page')),
-    );
-  }
-}
+
 class BalancedAllocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
