@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 class DynamicAsset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -9,7 +8,6 @@ class DynamicAsset extends StatelessWidget {
     );
   }
 }
-
 class DynamicAssetAllocation extends StatefulWidget {
   @override
   _DynamicAssetAllocationState createState() => _DynamicAssetAllocationState();

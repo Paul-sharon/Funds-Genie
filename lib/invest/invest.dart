@@ -179,9 +179,16 @@ class GenieRecommendationSection extends StatelessWidget {
       children: [
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          decoration: BoxDecoration(
-            color: Color(0xFF26A69A), // Greenish background
-            borderRadius: BorderRadius.circular(8),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF66B7B0),
+                Color(0xFF155F54),
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(8)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -209,11 +216,11 @@ class GenieRecommendationSection extends StatelessWidget {
               Divider(color: Colors.white),
               SizedBox(height: 16),
               RecommendationTile(
-                fundName: 'Canara Robeco Blue \nChip Equity Fund - Regular Growth',
+                fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
                 returnPercentage: '17.87%',
               ),
               RecommendationTile(
-                fundName: 'BARODA BNP PARIBAS \nLARGE CAP FUND - REGULAR',
+                fundName: 'BARODA BNP \nPARIBAS LARGE \nCAP FUND - REGULAR',
                 returnPercentage: '17.77%',
               ),
             ],
@@ -290,7 +297,7 @@ class RecommendationTile extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Color(0xFF1E1E1E),
+        color: Color(0xFF2A2E34),
         borderRadius: BorderRadius.circular(8),
       ),
       child: Padding(
@@ -301,8 +308,8 @@ class RecommendationTile extends StatelessWidget {
             Expanded(
               child: Text(
                 fundName,
-                style: TextStyle(color: Colors.white, fontSize: 14),
-                maxLines: 2,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
