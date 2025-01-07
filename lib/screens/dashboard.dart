@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
-
+import '../invest/invest.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -194,24 +194,6 @@ class _DashboardState extends State<Dashboard> {
 }
 
 // Placeholder page for the Invest section
-class Invest extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Invest'),
-        backgroundColor: Color(0xFF2A2E34),
-      ),
-      body: Center(
-        child: Text(
-          'Welcome to Invest Page!',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
-      backgroundColor: Colors.black,
-    );
-  }
-}
 class Portfolio extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -24,7 +24,7 @@ class _DynamicAssetAllocationState extends State<DynamicAssetAllocation> {
       appBar: AppBar(
         backgroundColor: Color(0xFF2A2E34),
         elevation: 0,
-        leading: Icon(Icons.arrow_back, color: Colors.white),
+        //leading: Icon(Icons.arrow_back, color: Colors.white),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
