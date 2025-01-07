@@ -18,12 +18,12 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, // Removes the back arrow
+        automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF2A2E34),
         title: Row(
           children: [
             CircleAvatar(
-              backgroundImage: AssetImage('assets/paul.jpg'), // Add a valid image path
+              backgroundImage: AssetImage('assets/paul.jpg'),
             ),
             SizedBox(width: 10),
             Column(
@@ -31,10 +31,7 @@ class _DashboardState extends State<Dashboard> {
               children: [
                 Text(
                   'Welcome,',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
                   'SHARON',
@@ -47,26 +44,17 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
             Spacer(),
-            Icon(
-              Icons.search_rounded,
-              color: Colors.white,
-              size: 36.0, // Adjust the size as needed
-            ),
+            Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
           ],
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 20.0), // Adjust this value as needed
+        padding: const EdgeInsets.only(top: 20.0),
         child: Column(
           children: [
             Container(
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30),
-                  topRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(30)),
                 color: Color(0xFF2A2E34),
               ),
               child: SingleChildScrollView(
@@ -84,25 +72,10 @@ class _DashboardState extends State<Dashboard> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 20),
-                      CategoryButtonsRow(),
                       SizedBox(height: 30),
-                      GridView.count(
-                        shrinkWrap: true,
-                        crossAxisCount: 4,
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 20,
-                        physics: NeverScrollableScrollPhysics(),
-                        children: [
-                          _buildFundOption('Dynamic Asset', Icons.savings),
-                          _buildFundOption('Balanced Allocation', Icons.bar_chart),
-                          _buildFundOption('Multi Asset Allocation', Icons.pie_chart),
-                          _buildFundOption('Aggressive Allocation', Icons.trending_up),
-                          _buildFundOption('Equity Savings', Icons.money),
-                          _buildFundOption('Arbitrage Fund', Icons.swap_horiz),
-                          _buildFundOption('View All', Icons.arrow_forward),
-                        ],
-                      ),
+                      CategoryButtonsRow(),
+                      SizedBox(height: 40),
+                      FundOptionsGrid(),
                       SizedBox(height: 80),
                     ],
                   ),
@@ -110,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 22.0),
+              padding: const EdgeInsets.only(top: 10.0),
               child: _buildPortfolioSyncCard(),
             ),
           ],
@@ -119,7 +92,7 @@ class _DashboardState extends State<Dashboard> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF2A2E34),
         selectedItemColor: Colors.greenAccent,
         unselectedItemColor: Colors.grey,
         items: const [
@@ -145,40 +118,11 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-  Widget _buildFundOption(String title, IconData icon) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[900],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 30, color: Colors.white),
-          SizedBox(height: 8),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 12,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildPortfolioSyncCard() {
     return Container(
       padding: EdgeInsets.all(16),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-          bottomLeft: Radius.circular(30),
-          bottomRight: Radius.circular(30),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(30)),
         color: Color(0xFFFFD7CA),
       ),
       child: Column(
@@ -201,18 +145,12 @@ class _DashboardState extends State<Dashboard> {
           SizedBox(height: 10),
           Text(
             'Last Updated: 28 Nov 2024',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.black),
           ),
           SizedBox(height: 25),
           Text(
             'Your external portfolio needs frequent syncing to get accurate investment details.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.black,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.black),
           ),
           SizedBox(height: 20),
           ElevatedButton(
@@ -229,6 +167,61 @@ class _DashboardState extends State<Dashboard> {
           SizedBox(height: 10),
         ],
       ),
+    );
+  }
+}
+
+class FundOptionsGrid extends StatelessWidget {
+  final List<Map<String, dynamic>> fundOptions = [
+    {'title': 'Dynamic Asset', 'icon': Icons.savings, 'route': DynamicAsset()},
+    {'title': 'Balanced Allocation', 'icon': Icons.bar_chart, 'route': BalancedAllocation()},
+    {'title': 'Multi Asset Allocation', 'icon': Icons.pie_chart, 'route': MultiAssetAllocation()},
+    {'title': 'Aggressive Allocation', 'icon': Icons.trending_up, 'route': AggressiveAllocation()},
+    {'title': 'Equity Savings', 'icon': Icons.money, 'route': EquitySavings()},
+    {'title': 'Arbitrage Fund', 'icon': Icons.swap_horiz, 'route': ArbitrageFund()},
+    {'title': 'View All', 'icon': Icons.arrow_forward, 'route': ViewAll()},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      shrinkWrap: true,
+      crossAxisCount: 4,
+      crossAxisSpacing: 10,
+      mainAxisSpacing: 20,
+      physics: NeverScrollableScrollPhysics(),
+      children: fundOptions.map((fund) {
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => fund['route']),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: Color(0xFF2A2E34),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Color(0xFF4A3E45), // Border color
+                width: 1.5, // Border width (adjust as needed)
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(fund['icon'], size: 30, color: Colors.white),
+                SizedBox(height: 8),
+                Text(
+                  fund['title'],
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white, fontSize: 12),
+                ),
+              ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 }
@@ -281,6 +274,76 @@ class _CategoryButtonsRowState extends State<CategoryButtonsRow> {
           ),
         ),
       ),
+    );
+  }
+}
+
+// Placeholder pages for navigation
+class DynamicAsset extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dynamic Asset')),
+      body: Center(child: Text('Dynamic Asset Page')),
+    );
+  }
+}
+class BalancedAllocation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Balanced Allocation')),
+      body: Center(child: Text('Balanced Allocation Page')),
+    );
+  }
+}
+
+class MultiAssetAllocation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Multi Asset Allocation')),
+      body: Center(child: Text('Multi Asset Allocation Page')),
+    );
+  }
+}
+
+class AggressiveAllocation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Aggressive Allocation')),
+      body: Center(child: Text('Aggressive Allocation Page')),
+    );
+  }
+}
+
+class EquitySavings extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Equity Savings')),
+      body: Center(child: Text('Equity Savings Page')),
+    );
+  }
+}
+
+class ArbitrageFund extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Arbitrage Fund')),
+      body: Center(child: Text('Arbitrage Fund Page')),
+    );
+  }
+}
+
+class ViewAll extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('View All Funds')),
+      body: Center(child: Text('View All Funds Page')),
     );
   }
 }
