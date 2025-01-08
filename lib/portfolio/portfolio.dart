@@ -1,5 +1,33 @@
 import 'package:flutter/material.dart';
-class Portfolio extends StatelessWidget {
+import 'package:mutualfund_gtl/invest/invest.dart';
+import '../screens/dashboard.dart';
+class Portfolio extends StatefulWidget {
+  @override
+  _PortfolioState createState() => _PortfolioState();
+}
+
+class _PortfolioState extends State<Portfolio> {
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Dashboard()),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Invest()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => More()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -118,7 +146,7 @@ class Portfolio extends StatelessWidget {
                     child: Text(
                       "View more →",
                       style: TextStyle(
-                        color: Colors.teal,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -128,6 +156,19 @@ class Portfolio extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Color(0xFF2A2E34),
+        selectedItemColor: Colors.greenAccent,
+        unselectedItemColor: Colors.grey,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
+          BottomNavigationBarItem(icon: Icon(Icons.pie_chart), label: 'Portfolio'),
+          BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Invest'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
+        ],
       ),
     );
   }
