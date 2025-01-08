@@ -13,7 +13,8 @@ class TransactionCompleted extends StatelessWidget {
           title: const Text(
             'Transaction Details',
             style: TextStyle(
-              color: Colors.white, // Title text color
+              color: Colors.white,
+                fontWeight: FontWeight.w500,
             ),
           ),
           bottom: PreferredSize(
