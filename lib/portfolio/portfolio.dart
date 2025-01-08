@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mutualfund_gtl/invest/invest.dart';
 import '../screens/dashboard.dart';
+import 'TransactionCompleted.dart'; // Ensure this is the correct path
+
 class Portfolio extends StatefulWidget {
   @override
   _PortfolioState createState() => _PortfolioState();
@@ -174,30 +176,40 @@ class _PortfolioState extends State<Portfolio> {
   }
 
   Widget _buildSummaryCard(String title, String value, Color backgroundColor) {
-    return Container(
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: backgroundColor,
-        borderRadius: BorderRadius.circular(12.0),
-      ),
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16.0,
-              color: Colors.black87,
+    return GestureDetector(
+      onTap: () {
+        if (value == "Completed") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TransactionCompleted()),
+          );
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.black87,
+              ),
             ),
-          ),
-          SizedBox(height: 4.0),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.black54,
+            SizedBox(height: 4.0),
+            Text(
+              title,
+              style: TextStyle(
+                fontSize: 14.0,
+                color: Colors.black54,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
