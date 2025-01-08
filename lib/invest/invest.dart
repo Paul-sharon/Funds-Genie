@@ -1,5 +1,17 @@
 import 'package:flutter/material.dart';
 import '../screens/dashboard.dart';
+import 'FundDetailsPage.dart';
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Invest(),
+    );
+  }
+}
 
 class Invest extends StatefulWidget {
   @override
@@ -31,7 +43,7 @@ class _InvestState extends State<Invest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF121212), // Dark background color
+      backgroundColor: Color(0xFF121212),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Color(0xFF2A2E34),
@@ -44,18 +56,8 @@ class _InvestState extends State<Invest> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Welcome,',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                Text(
-                  'SHARON',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text('Welcome,', style: TextStyle(color: Colors.white, fontSize: 14)),
+                Text('SHARON', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               ],
             ),
             Spacer(),
@@ -86,22 +88,10 @@ class _InvestState extends State<Invest> {
         selectedItemColor: Colors.greenAccent,
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'Portfolio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money),
-            label: 'Invest',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
+          BottomNavigationBarItem(icon: Icon(Icons.pie_chart), label: 'Portfolio'),
+          BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Invest'),
+          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
         ],
       ),
     );
@@ -114,34 +104,20 @@ class OngoingNFOsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Ongoing NFOs (5)',
-          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        Text('Ongoing NFOs (5)', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 8),
-        Text(
-          'Explore New Fund offerings',
-          style: TextStyle(color: Colors.grey, fontSize: 14),
-        ),
+        Text('Explore New Fund offerings', style: TextStyle(color: Colors.grey, fontSize: 14)),
         SizedBox(height: 16),
         Container(
-          decoration: BoxDecoration(
-            color: Color(0xFFFFFFFF),
-            borderRadius: BorderRadius.circular(8),
-          ),
+          decoration: BoxDecoration(color: Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(8)),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'UNION ACTIVE MOMENTUM FUND REGULAR IDCW PAYOUT',
-                  style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'Equity Other',
-                  style: TextStyle(color: Colors.grey.shade600, fontSize: 12, fontWeight: FontWeight.bold),
-                ),
+                Text('UNION ACTIVE MOMENTUM FUND REGULAR IDCW PAYOUT',
+                    style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
+                Text('Equity Other', style: TextStyle(color: Colors.grey.shade600, fontSize: 12, fontWeight: FontWeight.bold)),
                 SizedBox(height: 12),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -216,12 +192,12 @@ class GenieRecommendationSection extends StatelessWidget {
               Divider(color: Colors.white),
               SizedBox(height: 16),
               RecommendationTile(
-                avatarText: 'CR', // CircleAvatar text for the first tile
+                avatarText: 'CR',
                 fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
                 returnPercentage: '17.87%',
               ),
               RecommendationTile(
-                avatarText: 'BB', // CircleAvatar text for the second tile
+                avatarText: 'BB',
                 fundName: 'BARODA BNP \nPARIBAS LARGE \nCAP FUND - REGULAR',
                 returnPercentage: '17.77%',
               ),
@@ -233,6 +209,81 @@ class GenieRecommendationSection extends StatelessWidget {
     );
   }
 }
+
+class RecommendationTile extends StatelessWidget {
+  final String avatarText;
+  final String fundName;
+  final String returnPercentage;
+
+  RecommendationTile({
+    required this.avatarText,
+    required this.fundName,
+    required this.returnPercentage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to FundDetailsPage when tapped
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => FundDetailsPage(
+              avatarText: avatarText,
+              fundName: fundName,
+              returnPercentage: returnPercentage,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.only(bottom: 12),
+        decoration: BoxDecoration(
+          color: Color(0xFF2A2E34),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: Colors.black,
+                      child: Text(
+                        avatarText,
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        fundName,
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 12),
+              Text(
+                returnPercentage,
+                style: TextStyle(color: Colors.green, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 
 class InfoTile extends StatelessWidget {
   final String title;
@@ -287,64 +338,3 @@ class TabItem extends StatelessWidget {
     );
   }
 }
-
-class RecommendationTile extends StatelessWidget {
-  final String avatarText; // New parameter for CircleAvatar text
-  final String fundName;
-  final String returnPercentage;
-
-  RecommendationTile({
-    required this.avatarText,
-    required this.fundName,
-    required this.returnPercentage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Color(0xFF2A2E34),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: Colors.black,
-                    child: Text(
-                      avatarText,
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(width: 12), // Space between avatar and text
-                  Expanded(
-                    child: Text(
-                      fundName,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                      maxLines: 3,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: 12),
-            Text(
-              returnPercentage,
-              style: TextStyle(color: Colors.green, fontSize: 14, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
