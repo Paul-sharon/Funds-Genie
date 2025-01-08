@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../screens/dashboard.dart';
 import 'FundDetailsPage.dart';
+import '../portfolio/portfolio.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
