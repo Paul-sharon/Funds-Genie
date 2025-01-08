@@ -40,7 +40,8 @@ class TransactionCompleted extends StatelessWidget {
             IconButton(
               icon: const Icon(
                 Icons.search,
-                color: Colors.white, // Search icon color
+                color: Colors.white,
+                size: 36.0,
               ),
               onPressed: () {
                 // Search button functionality
