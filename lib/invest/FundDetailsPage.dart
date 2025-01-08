@@ -22,7 +22,7 @@ class FundDetailsPage extends StatelessWidget {
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () {
-              // Define back button action here
+              Navigator.pop(context); // Navigates to the previous screen
             },
           ),
         ),
