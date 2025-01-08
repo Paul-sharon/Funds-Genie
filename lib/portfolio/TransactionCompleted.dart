@@ -73,7 +73,6 @@ class TransactionCompleted extends StatelessWidget {
     );
   }
 }
-
 class CompletedTransactionsTab extends StatelessWidget {
   const CompletedTransactionsTab({Key? key}) : super(key: key);
 
@@ -191,27 +190,27 @@ class TransactionCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 18),
+            if (tag != null)
+              Container(
+                margin: const EdgeInsets.only(top: 8), // Space above the tag
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: Colors.teal.shade100,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  tag!,
+                  style: const TextStyle(
+                    color: Colors.teal,
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            const SizedBox(height: 18), // Space below the tag
           ],
-
         ),
-        trailing: tag != null
-            ? Container(
-          margin: const EdgeInsets.only(top: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          decoration: BoxDecoration(
-            color: Colors.teal.shade100,
-            borderRadius: BorderRadius.circular(4),
-          ),
-          child: Text(
-            tag!,
-            style: const TextStyle(
-              color: Colors.teal,
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ) : null,
+        trailing: null, // No trailing logic as tag is moved to subtitle
       ),
     );
   }
