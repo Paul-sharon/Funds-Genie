@@ -10,27 +10,33 @@ class FundDetailsPage extends StatelessWidget {
     required this.fundName,
     required this.returnPercentage,
   });
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.black, // Makes the entire Scaffold background black
+        backgroundColor: Colors.black, // Sets background color to black
         appBar: AppBar(
-          backgroundColor: Colors.black, // Sets the AppBar background to black
-          leading: Icon(Icons.arrow_back, color: Colors.white), // Adjusts the color of the back arrow
+          backgroundColor: Color(0xFF2A2E34), // AppBar background color
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              // Define back button action here
+            },
+          ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 0,vertical: 5),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Fund Details Card
                 Card(
-                  color: Colors.grey[900], // Card background color for contrast
+                  color: Color(0xFF2A2E34), // Card background color
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12.0),
+                    borderRadius: BorderRadius.circular(18.0),
                   ),
                   elevation: 4.0,
                   child: Padding(
@@ -44,9 +50,7 @@ class FundDetailsPage extends StatelessWidget {
                               backgroundColor: Colors.black,
                               child: Text(
                                 avatarText,
-                                style: TextStyle(
-                                  color: Colors.white, // Set text color to white
-                                ),
+                                style: TextStyle(color: Colors.white),
                               ),
                             ),
                             SizedBox(width: 12.0),
@@ -56,7 +60,7 @@ class FundDetailsPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white, // Text color
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -68,7 +72,7 @@ class FundDetailsPage extends StatelessWidget {
                             Container(
                               padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                               decoration: BoxDecoration(
-                                color: Colors.grey[700], // Dark grey for the tag
+                                color: Colors.grey[700],
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               child: Text(
@@ -76,7 +80,7 @@ class FundDetailsPage extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 12.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white, // Text color
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -88,7 +92,7 @@ class FundDetailsPage extends StatelessWidget {
                           children: [
                             Text(
                               'Equity • Large Cap',
-                              style: TextStyle(color: Colors.grey[400]), // Light grey text
+                              style: TextStyle(color: Colors.grey[400]),
                             ),
                             Row(
                               children: [
@@ -105,9 +109,9 @@ class FundDetailsPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(height: 12.0),
-                        Divider(color: Colors.grey[800]), // Divider color for contrast
-                        SizedBox(height: 12.0),
+                        SizedBox(height: 5.0),
+                        Divider(color: Colors.grey[800]),
+                        SizedBox(height: 5.0),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -116,7 +120,7 @@ class FundDetailsPage extends StatelessWidget {
                               children: [
                                 Text(
                                   'NAV (Nov 29, 2024)',
-                                  style: TextStyle(color: Colors.grey[400]), // Light grey text
+                                  style: TextStyle(color: Colors.grey[400]),
                                 ),
                                 SizedBox(height: 4.0),
                                 Text(
@@ -124,7 +128,7 @@ class FundDetailsPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white, // Text color
+                                    color: Colors.white,
                                   ),
                                 ),
                                 Text(
@@ -138,7 +142,7 @@ class FundDetailsPage extends StatelessWidget {
                               children: [
                                 Text(
                                   '5 Y CAGR',
-                                  style: TextStyle(color: Colors.grey[400]), // Light grey text
+                                  style: TextStyle(color: Colors.grey[400]),
                                 ),
                                 SizedBox(height: 4.0),
                                 Text(
@@ -146,7 +150,7 @@ class FundDetailsPage extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 20.0,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white, // Text color
+                                    color: Colors.white,
                                   ),
                                 ),
                               ],
@@ -157,7 +161,7 @@ class FundDetailsPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 10.0),
                 // Fund Rating Section
                 Center(
                   child: Container(
@@ -186,7 +190,7 @@ class FundDetailsPage extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        SizedBox(height: 15),
+                        SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -298,7 +302,137 @@ class FundDetailsPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 16.0),
+                // Scheme Details Section
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFF2A2E34),
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Scheme Details",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Expense Ratio",
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          Text(
+                            "1.66% (as on Oct 31, 2024)",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Divider(color: Colors.grey[700]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Exit Load",
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          Text(
+                            "1.0%",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Divider(color: Colors.grey[700]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "AUM (Fund Size)",
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          Text(
+                            "14580.92 Cr",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Divider(color: Colors.grey[700]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Lock-In",
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          Text(
+                            "No lock in",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      Divider(color: Colors.grey[700]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Age",
+                            style: TextStyle(color: Colors.grey[400]),
+                          ),
+                          Text(
+                            "14y 4m (since Aug 20, 2010)",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF004D40), // Dark green (almost black)
+                Color(0xFF66B7B0), // Light green
+              ],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: () {
+                // Add your action here
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent, // Use transparent to show gradient
+                shadowColor: Colors.transparent, // Remove button shadow
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                ),
+              ),
+              child: Text(
+                "Invest",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
         ),
@@ -306,3 +440,4 @@ class FundDetailsPage extends StatelessWidget {
     );
   }
 }
+
