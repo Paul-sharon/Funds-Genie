@@ -216,10 +216,12 @@ class GenieRecommendationSection extends StatelessWidget {
               Divider(color: Colors.white),
               SizedBox(height: 16),
               RecommendationTile(
+                avatarText: 'CR', // CircleAvatar text for the first tile
                 fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
                 returnPercentage: '17.87%',
               ),
               RecommendationTile(
+                avatarText: 'BB', // CircleAvatar text for the second tile
                 fundName: 'BARODA BNP \nPARIBAS LARGE \nCAP FUND - REGULAR',
                 returnPercentage: '17.77%',
               ),
@@ -287,10 +289,15 @@ class TabItem extends StatelessWidget {
 }
 
 class RecommendationTile extends StatelessWidget {
+  final String avatarText; // New parameter for CircleAvatar text
   final String fundName;
   final String returnPercentage;
 
-  RecommendationTile({required this.fundName, required this.returnPercentage});
+  RecommendationTile({
+    required this.avatarText,
+    required this.fundName,
+    required this.returnPercentage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -306,11 +313,26 @@ class RecommendationTile extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Text(
-                fundName,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.black,
+                    child: Text(
+                      avatarText,
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  SizedBox(width: 12), // Space between avatar and text
+                  Expanded(
+                    child: Text(
+                      fundName,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
               ),
             ),
             SizedBox(width: 12),
@@ -324,3 +346,5 @@ class RecommendationTile extends StatelessWidget {
     );
   }
 }
+
+
