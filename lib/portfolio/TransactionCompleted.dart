@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'TransactionStatus.dart';
 class TransactionCompleted extends StatelessWidget {
   const TransactionCompleted({Key? key}) : super(key: key);
 
@@ -14,7 +14,7 @@ class TransactionCompleted extends StatelessWidget {
             'Transaction Details',
             style: TextStyle(
               color: Colors.white,
-                fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w500,
             ),
           ),
           bottom: PreferredSize(
@@ -73,6 +73,7 @@ class TransactionCompleted extends StatelessWidget {
     );
   }
 }
+
 class CompletedTransactionsTab extends StatelessWidget {
   const CompletedTransactionsTab({Key? key}) : super(key: key);
 
@@ -146,6 +147,15 @@ class TransactionCard extends StatelessWidget {
     return Card(
       color: Colors.white, // Set background color to white
       child: ListTile(
+        onTap: () {
+          // Navigate to TransactionStatus
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const TransactionStatus(),
+            ),
+          );
+        },
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -215,3 +225,5 @@ class TransactionCard extends StatelessWidget {
     );
   }
 }
+
+
