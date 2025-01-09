@@ -120,7 +120,7 @@ class CompletedTransactionsTab extends StatelessWidget {
         ),
         TransactionCard(
           date: '11 Nov 2024',
-          fundName: 'Some Other Fund',
+          fundName: 'Canara Robeco Blue Chip Equity',
           units: '0.150 Unit',
         ),
       ],
