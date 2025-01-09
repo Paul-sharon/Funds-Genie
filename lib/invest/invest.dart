@@ -2,17 +2,8 @@ import 'package:flutter/material.dart';
 import '../screens/dashboard.dart';
 import 'FundDetailsPage.dart';
 import '../portfolio/portfolio.dart';
-void main() => runApp(MyApp());
+import '../More/Morepage.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Invest(),
-    );
-  }
-}
 
 class Invest extends StatefulWidget {
   @override
@@ -36,7 +27,7 @@ class _InvestState extends State<Invest> {
     } else if (index == 3) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => More()),
+        MaterialPageRoute(builder: (context) => Morepage()),
       );
     }
   }

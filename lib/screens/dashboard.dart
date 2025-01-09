@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
 import '../invest/invest.dart';
 import '../portfolio/portfolio.dart';
+import '../More/Morepage.dart';
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
@@ -27,7 +28,7 @@ class _DashboardState extends State<Dashboard> {
     else if(index == 3){
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => More()),
+        MaterialPageRoute(builder: (context) => Morepage()),
       );
     }
     else {
@@ -194,25 +195,6 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
-// Placeholder page for the Invest section
-class More extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('More'),
-        backgroundColor: Color(0xFF2A2E34),
-      ),
-      body: Center(
-        child: Text(
-          'Welcome to More Page!',
-          style: TextStyle(color: Colors.white, fontSize: 18),
-        ),
-      ),
-      backgroundColor: Colors.black,
-    );
-  }
-}
 
 class FundOptionsGrid extends StatelessWidget {
   final List<Map<String, dynamic>> fundOptions = [

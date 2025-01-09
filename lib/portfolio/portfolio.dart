@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mutualfund_gtl/invest/invest.dart';
 import '../screens/dashboard.dart';
-import 'TransactionCompleted.dart'; // Ensure this is the correct path
-
+import 'TransactionCompleted.dart';
+import '../More/Morepage.dart';
 class Portfolio extends StatefulWidget {
   @override
   _PortfolioState createState() => _PortfolioState();
@@ -25,7 +25,7 @@ class _PortfolioState extends State<Portfolio> {
     } else if (index == 3) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => More()),
+        MaterialPageRoute(builder: (context) => Morepage()),
       );
     }
   }
