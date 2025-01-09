@@ -7,8 +7,7 @@ class Morepage extends StatefulWidget {
   _MorepageState createState() => _MorepageState();
 }
 class _MorepageState extends State<Morepage> {
-  // Added _MorepageState class to correct the structure.
-  int _selectedIndex = 3; // Added _selectedIndex field to track the selected tab.
+  int _selectedIndex = 3;
 
   void _onItemTapped(int index) {
     if (index == 0) {
@@ -81,7 +80,10 @@ class _MorepageState extends State<Morepage> {
                       icon: Icons.calculate, // Icon for SIP Calculator
                       label: '     SIP \n     Calculator',
                       onPressed: () {
-                        // Navigate to SIP Calculator
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Invest()),
+                        );
                       },
                     ),
                     _buildButton(
