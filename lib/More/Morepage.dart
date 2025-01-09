@@ -92,7 +92,10 @@ class _MorepageState extends State<Morepage> {
                       // Icon for Wealth Calculator
                       label: '     Wealth \n     Calculator',
                       onPressed: () {
-                        // Navigate to Wealth Calculator
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Invest()),
+                        );
                       },
                     ),
                   ],
