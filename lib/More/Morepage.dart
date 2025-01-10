@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../portfolio/portfolio.dart';
 import '../screens/dashboard.dart';
 import '../invest/invest.dart';
+import 'SIPCalculator.dart';
 class Morepage extends StatefulWidget {
   @override
   _MorepageState createState() => _MorepageState();
@@ -82,7 +83,7 @@ class _MorepageState extends State<Morepage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Invest()),
+                          MaterialPageRoute(builder: (context) => SIPCalculator()),
                         );
                       },
                     ),
