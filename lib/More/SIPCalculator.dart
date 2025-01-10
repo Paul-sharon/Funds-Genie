@@ -16,8 +16,19 @@ class SIPCalculatorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('SIP Calculator'),
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF2A2E34), // Black app bar background
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            // Handle back navigation
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text(
+          'SIP Calculator',
+          style: TextStyle(color: Colors.white,
+              fontWeight: FontWeight.bold),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -26,6 +37,7 @@ class SIPCalculatorScreen extends StatelessWidget {
             _buildContainer(
               child: Column(
                 children: [
+                  const SizedBox(height: 20),
                   SizedBox(
                     height: 250,
                     child: PieChart(
