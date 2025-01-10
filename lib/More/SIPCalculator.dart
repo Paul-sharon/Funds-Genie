@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-
-import 'Morepage.dart'; // Ensure this file is correctly implemented.
+import 'package:flutter/services.dart';
+import 'Morepage.dart';
 
 class SIPCalculator extends StatelessWidget {
   @override
@@ -21,6 +21,12 @@ class SIPCalculatorScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            SystemChrome.setSystemUIOverlayStyle(
+              const SystemUiOverlayStyle(
+                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
+                systemNavigationBarIconBrightness: Brightness.light, // White icons
+              ),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Morepage()),

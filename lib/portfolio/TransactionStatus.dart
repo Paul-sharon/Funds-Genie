@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mutualfund_gtl/portfolio/TransactionCompleted.dart';
+import 'package:flutter/services.dart';
 
 class TransactionStatus extends StatelessWidget {
   const TransactionStatus({Key? key}) : super(key: key);
@@ -25,6 +26,12 @@ class CombinedScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
+            SystemChrome.setSystemUIOverlayStyle(
+              const SystemUiOverlayStyle(
+                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
+                systemNavigationBarIconBrightness: Brightness.light, // White icons
+              ),
+            );
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => TransactionCompleted()),

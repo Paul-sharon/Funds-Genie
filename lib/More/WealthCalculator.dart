@@ -1,11 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-
 import 'Morepage.dart'; // Ensure this file is correctly implemented.
+import 'package:flutter/services.dart';
 
 class WealthCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        systemNavigationBarColor: Color(0xFF2A2E34), // Black navigation bar
+        systemNavigationBarIconBrightness: Brightness.light, // Light icons
+        statusBarColor: Color(0xFF2A2E34), // Black status bar
+        statusBarIconBrightness: Brightness.light, // Light icons
+      ),
+    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: WealthcalculatorScreen(),
