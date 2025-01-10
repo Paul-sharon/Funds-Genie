@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'Morepage.dart';
-
-class SIPCalculator extends StatelessWidget {
+class Wealthcalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SIPCalculatorScreen(),
+      home: WealthcalculatorScreen(),
     );
   }
 }
-
-class SIPCalculatorScreen extends StatelessWidget {
+class WealthcalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +27,7 @@ class SIPCalculatorScreen extends StatelessWidget {
           },
         ),
         title: const Text(
-          'SIP Calculator',
+          'Wealth Calculator',
           style: TextStyle(color: Colors.white,
               fontWeight: FontWeight.bold),
         ),
