@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'Morepage.dart';
+
+import 'Morepage.dart'; // Ensure this file is correctly implemented.
 
 class WealthCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: WealthCalculatorScreen(),
+      home: WealthcalculatorScreen(),
     );
   }
 }
 
-class WealthCalculatorScreen extends StatelessWidget {
+class WealthcalculatorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +29,7 @@ class WealthCalculatorScreen extends StatelessWidget {
           },
         ),
         title: const Text(
-          'SIP Calculator',
+          'Wealth Calculator',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
@@ -48,12 +49,10 @@ class WealthCalculatorScreen extends StatelessWidget {
                           PieChartSectionData(
                             color: Colors.blue,
                             radius: 40,
-                            value: 30,
                           ),
                           PieChartSectionData(
                             color: Colors.green,
                             radius: 40,
-                            value: 28.08,
                           ),
                         ],
                         sectionsSpace: 2,
@@ -125,24 +124,24 @@ class InvestmentSummary extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildValueSection('Invested', '₹30.00 L'),
+        _buildValueSection('Invested', '₹25.0 L'),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text('+', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
-        _buildValueSection('Est Return', '₹28.08 L'),
+        _buildValueSection('Est Return', '₹52.6 L'),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text('=', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
-        _buildValueSection('Total Value', '₹58.08 L', highlight: true),
+        _buildValueSection('Total Value', '₹77.6 L', highlight: true),
       ],
     );
   }
 
   Widget _buildValueSection(String label, String value, {bool highlight = false}) {
     return Container(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: highlight ? Colors.blue[100] : Colors.grey[100],
         borderRadius: BorderRadius.circular(8),
@@ -188,8 +187,8 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text(
-              'Monthly Investment',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Lumpsum Investment',
+              style: TextStyle(fontSize: 18),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -199,7 +198,7 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
               ),
               child: Text(
                 _monthlyInvestment.toStringAsFixed(0),
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(fontSize: 16),
               ),
             ),
           ],
@@ -207,8 +206,8 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
         const SizedBox(height: 8),
         Slider(
           value: _monthlyInvestment,
-          min: 500,
-          max: 100000,
+          min: 10000,
+          max: 10000000,
           divisions: 199,
           label: _monthlyInvestment.toStringAsFixed(0),
           activeColor: const Color(0xFF028274),
@@ -222,8 +221,8 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: const [
-            Text('500'),
-            Text('1L'),
+            Text('10k'),
+            Text('1Cr'),
           ],
         ),
         const SizedBox(height: 20),
@@ -235,7 +234,7 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
           children: [
             const Text(
               'Time Period (in years)',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18),
             ),
             Container(
               width: 65,
@@ -248,7 +247,7 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
               child: Center(
                 child: Text(
                   _timePeriod.toStringAsFixed(0),
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
             ),
@@ -281,7 +280,7 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
         // Rate of Return Section
         const Text(
           'Expected Rate of Return (% p.a)',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18),
         ),
         TextField(
           decoration: const InputDecoration(
