@@ -133,11 +133,10 @@ class InvestmentSummary extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text('=', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
         ),
-        _buildValueSection('Total Value', '₹58.08 L', highlight: true),
+        _buildValueSection('Total Value', '₹77.6 L', highlight: true),
       ],
     );
   }
-
   Widget _buildValueSection(String label, String value, {bool highlight = false}) {
     return Container(
       padding: const EdgeInsets.all(8.0),
