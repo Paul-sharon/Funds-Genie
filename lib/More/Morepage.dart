@@ -96,7 +96,7 @@ class _MorepageState extends State<Morepage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Wealthcalculator()),
+                          MaterialPageRoute(builder: (context) => WealthCalculator()),
                         );
                       },
                     ),

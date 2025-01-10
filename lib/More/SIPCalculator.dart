@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'Morepage.dart';
+
+import 'Morepage.dart'; // Ensure this file is correctly implemented.
 
 class SIPCalculator extends StatelessWidget {
   @override
@@ -17,11 +18,10 @@ class SIPCalculatorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2A2E34), // Black app bar background
+        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Navigate to MorePage
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => Morepage()),
@@ -30,8 +30,7 @@ class SIPCalculatorScreen extends StatelessWidget {
         ),
         title: const Text(
           'SIP Calculator',
-          style: TextStyle(color: Colors.white,
-              fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
@@ -66,9 +65,9 @@ class SIPCalculatorScreen extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _legend(Color(0xFF0288D1), 'Invested Amount'),
+                      _legend(const Color(0xFF0288D1), 'Invested Amount'),
                       const SizedBox(width: 20),
-                      _legend(Color(0xFF4CAF50), 'Est Return'),
+                      _legend(const Color(0xFF4CAF50), 'Est Return'),
                     ],
                   ),
                 ],
@@ -80,7 +79,7 @@ class SIPCalculatorScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             _buildContainer(
-              child: InvestmentCalculator(),
+              child: const InvestmentCalculator(),
             ),
           ],
         ),
@@ -149,11 +148,15 @@ class InvestmentSummary extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
           const SizedBox(height: 4),
           Text(
             value,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: highlight ? Colors.blue[900] : Colors.black),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: highlight ? Colors.blue[900] : Colors.black,
+            ),
           ),
         ],
       ),
@@ -162,6 +165,8 @@ class InvestmentSummary extends StatelessWidget {
 }
 
 class InvestmentCalculator extends StatefulWidget {
+  const InvestmentCalculator({Key? key}) : super(key: key);
+
   @override
   _InvestmentCalculatorState createState() => _InvestmentCalculatorState();
 }
@@ -170,100 +175,139 @@ class _InvestmentCalculatorState extends State<InvestmentCalculator> {
   double _monthlyInvestment = 25000;
   double _timePeriod = 10;
   double _rateOfReturn = 12;
-  late TextEditingController _rateController;
-
-  @override
-  void initState() {
-    super.initState();
-    _rateController = TextEditingController(text: _rateOfReturn.toStringAsFixed(1));
-  }
-
-  @override
-  void dispose() {
-    _rateController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _sliderRow(
-          label: 'Monthly Investment',
+        // Monthly Investment Section
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Monthly Investment',
+              style: TextStyle(fontSize: 18),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Text(
+                _monthlyInvestment.toStringAsFixed(0),
+                style: const TextStyle(fontSize: 16),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Slider(
           value: _monthlyInvestment,
           min: 500,
           max: 100000,
           divisions: 199,
-          onChanged: (value) => setState(() => _monthlyInvestment = value),
+          label: _monthlyInvestment.toStringAsFixed(0),
+          activeColor: const Color(0xFF028274),
+          inactiveColor: Colors.grey,
+          onChanged: (value) {
+            setState(() {
+              _monthlyInvestment = value;
+            });
+          },
         ),
-        _sliderRow(
-          label: 'Time Period (in years)',
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Text('500'),
+            Text('1L'),
+          ],
+        ),
+        const SizedBox(height: 20),
+
+        // Time Period Section
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Time Period (in years)',
+              style: TextStyle(fontSize: 18),
+            ),
+            Container(
+              width: 65,
+              height: 30,
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Center(
+                child: Text(
+                  _timePeriod.toStringAsFixed(0),
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        Slider(
           value: _timePeriod,
           min: 1,
           max: 40,
           divisions: 39,
-          onChanged: (value) => setState(() => _timePeriod = value),
+          label: _timePeriod.toStringAsFixed(0),
+          activeColor: const Color(0xFF028274),
+          inactiveColor: Colors.grey,
+          onChanged: (value) {
+            setState(() {
+              _timePeriod = value;
+            });
+          },
         ),
-        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: const [
+            Text('1Y'),
+            Text('40Y'),
+          ],
+        ),
+        const SizedBox(height: 20),
+
+        // Rate of Return Section
         const Text(
           'Expected Rate of Return (% p.a)',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18),
         ),
-        const SizedBox(height: 8),
         TextField(
-          controller: _rateController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12.0)),
+            ),
           ),
           keyboardType: TextInputType.number,
-          onSubmitted: (value) => setState(() {
-            _rateOfReturn = double.tryParse(value) ?? _rateOfReturn;
-          }),
+          controller: TextEditingController(text: _rateOfReturn.toStringAsFixed(1)),
+          onSubmitted: (value) {
+            setState(() {
+              _rateOfReturn = double.tryParse(value) ?? _rateOfReturn;
+            });
+          },
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 20),
+
+        // Calculate Button
         ElevatedButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            final snackBar = SnackBar(
               content: Text(
-                'Monthly Investment: ₹$_monthlyInvestment\nTime Period: $_timePeriod years\nRate of Return: $_rateOfReturn%',
-              ),
-            ));
+                  'Monthly Investment: ₹$_monthlyInvestment\nTime Period: $_timePeriod years\nRate of Return: $_rateOfReturn%'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
           child: const Text('Calculate'),
-        ),
-      ],
-    );
-  }
-
-  Widget _sliderRow({
-    required String label,
-    required double value,
-    required double min,
-    required double max,
-    required int divisions,
-    required ValueChanged<double> onChanged,
-  }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-        const SizedBox(height: 8),
-        SliderTheme(
-          data: SliderTheme.of(context).copyWith(
-            activeTrackColor: Color(0xFF028274),
-            inactiveTrackColor: Color(0xFF028274),
-            thumbColor: Color(0xFF028274),
-            overlayColor: Color(0xFF028274),
-          ),
-          child: Slider(
-            value: value,
-            min: min,
-            max: max,
-            divisions: divisions,
-            label: value.toStringAsFixed(0),
-            onChanged: onChanged,
-          ),
         ),
       ],
     );
