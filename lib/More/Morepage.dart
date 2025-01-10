@@ -4,6 +4,8 @@ import '../screens/dashboard.dart';
 import '../invest/invest.dart';
 import 'SIPCalculator.dart';
 import 'WealthCalculator.dart';
+import 'package:flutter/services.dart';
+
 class Morepage extends StatefulWidget {
   @override
   _MorepageState createState() => _MorepageState();
@@ -35,18 +37,30 @@ class _MorepageState extends State<Morepage> {
     return Scaffold(
       backgroundColor: Colors.black, // Dark background
       appBar: AppBar(
-        backgroundColor: Color(0xFF2A2E34), // Black app bar background
+        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Handle back navigation
-            Navigator.pop(context);
+            // Set the navigation bar color before navigating
+            SystemChrome.setSystemUIOverlayStyle(
+              const SystemUiOverlayStyle(
+                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
+                systemNavigationBarIconBrightness: Brightness.light, // White icons
+              ),
+            );
+
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Dashboard()),
+            );
           },
         ),
         title: const Text(
           'More',
-          style: TextStyle(color: Colors.white,
-              fontWeight: FontWeight.bold), // White text for title
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: Column(

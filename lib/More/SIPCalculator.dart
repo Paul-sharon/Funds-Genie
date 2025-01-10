@@ -48,10 +48,14 @@ class SIPCalculatorScreen extends StatelessWidget {
                           PieChartSectionData(
                             color: Colors.blue,
                             radius: 40,
+                            value: 30,
+                              showTitle: false
                           ),
                           PieChartSectionData(
                             color: Colors.green,
                             radius: 40,
+                            value:28,
+                              showTitle: false
                           ),
                         ],
                         sectionsSpace: 2,

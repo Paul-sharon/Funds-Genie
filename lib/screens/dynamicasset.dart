@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dashboard.dart';
 class DynamicAsset extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +22,15 @@ class _DynamicAssetAllocationState extends State<DynamicAssetAllocation> {
       backgroundColor: Color(0xFF2A2E34),// Light black background
       appBar: AppBar(
         backgroundColor: Color(0xFF2A2E34),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Dashboard()),
+            );
+          },
+        ),
         elevation: 0,
         //leading: Icon(Icons.arrow_back, color: Colors.white),
         title: Column(

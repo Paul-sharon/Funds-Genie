@@ -49,10 +49,14 @@ class WealthcalculatorScreen extends StatelessWidget {
                           PieChartSectionData(
                             color: Colors.blue,
                             radius: 40,
+                            value:25,
+                              showTitle: false
                           ),
                           PieChartSectionData(
                             color: Colors.green,
                             radius: 40,
+                            value:52.6,
+                              showTitle: false
                           ),
                         ],
                         sectionsSpace: 2,
