@@ -123,7 +123,7 @@ class InvestmentSummary extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildValueSection('Invested', '₹30.00 L'),
+        _buildValueSection('Invested', '₹30.0 L'),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 8.0),
           child: Text('+', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
