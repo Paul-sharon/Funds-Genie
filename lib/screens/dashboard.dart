@@ -58,7 +58,7 @@ class _DashboardState extends State<Dashboard> {
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
-                  'SHARON',
+                  'ROCKSON',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
