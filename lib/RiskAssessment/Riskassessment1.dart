@@ -28,19 +28,28 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xFF2A2E34),
+        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            // Navigate back to the previous screen
+            Navigator.pop(context);
+          },
+        ),
         title: const Text(
           'Risk Assessment Test',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,color: Colors.white),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        centerTitle: true,
-        leading: const Icon(Icons.arrow_back),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             // Question Header
             const Text(
               'QUESTION 3/8',
@@ -113,14 +122,14 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
                   backgroundColor: selectedOption != null
                       ? Colors.teal
                       : Colors.grey,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(25),
                   ),
                 ),
                 child: const Text(
                   'Next',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold,color: Colors.white),
                 ),
               ),
             ),
@@ -136,8 +145,15 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
       color: selectedOption == title
           ? Colors.teal // Change to cyan when selected
           : const Color(0xFF1F1F1F), // Default background color
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12), // Rounded corners
+        side: BorderSide(
+          color: Color(0xFF4A3E45),// Grey border color
+          width: 1.5, // Border width
+        ),
+      ),
       child: InkWell(
+        borderRadius: BorderRadius.circular(12), // Ensures ripple effect respects corners
         onTap: () {
           setState(() {
             selectedOption = title; // Set the selected option on tap
@@ -182,7 +198,7 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
                   groupValue: selectedOption,
                   onChanged: (value) {
                     setState(() {
-                      selectedOption = value;
+                      selectedOption = value!;
                     });
                   },
                   activeColor: Colors.white,
@@ -194,4 +210,5 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
       ),
     );
   }
+
 }
