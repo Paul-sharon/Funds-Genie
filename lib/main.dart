@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/loginpage.dart';
-import 'screens/registerpage.dart';
-import 'screens/dashboard.dart';
-import 'RiskAssessment/Riskassessment1.dart';
+import 'RiskAssessment/Riskassessment.dart';
 void main() => runApp(MutualFundApp());
 
 class MutualFundApp extends StatelessWidget {

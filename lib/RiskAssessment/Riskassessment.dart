@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
-import 'Riskassessment2.dart';
+
+class Question {
+  final String questionText;
+  final List<Option> options;
+
+  Question({required this.questionText, required this.options});
+}
+
+class Option {
+  final String title;
+  final String subtitle;
+
+  Option({required this.title, required this.subtitle});
+}
+
 class RiskAssessment extends StatelessWidget {
   const RiskAssessment({Key? key}) : super(key: key);
 
@@ -7,39 +21,66 @@ class RiskAssessment extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const RiskAssessmentScreen(),
+      home: RiskAssessmentScreen(
+        questions: [
+          Question(
+            questionText: 'What is your primary investment goal?',
+            options: [
+              Option(title: 'Capital Preservation', subtitle: 'e.g. Secure initial investment'),
+              Option(title: 'Steady Income', subtitle: 'e.g. Fixed returns, lower risk'),
+              Option(title: 'Balanced Growth and Income', subtitle: 'e.g. Moderate risk for moderate returns'),
+              Option(title: 'Growth', subtitle: 'e.g. Seeking higher returns. Willing to take moderate risks'),
+              Option(title: 'Aggressive Growth', subtitle: 'e.g. Maximizing returns, Accepting high risks'),
+            ],
+          ),
+          Question(
+            questionText: 'How long do you plan to invest?',
+            options: [
+              Option(title: 'Less than 1 year', subtitle: 'Short-term investment horizon'),
+              Option(title: '1 to 3 years', subtitle: 'Medium-term investment horizon'),
+              Option(title: 'More than 3 years', subtitle: 'Long-term investment horizon'),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
 
 class RiskAssessmentScreen extends StatefulWidget {
-  const RiskAssessmentScreen({Key? key}) : super(key: key);
+  final List<Question> questions;
+
+  const RiskAssessmentScreen({Key? key, required this.questions}) : super(key: key);
 
   @override
   _RiskAssessmentScreenState createState() => _RiskAssessmentScreenState();
 }
 
 class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
+  int currentQuestionIndex = 0;
   String? selectedOption;
 
   @override
   Widget build(BuildContext context) {
+    final currentQuestion = widget.questions[currentQuestionIndex];
+
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
+        backgroundColor: const Color(0xFF2A2E34),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            // Navigate back to the previous screen
-            Navigator.pop(context);
+            if (currentQuestionIndex > 0) {
+              setState(() {
+                currentQuestionIndex--; // Go to the previous question
+                selectedOption = null; // Reset selected option for the new question
+              });
+            }
           },
         ),
         title: const Text(
           'Risk Assessment Test',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
       body: Padding(
@@ -49,9 +90,9 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
           children: [
             const SizedBox(height: 20),
             // Question Header
-            const Text(
-              'QUESTION 1/6',
-              style: TextStyle(
+            Text(
+              'QUESTION ${currentQuestionIndex + 1}/${widget.questions.length}',
+              style: const TextStyle(
                 fontSize: 14,
                 color: Colors.grey,
                 fontWeight: FontWeight.bold,
@@ -60,9 +101,9 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
             const SizedBox(height: 10),
 
             // Question Text
-            const Text(
-              'What is your primary investment goal?',
-              style: TextStyle(
+            Text(
+              currentQuestion.questionText,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -71,30 +112,8 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
             const SizedBox(height: 20),
 
             // Options
-            buildOption(
-              context,
-              'Capital Preservation',
-              'e.g. Secure initial investment',
-            ),
-            buildOption(
-              context,
-              'Steady Income',
-              'e.g. Fixed returns, lower risk',
-            ),
-            buildOption(
-              context,
-              'Balanced Growth and Income',
-              'e.g. Moderate risk for moderate returns',
-            ),
-            buildOption(
-              context,
-              'Growth',
-              'e.g. Seeking higher returns. Willing to take moderate risks',
-            ),
-            buildOption(
-              context,
-              'Aggressive Growth',
-              'e.g. Maximizing returns, Accepting high risks',
+            ...currentQuestion.options.map(
+                  (option) => buildOption(context, option.title, option.subtitle),
             ),
 
             const Spacer(),
@@ -103,22 +122,26 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {
-                  // Add navigation or further logic here
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RiskAssessment2(),
-                    ),
-                  );
-                },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal, // Consistently teal background
+                  backgroundColor: Colors.teal,
                   padding: const EdgeInsets.symmetric(vertical: 18),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(25),
                   ),
                 ),
+                onPressed: () {
+                  if (currentQuestionIndex < widget.questions.length - 1) {
+                    setState(() {
+                      selectedOption = null; // Reset selected option
+                      currentQuestionIndex++;
+                    });
+                  } else {
+                    // Handle the end of the questionnaire
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('You have completed the assessment!')),
+                    );
+                  }
+                },
                 child: const Text(
                   'Next',
                   style: TextStyle(
@@ -139,60 +162,56 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
   Widget buildOption(BuildContext context, String title, String subtitle) {
     return Card(
       color: selectedOption == title
-          ? Colors.teal // Change to cyan when selected
+          ? Colors.teal
           : const Color(0xFF1F1F1F), // Default background color
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12), // Rounded corners
+        borderRadius: BorderRadius.circular(12),
         side: const BorderSide(
-          color: Color(0xFF4A3E45), // Grey border color
-          width: 1.5, // Border width
+          color: Color(0xFF4A3E45),
+          width: 1.5,
         ),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(12), // Ripple effect respects corners
+        borderRadius: BorderRadius.circular(12),
         onTap: () {
           setState(() {
-            selectedOption = title; // Set the selected option on tap
+            selectedOption = title;
           });
         },
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
           child: Row(
             children: [
-              // Text on the left
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white, // Text color
+                        color: Colors.white,
                       ),
                     ),
                     Text(
                       subtitle,
                       style: TextStyle(
                         fontSize: 14,
-                        color: selectedOption == title
-                            ? Colors.white70 // Lighter grey text when selected
-                            : Colors.grey, // Default grey text
+                        color: selectedOption == title ? Colors.white70 : Colors.grey,
                       ),
                     ),
                   ],
                 ),
               ),
-              // Radio button on the right
               Transform.scale(
-                scale: 1.3, // Adjust size
+                scale: 1.3,
                 child: Radio<String>(
                   value: title,
                   groupValue: selectedOption,
                   onChanged: (value) {
                     setState(() {
-                      selectedOption = value!;
+                      selectedOption = value;
                     });
                   },
                   activeColor: Colors.white,
@@ -201,23 +220,6 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Placeholder for SIPCalculator screen
-class SIPCalculator extends StatelessWidget {
-  const SIPCalculator({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('SIP Calculator'),
-      ),
-      body: const Center(
-        child: Text('SIP Calculator Screen'),
       ),
     );
   }
