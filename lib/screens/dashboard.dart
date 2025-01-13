@@ -7,7 +7,6 @@ class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
-
 class _DashboardState extends State<Dashboard> {
   int _selectedIndex = 0;
 
@@ -37,7 +36,6 @@ class _DashboardState extends State<Dashboard> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +56,7 @@ class _DashboardState extends State<Dashboard> {
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
-                  'ROCKSON',
+                  'SHARON',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
