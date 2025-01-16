@@ -13,8 +13,8 @@ class MutualFundApp extends StatelessWidget {
         primaryColor: Color(0xFF0A0E21),
         scaffoldBackgroundColor: Color(0xFF0A0E21),
       ),
-      home: LoginPage(),
-      //home: RiskAssessment(),
+      //home: LoginPage(),
+      home: RiskAssessment(),
       // home: Riskometer(),
     );
   }
