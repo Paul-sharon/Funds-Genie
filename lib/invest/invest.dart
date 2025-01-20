@@ -34,7 +34,6 @@ class _InvestState extends State<Invest> {
     );
   }
 }
-
 class OngoingNFOsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

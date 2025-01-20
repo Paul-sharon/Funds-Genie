@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'TransactionFailed.dart';
+import 'TransactionCompleted.dart';
 import 'TransactionProgress.dart';
 import 'TransactionStatus.dart';
-class TransactionCompleted extends StatelessWidget {
-  const TransactionCompleted({Key? key}) : super(key: key);
+
+class TransactionFailed extends StatelessWidget {
+  const TransactionFailed({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
+      initialIndex: 2, // Set default tab to "Failed"
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF2A2E34),
@@ -65,9 +67,8 @@ class TransactionCompleted extends StatelessWidget {
     );
   }
 }
-
-class CompletedTransactionsTab extends StatelessWidget {
-  const CompletedTransactionsTab({Key? key}) : super(key: key);
+class FailedTransactionsTab extends StatelessWidget {
+  const FailedTransactionsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,11 @@ class CompletedTransactionsTab extends StatelessWidget {
               color: Colors.black, // Black text
             ),
           ),
+        ),
+        TransactionCard(
+          date: '11 Nov 2024',
+          fundName: 'Canara Robeco Blue Chip Equity',
+          units: '0.150 Unit',
         ),
         TransactionCard(
           date: '22 Nov 2024',
@@ -110,11 +116,7 @@ class CompletedTransactionsTab extends StatelessWidget {
           units: '0.183 Unit',
           tag: 'PURCHASE-LUMPSUM',
         ),
-        TransactionCard(
-          date: '11 Nov 2024',
-          fundName: 'Canara Robeco Blue Chip Equity',
-          units: '0.150 Unit',
-        ),
+
       ],
     );
   }
@@ -217,5 +219,4 @@ class TransactionCard extends StatelessWidget {
     );
   }
 }
-
 

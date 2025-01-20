@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'TransactionCompleted.dart';
 import 'TransactionFailed.dart';
-import 'TransactionProgress.dart';
 import 'TransactionStatus.dart';
-class TransactionCompleted extends StatelessWidget {
-  const TransactionCompleted({Key? key}) : super(key: key);
+
+class TransactionProgress extends StatelessWidget {
+  const TransactionProgress({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
+      initialIndex: 1, // Set default tab to "In Progress"
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF2A2E34),
@@ -65,9 +67,8 @@ class TransactionCompleted extends StatelessWidget {
     );
   }
 }
-
-class CompletedTransactionsTab extends StatelessWidget {
-  const CompletedTransactionsTab({Key? key}) : super(key: key);
+class ProgressTransactionsTab extends StatelessWidget {
+  const ProgressTransactionsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +84,12 @@ class CompletedTransactionsTab extends StatelessWidget {
               color: Colors.black, // Black text
             ),
           ),
+        ),
+        TransactionCard(
+          date: '12 Nov 2024',
+          fundName: 'Kotak Bluechip Fund',
+          units: '0.183 Unit',
+          tag: 'PURCHASE-LUMPSUM',
         ),
         TransactionCard(
           date: '22 Nov 2024',
@@ -104,12 +111,7 @@ class CompletedTransactionsTab extends StatelessWidget {
           fundName: 'Aditya Birla Sun Life Flexi Cap Fund - IDCW-Regular Plan',
           units: '1.057 Unit',
         ),
-        TransactionCard(
-          date: '12 Nov 2024',
-          fundName: 'Kotak Bluechip Fund',
-          units: '0.183 Unit',
-          tag: 'PURCHASE-LUMPSUM',
-        ),
+
         TransactionCard(
           date: '11 Nov 2024',
           fundName: 'Canara Robeco Blue Chip Equity',
@@ -217,5 +219,3 @@ class TransactionCard extends StatelessWidget {
     );
   }
 }
-
-

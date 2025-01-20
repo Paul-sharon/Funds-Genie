@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mutualfund_gtl/invest/invest.dart';
+import 'package:mutualfund_gtl/portfolio/TransactionFailed.dart';
+import 'package:mutualfund_gtl/portfolio/TransactionProgress.dart';
 import '../screens/dashboard.dart';
 import 'TransactionCompleted.dart';
 import '../More/Morepage.dart';
@@ -70,7 +72,7 @@ class _PortfolioState extends State<Portfolio> {
                             ),
                             Flexible(
                               flex: 1,
-                              child: _buildSummaryCard("525", "Failed", Colors.red.shade100),
+                              child: _buildSummaryCard("525", "   Failed   ", Colors.red.shade100),
                             ),
                           ],
                         ),
@@ -112,7 +114,10 @@ class _PortfolioState extends State<Portfolio> {
                     Center(
                       child: TextButton(
                         onPressed: () {
-                          // Handle "View more" action here
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => TransactionProgress()),
+                          );
                         },
                         child: const Text(
                           "View more →",
@@ -142,6 +147,20 @@ class _PortfolioState extends State<Portfolio> {
             MaterialPageRoute(builder: (context) => TransactionCompleted()),
           );
         }
+        else if(value=="In Progress")
+        {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TransactionProgress()),
+          );
+        }
+        else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => TransactionFailed()),
+          );
+        }
+
       },
       child: Container(
         padding: const EdgeInsets.all(12.0),

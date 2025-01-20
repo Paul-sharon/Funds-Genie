@@ -4,20 +4,6 @@ import 'package:flutter/services.dart';
 
 class TransactionStatus extends StatelessWidget {
   const TransactionStatus({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Transaction Status',
-      home: const CombinedScreen(),
-    );
-  }
-}
-
-class CombinedScreen extends StatelessWidget {
-  const CombinedScreen({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +12,8 @@ class CombinedScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            SystemChrome.setSystemUIOverlayStyle(
-              const SystemUiOverlayStyle(
-                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
-                systemNavigationBarIconBrightness: Brightness.light, // White icons
-              ),
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TransactionCompleted()),
+            Navigator.pop(
+                context
             );
           },
         ),
@@ -223,7 +202,6 @@ class TransactionStatusScreen extends StatelessWidget {
       ),
     );
   }
-
   // Helper method to create status tiles
   static Widget _buildStatusTile({
     required IconData icon,
