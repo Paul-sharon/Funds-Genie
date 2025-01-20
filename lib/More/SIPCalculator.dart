@@ -57,7 +57,7 @@ class _SipcalculatorState extends State<Sipcalculator> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(6.0),
           child: Column(
             children: [
               // Pie Chart with legend

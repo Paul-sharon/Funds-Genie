@@ -1,13 +1,47 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'Morepage.dart'; // Ensure this file is correctly implemented.
-import 'package:flutter/services.dart';
 
 
-class WealthCalculator extends StatelessWidget {
+class Wealthcalculator extends StatefulWidget {
+  const Wealthcalculator({super.key});
+
+  @override
+  State<Wealthcalculator> createState() => _WealthcalculatorState();
+}
+
+class _WealthcalculatorState extends State<Wealthcalculator> {
+  double LumpsumInvestment = 25000; // Initial investment
+  int timePeriod = 10; // Initial time period in years
+  double rateOfReturn = 12; // Initial rate of return (in %)
+
+  double investedAmount = 0;
+  double estimatedReturn = 0;
+  double totalValue = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _calculateSIP();
+  }
+
+  void _calculateSIP() {
+    setState(() {
+      double r = rateOfReturn / 100 / 12; // Monthly rate of return
+      int n = timePeriod * 12; // Total number of months
+      investedAmount = LumpsumInvestment * n;
+      totalValue = LumpsumInvestment *
+          (pow((1 + r), n) - 1) *
+          (1 + r) /
+          r; // SIP formula
+      estimatedReturn = totalValue - investedAmount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFF1B1C20),
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -15,293 +49,323 @@ class WealthCalculator extends StatelessWidget {
           },
           icon: const Icon(Icons.arrow_back),
         ),
-        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
         title: const Text(
           'Wealth Calculator',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
+        backgroundColor: const Color(0xFF2A2E34),
+        foregroundColor: const Color(0xFFFFFFFF),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            _buildContainer(
-              child: Column(
-                children: [
-                  const SizedBox(height: 20),
-                  SizedBox(
-                    height: 250,
-                    child: PieChart(
-                      PieChartData(
-                        sections: [
-                          PieChartSectionData(
-                            color: Colors.blue,
-                            radius: 40,
-                            value:25,
-                              showTitle: false
-                          ),
-                          PieChartSectionData(
-                            color: Colors.green,
-                            radius: 40,
-                            value:52.6,
-                              showTitle: false
-                          ),
-                        ],
-                        sectionsSpace: 2,
-                        centerSpaceRadius: 100,
-                        startDegreeOffset: -90,
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
+            children: [
+              // Pie Chart with legend
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 370,
+                      width:250,
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              color:  Colors.blue,
+                              value: investedAmount,
+                              title: '',
+                              titleStyle: const TextStyle(
+                                fontSize: 1,
+                                color: Colors.transparent,
+                              ),
+                            ),
+                            PieChartSectionData(
+                              color: Colors.green,
+                              value: estimatedReturn,
+                              title: '',
+                              titleStyle: const TextStyle(
+                                fontSize: 1,
+                                color: Colors.transparent,
+                              ),
+                            ),
+                          ],
+                          centerSpaceRadius: 120, // Increase this value for a thinner chart
+                          sectionsSpace: 2, // Adjust the gap between sections
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 50),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _legend(const Color(0xFF0288D1), 'Invested Amount'),
-                      const SizedBox(width: 20),
-                      _legend(const Color(0xFF4CAF50), 'Est Return'),
-                    ],
-                  ),
-                ],
+                    const SizedBox(height: 8),
+                    // Legend
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _legend(const Color(0xFF0288D1), 'Invested Amount'),
+                        const SizedBox(width: 20),
+                        _legend(const Color(0xFF4CAF50), 'Est Return'),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Summary row with improved handling of overflow
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: _buildSummaryColumn(
+                            label: 'Invested',
+                            value: '₹${(investedAmount / 100000).toStringAsFixed(2)}L',
+                            backgroundColor: const Color(0xFFF1F1F1),
+                          ),
+                        ),
+                        const Text(
+                          '+',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                          child: _buildSummaryColumn(
+                            label: 'Est Return',
+                            value: '₹${(estimatedReturn / 100000).toStringAsFixed(2)}L',
+                            backgroundColor: const Color(0xFFF1F1F1),
+                          ),
+                        ),
+                        const Text(
+                          '=',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Expanded(
+                          child: _buildSummaryColumn(
+                            label: 'Total Value',
+                            value: '₹${(totalValue / 100000).toStringAsFixed(2)}L',
+                            backgroundColor: const Color(0xFFE8F2FF),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Slider Section
+                    _buildSliderSection(
+                      title: 'Lumpsum Investment',
+                      value: LumpsumInvestment,
+                      min: 10000,
+                      max: 10000000,
+                      divisions: 1000,
+                      onChanged: (value) {
+
+
+                        setState(() {
+                          LumpsumInvestment = value;
+                          _calculateSIP();
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("10k",style:
+                        TextStyle(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),),
+                        const Text("1Cr",style:
+                        TextStyle(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    _buildSliderSection(
+                      title: 'Time Period (in years)',
+                      value: timePeriod.toDouble(),
+                      min: 1,
+                      max: 40,
+                      divisions: 39,
+                      onChanged: (value) {
+                        setState(() {
+                          timePeriod = value.toInt();
+                          _calculateSIP();
+                        });
+                      },
+                    ),
+                    const SizedBox(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("1Y",style:
+                        TextStyle(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),),
+                        const Text("40Y",style:
+                        TextStyle(fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey)),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    // Rate of Return Input
+                    _buildRateOfReturnInput(),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            _buildContainer(
-              child: const InvestmentSummary(),
-            ),
-            const SizedBox(height: 16),
-            _buildContainer(
-              child: const InvestmentCalculator(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContainer({required Widget child}) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(25.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade300,
-            blurRadius: 8.0,
-            offset: const Offset(0, 4),
+            ],
           ),
-        ],
+        ),
       ),
-      child: child,
     );
   }
 
-  Widget _legend(Color color, String label) {
-    return Row(
-      children: [
-        CircleAvatar(radius: 5, backgroundColor: color),
-        const SizedBox(width: 8),
-        Text(label, style: const TextStyle(fontSize: 14)),
-      ],
-    );
-  }
-}
-
-class InvestmentSummary extends StatelessWidget {
-  const InvestmentSummary({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _buildValueSection('Invested', '₹25.0 L'),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text('+', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        _buildValueSection('Est Return', '₹52.6 L'),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Text('=', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-        ),
-        _buildValueSection('Total Value', '₹77.6 L', highlight: true),
-      ],
-    );
-  }
-
-  Widget _buildValueSection(String label, String value, {bool highlight = false}) {
+  Widget _buildSummaryColumn({
+    required String label,
+    required String value,
+    required Color backgroundColor,
+  }) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: highlight ? Colors.blue[100] : Colors.grey[100],
-        borderRadius: BorderRadius.circular(8),
+        color: backgroundColor,
+        borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         children: [
-          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
-          const SizedBox(height: 4),
           Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: highlight ? Colors.blue[900] : Colors.black,
+            label,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey,
+            ),
+            overflow: TextOverflow.ellipsis, // Prevent overflow
+          ),
+          const SizedBox(height: 4),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              overflow: TextOverflow.ellipsis, // Prevent overflow
             ),
           ),
         ],
       ),
     );
   }
-}
 
-class InvestmentCalculator extends StatefulWidget {
-  const InvestmentCalculator({Key? key}) : super(key: key);
 
-  @override
-  _InvestmentCalculatorState createState() => _InvestmentCalculatorState();
-}
-
-class _InvestmentCalculatorState extends State<InvestmentCalculator> {
-  double _monthlyInvestment = 25000;
-  double _timePeriod = 10;
-  double _rateOfReturn = 12;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildSliderSection({
+    required String title,
+    required double value,
+    required double min,
+    required double max,
+    required int divisions,
+    required ValueChanged<double> onChanged,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Monthly Investment Section
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Lumpsum Investment',
-              style: TextStyle(fontSize: 18),
+            Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
+
                 borderRadius: BorderRadius.circular(8.0),
               ),
-              child: Text(
-                _monthlyInvestment.toStringAsFixed(0),
-                style: const TextStyle(fontSize: 16),
+              child: Column(
+                children: [
+
+                  const SizedBox(height: 4),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      value > 499
+                          ? '₹${value.toStringAsFixed(0)}' // If value is greater than 500, show in ₹ format
+                          : '${value.toStringAsFixed(0)}Y', // If value is 500 or less, show in L format
+
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                      overflow: TextOverflow.ellipsis, // Prevent overflow
+                    ),
+                  ),
+                ],
               ),
-            ),
+            )
+
           ],
         ),
-        const SizedBox(height: 8),
         Slider(
-          value: _monthlyInvestment,
-          min: 10000,
-          max: 10000000,
-          divisions: 199,
-          label: _monthlyInvestment.toStringAsFixed(0),
-          activeColor: const Color(0xFF028274),
-          inactiveColor: Colors.grey,
-          onChanged: (value) {
-            setState(() {
-              _monthlyInvestment = value;
-            });
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text('10k'),
-            Text('1Cr'),
-          ],
-        ),
-        const SizedBox(height: 20),
-
-        // Time Period Section
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Text(
-              'Time Period (in years)',
-              style: TextStyle(fontSize: 18),
-            ),
-            Container(
-              width: 65,
-              height: 30,
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              child: Center(
-                child: Text(
-                  _timePeriod.toStringAsFixed(0),
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Slider(
-          value: _timePeriod,
-          min: 1,
-          max: 40,
-          divisions: 39,
-          label: _timePeriod.toStringAsFixed(0),
-          activeColor: const Color(0xFF028274),
-          inactiveColor: Colors.grey,
-          onChanged: (value) {
-            setState(() {
-              _timePeriod = value;
-            });
-          },
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text('1Y'),
-            Text('40Y'),
-          ],
-        ),
-        const SizedBox(height: 20),
-
-        // Rate of Return Section
-        const Text(
-          'Expected Rate of Return (% p.a)',
-          style: TextStyle(fontSize: 18),
-        ),
-        TextField(
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12.0)),
-            ),
-          ),
-          keyboardType: TextInputType.number,
-          controller: TextEditingController(text: _rateOfReturn.toStringAsFixed(1)),
-          onSubmitted: (value) {
-            setState(() {
-              _rateOfReturn = double.tryParse(value) ?? _rateOfReturn;
-            });
-          },
-        ),
-        const SizedBox(height: 20),
-
-        // Calculate Button
-        ElevatedButton(
-          onPressed: () {
-            final snackBar = SnackBar(
-              content: Text(
-                  'Monthly Investment: ₹$_monthlyInvestment\nTime Period: $_timePeriod years\nRate of Return: $_rateOfReturn%'),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          },
-          child: const Text('Calculate'),
+          value: value,
+          min: min,
+          max: max,
+          divisions: divisions,
+          label: '₹${value.toStringAsFixed(0)}',
+          activeColor: Colors.green, // Set the active color to green
+          inactiveColor: Colors.grey, // Optional: Set the inactive color
+          onChanged: onChanged,
         ),
       ],
     );
   }
+
+  Widget _buildRateOfReturnInput() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          'Expected Rate of Return (%)',
+          style: TextStyle(
+              fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
+        SizedBox(
+          width: 80,
+          child: TextField(
+            keyboardType: TextInputType.number,
+            onChanged: (value) {
+              setState(() {
+                rateOfReturn = double.tryParse(value) ?? 12;
+                _calculateSIP();
+              });
+            },
+            decoration: const InputDecoration(
+              hintText: '12%',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+Widget _legend(Color color, String label) {
+  return Row(
+    children: [
+      CircleAvatar(radius: 5, backgroundColor: color),
+      const SizedBox(width: 8),
+      Text(label, style: const TextStyle(fontSize: 14,color: Colors.black)),
+    ],
+  );
 }
