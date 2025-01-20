@@ -114,7 +114,7 @@ class _DashboardState extends State<Dashboard> {
 
 class FundOptionsGrid extends StatelessWidget {
   final List<Map<String, dynamic>> fundOptions = [
-    {'title': 'Dynamic Asset', 'icon': Icons.savings, 'route': DynamicAsset()},
+    {'title': 'Dynamic Asset', 'icon': Icons.savings, 'route': DynamicAssetAllocation()},
     {'title': 'Balanced Allocation', 'icon': Icons.bar_chart, 'route': BalancedAllocation()},
     {'title': 'Multi Asset Allocation', 'icon': Icons.pie_chart, 'route': MultiAssetAllocation()},
     {'title': 'Aggressive Allocation', 'icon': Icons.trending_up, 'route': AggressiveAllocation()},

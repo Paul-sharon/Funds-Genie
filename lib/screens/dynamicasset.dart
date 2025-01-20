@@ -2,15 +2,6 @@ import 'package:flutter/material.dart';
 import 'dashboard.dart';
 import 'package:flutter/services.dart';
 
-class DynamicAsset extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: DynamicAssetAllocation(),
-    );
-  }
-}
 class DynamicAssetAllocation extends StatefulWidget {
   @override
   _DynamicAssetAllocationState createState() => _DynamicAssetAllocationState();
@@ -232,8 +223,8 @@ class FundCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.0),
         ),
         elevation: 4,
-        child:
-        Padding(
+        color: Colors.white, // Set background color to white
+        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +247,7 @@ class FundCard extends StatelessWidget {
                   ),
                   Text(
                     'UNRATED',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 12, color: Colors.black),
                   ),
                 ],
               ),
@@ -280,13 +271,14 @@ class FundCard extends StatelessWidget {
                     children: [
                       Text(
                         'Current Value',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                       Text(
                         currentValue,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
+                            color: Colors.black
                         ),
                       ),
                     ],
@@ -296,13 +288,14 @@ class FundCard extends StatelessWidget {
                     children: [
                       Text(
                         'Min SIP Amount',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                       Text(
                         minSipAmount,
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
+                            color: Colors.black
                         ),
                       ),
                     ],
@@ -312,13 +305,13 @@ class FundCard extends StatelessWidget {
                     children: [
                       Text(
                         'Return%',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                        style: TextStyle(fontSize: 12, color: Colors.black),
                       ),
                       Text(
                         returnPercentage,
                         style: TextStyle(
                           fontSize: 14,
-                          fontWeight: FontWeight.bold,
+                          fontWeight: FontWeight.bold, color: Colors.black
                         ),
                       ),
                     ],
@@ -349,3 +342,4 @@ class FundCard extends StatelessWidget {
     );
   }
 }
+
