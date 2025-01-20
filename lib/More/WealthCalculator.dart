@@ -3,39 +3,19 @@ import 'package:fl_chart/fl_chart.dart';
 import 'Morepage.dart'; // Ensure this file is correctly implemented.
 import 'package:flutter/services.dart';
 
-class WealthCalculator extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        systemNavigationBarColor: Color(0xFF2A2E34), // Black navigation bar
-        systemNavigationBarIconBrightness: Brightness.light, // Light icons
-        statusBarColor: Color(0xFF2A2E34), // Black status bar
-        statusBarIconBrightness: Brightness.light, // Light icons
-      ),
-    );
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: WealthcalculatorScreen(),
-    );
-  }
-}
 
-class WealthcalculatorScreen extends StatelessWidget {
+class WealthCalculator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Morepage()),
-            );
+            Navigator.pop(context);
           },
+          icon: const Icon(Icons.arrow_back),
         ),
+        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
         title: const Text(
           'Wealth Calculator',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),

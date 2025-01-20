@@ -51,7 +51,7 @@ class _MorepageState extends State<Morepage> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => SIPCalculator()),
+                                MaterialPageRoute(builder: (context) => Sipcalculator()),
                               );
                             },
                           ),
