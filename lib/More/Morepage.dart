@@ -10,86 +10,72 @@ class Morepage extends StatefulWidget {
   @override
   _MorepageState createState() => _MorepageState();
 }
-class _MorepageState extends State<Morepage> {
 
+class _MorepageState extends State<Morepage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black, // Dark background
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF2A2E34), // Black app bar background
-        // leading: IconButton(
-        //   icon: const Icon(Icons.arrow_back, color: Colors.white),
-        //   onPressed: () {
-        //     Navigator.pop(context);
-        //   },
-        // ),
-        title: const Text(
-          'More',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start, // Align at the top
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SizedBox(height: 20), // Add space at the top
-          Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Color(0xFF2A2E34), // Card background
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Tools and Calculator',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                SizedBox(height: 20), // Add space at the top
+                Container(
+                  padding: EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF2A2E34), // Card background
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildButton(
-                      context,
-                      icon: Icons.calculate, // Icon for SIP Calculator
-                      label: '     SIP \n     Calculator',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => SIPCalculator()),
-                        );
-                      },
-                    ),
-                    _buildButton(
-                      context,
-                      icon: Icons.calculate_outlined,
-                      // Icon for Wealth Calculator
-                      label: '     Wealth \n     Calculator',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => WealthCalculator()),
-                        );
-                      },
-                    ),
-                  ],
+                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Tools and Calculator',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _buildButton(
+                            context,
+                            icon: Icons.calculate, // Icon for SIP Calculator
+                            label: '     SIP \n     Calculator',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => SIPCalculator()),
+                              );
+                            },
+                          ),
+                          _buildButton(
+                            context,
+                            icon: Icons.calculate_outlined,
+                            label: '     Wealth \n     Calculator',
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => WealthCalculator()),
+                              );
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

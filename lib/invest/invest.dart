@@ -8,48 +8,29 @@ class Invest extends StatefulWidget {
   @override
   _InvestState createState() => _InvestState();
 }
+
 class _InvestState extends State<Invest> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFF121212),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF2A2E34),
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/paul.jpg'),
-            ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Welcome,', style: TextStyle(color: Colors.white, fontSize: 14)),
-                Text('SHARON', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-              ],
-            ),
-            Spacer(),
-            Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
-          ],
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 24),
-                OngoingNFOsSection(),
-                SizedBox(height: 24),
-                GenieRecommendationSection(),
-              ],
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 24),
+                  OngoingNFOsSection(),
+                  SizedBox(height: 24),
+                  GenieRecommendationSection(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

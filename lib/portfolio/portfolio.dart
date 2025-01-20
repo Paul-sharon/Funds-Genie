@@ -14,37 +14,6 @@ class _PortfolioState extends State<Portfolio> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        AppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: const Color(0xFF2A2E34),
-          title: Row(
-            children: [
-              const CircleAvatar(
-                backgroundImage: AssetImage('assets/paul.jpg'),
-              ),
-              const SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Welcome,',
-                    style: TextStyle(color: Colors.white, fontSize: 14),
-                  ),
-                  Text(
-                    'SHARON',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
-            ],
-          ),
-        ),
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
@@ -84,18 +53,37 @@ class _PortfolioState extends State<Portfolio> {
                         )
                       ],
                     ),
-                    const SizedBox(height: 5.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
-                        _buildSummaryCard("11", "Completed", Colors.green.shade100),
-                        _buildSummaryCard("12", "In Progress", Colors.orange.shade100),
-                        _buildSummaryCard("525", "    Failed    ", Colors.red.shade100),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: _buildSummaryCard("11", "Completed", Colors.green.shade100),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: _buildSummaryCard("12", "In Progress", Colors.orange.shade100),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: _buildSummaryCard("525", "Failed", Colors.red.shade100),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          color: Colors.red, // Debug color
+                          child: const SizedBox(height: 2.0),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 10.0),
                     Expanded(
                       child: ListView(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero, // Adding zero padding
                         children: [
                           _buildTransactionItem(
                             date: "26 Nov 2024",

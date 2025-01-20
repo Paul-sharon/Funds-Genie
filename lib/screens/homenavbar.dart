@@ -24,19 +24,47 @@ class _HomenavbarState extends State<Homenavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: const Color(0xFF2A2E34),
+        title: Row(
+          children: [
+            const CircleAvatar(
+              backgroundImage: AssetImage('assets/paul.jpg'),
+            ),
+            const SizedBox(width: 10),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: const [
+                Text(
+                  'Welcome,',
+                  style: TextStyle(color: Colors.white, fontSize: 14),
+                ),
+                Text(
+                  'SHARON',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
+          ],
+        ),
+      ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _currentIndex,
         onTap: (index) {
-          print("index $index");
           setState(() {
             _currentIndex = index;
-
-
           });
         },
-        backgroundColor: Color(0xFF2A2E34),
+        backgroundColor: const Color(0xFF2A2E34),
         selectedItemColor: Colors.greenAccent,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
