@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'registerpage.dart'; // Ensure you import the RegisterPage file
-import 'dashboard.dart';
+import 'homenavbar.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -141,7 +141,8 @@ class _LoginPageState extends State<LoginPage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Dashboard(),
+                              builder: (context) => Homenavbar(),
+
                             ),
                           );
                         },

@@ -21,16 +21,7 @@ class SIPCalculatorScreen extends StatelessWidget {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
-            SystemChrome.setSystemUIOverlayStyle(
-              const SystemUiOverlayStyle(
-                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
-                systemNavigationBarIconBrightness: Brightness.light, // White icons
-              ),
-            );
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Morepage()),
-            );
+            Navigator.pop(context);
           },
         ),
         title: const Text(

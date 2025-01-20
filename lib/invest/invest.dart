@@ -4,34 +4,11 @@ import 'FundDetailsPage.dart';
 import '../portfolio/portfolio.dart';
 import '../More/Morepage.dart';
 
-
 class Invest extends StatefulWidget {
   @override
   _InvestState createState() => _InvestState();
 }
-
 class _InvestState extends State<Invest> {
-  int _selectedIndex = 2;
-
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
-      );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Portfolio()),
-      );
-    } else if (index == 3) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Morepage()),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,19 +49,6 @@ class _InvestState extends State<Invest> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Color(0xFF2A2E34),
-        selectedItemColor: Colors.greenAccent,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.pie_chart), label: 'Portfolio'),
-          BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Invest'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
-        ],
       ),
     );
   }

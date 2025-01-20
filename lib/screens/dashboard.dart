@@ -1,148 +1,97 @@
 import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
-import '../invest/invest.dart';
-import '../portfolio/portfolio.dart';
-import '../More/Morepage.dart';
+
 class Dashboard extends StatefulWidget {
   @override
   _DashboardState createState() => _DashboardState();
 }
-class _DashboardState extends State<Dashboard> {
-  int _selectedIndex = 0;
 
-  void _onItemTapped(int index) {
-    if (index == 2) {
-      // Navigate to Invest page
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Invest()),
-      );
-    }
-    else if(index == 1){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Portfolio()),
-      );
-    }
-    else if(index == 3){
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Morepage()),
-      );
-    }
-    else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color(0xFF2A2E34),
-        title: Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/paul.jpg'),
-            ),
-            SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Welcome,',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                ),
-                Text(
-                  'SHARON',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+    return Column(
+      children: [
+        AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: const Color(0xFF2A2E34),
+          title: Row(
+            children: [
+              const CircleAvatar(
+                backgroundImage: AssetImage('assets/paul.jpg'),
+              ),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
+                    'Welcome,',
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
+                  Text(
+                    'SHARON',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
+            ],
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    color: Color(0xFF2A2E34),
+                  ),
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 40),
+                          const Text(
+                            'Explore All Mutual Funds',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          CategoryButtonsRow(),
+                          const SizedBox(height: 10),
+                          FundOptionsGrid(),
+                          const SizedBox(height: 40),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 10.0),
+                  child: _buildPortfolioSyncCard(),
                 ),
               ],
             ),
-            Spacer(),
-            Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
-          ],
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Column(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                color: Color(0xFF2A2E34),
-              ),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(width: 40),
-                      Text(
-                        'Explore All Mutual Funds',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: 30),
-                      CategoryButtonsRow(),
-                      SizedBox(height: 40),
-                      FundOptionsGrid(),
-                      SizedBox(height: 80),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: _buildPortfolioSyncCard(),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Color(0xFF2A2E34),
-        selectedItemColor: Colors.greenAccent,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart),
-            label: 'Portfolio',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money),
-            label: 'Invest',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.more_horiz),
-            label: 'More',
-          ),
-        ],
-      ),
-      backgroundColor: Colors.black,
+      ],
     );
   }
 
   Widget _buildPortfolioSyncCard() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(30)),
         color: Color(0xFFFFD7CA),
@@ -152,7 +101,7 @@ class _DashboardState extends State<Dashboard> {
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
+            children: const [
               Text(
                 'Update Your External Portfolio',
                 style: TextStyle(
@@ -164,29 +113,29 @@ class _DashboardState extends State<Dashboard> {
               Icon(Icons.close, color: Colors.black),
             ],
           ),
-          SizedBox(height: 10),
-          Text(
+          const SizedBox(height: 10),
+          const Text(
             'Last Updated: 28 Nov 2024',
             style: TextStyle(fontSize: 14, color: Colors.black),
           ),
-          SizedBox(height: 25),
-          Text(
+          const SizedBox(height: 25),
+          const Text(
             'Your external portfolio needs frequent syncing to get accurate investment details.',
             style: TextStyle(fontSize: 14, color: Colors.black),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
             ),
-            child: Text(
+            child: const Text(
               'Sync External Portfolio',
               style: TextStyle(color: Colors.white),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
         ],
       ),
     );

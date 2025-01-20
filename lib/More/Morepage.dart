@@ -11,26 +11,6 @@ class Morepage extends StatefulWidget {
   _MorepageState createState() => _MorepageState();
 }
 class _MorepageState extends State<Morepage> {
-  int _selectedIndex = 3;
-
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Dashboard()),
-      );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Portfolio()),
-      );
-    } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Invest()),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,23 +18,12 @@ class _MorepageState extends State<Morepage> {
       backgroundColor: Colors.black, // Dark background
       appBar: AppBar(
         backgroundColor: const Color(0xFF2A2E34), // Black app bar background
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            // Set the navigation bar color before navigating
-            SystemChrome.setSystemUIOverlayStyle(
-              const SystemUiOverlayStyle(
-                systemNavigationBarColor: Color(0xFF2A2E34), // Set to match your app theme
-                systemNavigationBarIconBrightness: Brightness.light, // White icons
-              ),
-            );
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => Dashboard()),
-            );
-          },
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.arrow_back, color: Colors.white),
+        //   onPressed: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
         title: const Text(
           'More',
           style: TextStyle(
@@ -119,22 +88,6 @@ class _MorepageState extends State<Morepage> {
               ],
             ),
           ),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Color(0xFF2A2E34),
-        selectedItemColor: Colors.greenAccent,
-        unselectedItemColor: Colors.grey,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.dashboard), label: 'Dashboard'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.pie_chart), label: 'Portfolio'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.attach_money), label: 'Invest'),
-          BottomNavigationBarItem(icon: Icon(Icons.more_horiz), label: 'More'),
         ],
       ),
     );
