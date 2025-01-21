@@ -2,33 +2,63 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  static const String baseUrl = 'http://10.0.2.2:8093/gtl-ws/api'; // Replace with your server's URL
+  static const String baseUrl = "http://10.0.2.2:8093/gtl-ws/api";
 
-  // User registration API call
+  // Register User
   static Future<String> registerUser(String name, String email, String password) async {
-    final url = Uri.parse('$baseUrl/register');
-    final body = jsonEncode({
-      'name': name,
-      'email': email,
-      'password': password,
-    });
-
     try {
       final response = await http.post(
-        url,
+        Uri.parse('$baseUrl/register'),
         headers: {'Content-Type': 'application/json'},
-        body: body,
+        body: jsonEncode({
+          'name': name,
+          'email': email,
+          'password': password,
+        }),
       );
 
-      if (response.statusCode == 201) {
-        return "Registration successful!";
-      } else if (response.statusCode == 400) {
-        return "Validation error: ${jsonDecode(response.body)['message']}";
+      // Log the response body
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        return data['message'] ?? "Registration successful!";
       } else {
-        return "Registration failed. Try again.";
+        final data = jsonDecode(response.body);
+        return data['error'] ?? "Registration failed. Please try again.";
       }
     } catch (e) {
-      return "An error occurred: $e";
+      return "An error occurred. Please check your internet connection.";
+    }
+  }
+
+  // Login User
+  static Future<String> loginUser(String email, String password) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/login'),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'email': email,
+          'password': password,
+        }),
+      );
+
+      // Log the response body
+      print('Response body: ${response.body}');
+
+      // Check if the response is a valid JSON object
+      try {
+        final data = jsonDecode(response.body);
+        return data['message'] ?? "Login successful!";
+      } catch (e) {
+        // If response body is not JSON, treat it as a plain string
+        return response.body ?? "An error occurred.";
+      }
+
+    } catch (e) {
+      print("Error: $e");
+      return "An error occurred. Please check your internet connection.";
     }
   }
 }
