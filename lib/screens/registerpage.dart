@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'loginpage.dart'; // Ensure you import the LoginPage file
+import '../services/api_service.dart';
+import 'loginpage.dart';
+
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -11,23 +13,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-  TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
 
-  void _register() {
+  // Validate and Register User
+  void _register() async {
     if (_formKey.currentState!.validate()) {
-      final String name = _nameController.text;
-      final String email = _emailController.text;
-      final String password = _passwordController.text;
+      final String name = _nameController.text.trim();
+      final String email = _emailController.text.trim();
+      final String password = _passwordController.text.trim();
 
-      print('User Registered: Name: $name, Email: $email, Password: $password');
+      // API call
+      final result = await ApiService.registerUser(name, email, password);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Registration Successful!')),
-      );
+      // Show response message
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+
+      if (result == "Registration successful!") {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+        );
+      }
     }
   }
 
@@ -36,6 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Stack(
         children: [
+          // Existing gradient background and title (unchanged)
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -72,169 +82,192 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 18.0),
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 80),
-                      TextField(
-                        controller: _nameController,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Text(
-                            'Full Name',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffB81736),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextField(
-                        controller: _emailController,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: const InputDecoration(
-                          suffixIcon: Icon(
-                            Icons.check,
-                            color: Colors.grey,
-                          ),
-                          label: Text(
-                            'Gmail',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffB81736),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextField(
-                        controller: _passwordController,
-                        obscureText: !_isPasswordVisible,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 80),
+                        TextFormField(
+                          controller: _nameController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            suffixIcon: Icon(
+                              Icons.check,
                               color: Colors.grey,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                          ),
-                          label: const Text(
-                            'Password',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffB81736),
-                            ),
-                          ),
-                        ),
-                      ),
-                      TextField(
-                        controller: _confirmPasswordController,
-                        obscureText: !_isConfirmPasswordVisible,
-                        style: const TextStyle(color: Colors.black),
-                        decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isConfirmPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isConfirmPasswordVisible =
-                                !_isConfirmPasswordVisible;
-                              });
-                            },
-                          ),
-                          label: const Text(
-                            'Confirm Password',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xffB81736),
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 30),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LoginPage(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          height: 55,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            gradient: const LinearGradient(
-                              colors: [
-                                Color(0xffB81736),
-                                Color(0xff281537),
-                              ],
-                            ),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'SIGN UP',
+                            label: Text(
+                              'Full Name',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
+                                color: Color(0xffB81736),
                               ),
                             ),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Name cannot be empty.";
+                            }
+                            return null;
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 120),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Text(
-                              "Have account?",
+                        TextFormField(
+                          controller: _emailController,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: const InputDecoration(
+                            suffixIcon: Icon(
+                              Icons.check,
+                              color: Colors.grey,
+                            ),
+                            label: Text(
+                              'Email',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: Color(0xffB81736),
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Email cannot be empty.";
+                            }
+                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              return "Enter a valid email address.";
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: _passwordController,
+                          obscureText: !_isPasswordVisible,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                                 color: Colors.grey,
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LoginPage(),
-                                  ),
-                                );
+                              onPressed: () {
+                                setState(() {
+                                  _isPasswordVisible = !_isPasswordVisible;
+                                });
                               },
-                              child: const Text(
-                                "Sign in",
+                            ),
+                            label: const Text(
+                              'Password',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffB81736),
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.length < 6) {
+                              return "Password must be at least 6 characters.";
+                            }
+                            return null;
+                          },
+                        ),
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          obscureText: !_isConfirmPasswordVisible,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isConfirmPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _isConfirmPasswordVisible =
+                                  !_isConfirmPasswordVisible;
+                                });
+                              },
+                            ),
+                            label: const Text(
+                              'Confirm Password',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xffB81736),
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value != _passwordController.text) {
+                              return "Passwords do not match.";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 30),
+                        GestureDetector(
+                          onTap: _register,
+                          child: Container(
+                            height: 55,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xffB81736),
+                                  Color(0xff281537),
+                                ],
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'SIGN UP',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                  color: Colors.black,
+                                  fontSize: 20,
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 20),
-                    ],
+                        const SizedBox(height: 120),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Text(
+                                "Have account?",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LoginPage(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  "Sign in",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
                   ),
                 ),
               ),
