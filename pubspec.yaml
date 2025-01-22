@@ -13,8 +13,7 @@ dependencies:
   flutter:
     sdk: flutter
   fl_chart: ^0.70.2
-  http: ^1.2.2 # Updated version for HTTP requests
-
+  http: ^1.2.2
 
   cupertino_icons: ^1.0.8
 

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'dashboard.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+import '../More/Morepage.dart';
 import '../invest/invest.dart';
 import '../portfolio/portfolio.dart';
-import '../More/Morepage.dart';
+import '../services/api_service.dart';
+import 'dashboard.dart'; // Import the ApiService
 
 class Homenavbar extends StatefulWidget {
   const Homenavbar({Key? key}) : super(key: key);
@@ -13,6 +17,7 @@ class Homenavbar extends StatefulWidget {
 
 class _HomenavbarState extends State<Homenavbar> {
   int _currentIndex = 0;
+  String userName = 'Guest'; // Default value if not logged in
 
   final List<Widget> _pages = [
     Dashboard(),
@@ -20,6 +25,19 @@ class _HomenavbarState extends State<Homenavbar> {
     Invest(),
     Morepage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserName();
+  }
+
+  Future<void> _fetchUserName() async {
+    final user = await ApiService.fetchCurrentUser();
+    setState(() {
+      userName = user?['name'] ?? 'Guest';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,14 +53,14 @@ class _HomenavbarState extends State<Homenavbar> {
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Welcome,',
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
-                  'SHARON',
-                  style: TextStyle(
+                  userName, // Display the fetched username
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

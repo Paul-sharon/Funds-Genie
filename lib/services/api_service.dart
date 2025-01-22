@@ -4,6 +4,25 @@ import 'package:http/http.dart' as http;
 class ApiService {
   static const String baseUrl = "http://10.0.2.2:8093/gtl-ws/api";
 
+  // Fetch current user details
+  static Future<Map<String, dynamic>?> fetchCurrentUser() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/currentUser'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        return jsonDecode(response.body);
+      } else {
+        return null; // Return null if unauthorized or not found
+      }
+    } catch (e) {
+      print("Error fetching current user: $e");
+      return null;
+    }
+  }
+
   // Register User
   static Future<String> registerUser(String name, String email, String password) async {
     try {
@@ -17,9 +36,7 @@ class ApiService {
         }),
       );
 
-      // Log the response body
       print('Response body: ${response.body}');
-
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         return data['message'] ?? "Registration successful!";
@@ -44,18 +61,13 @@ class ApiService {
         }),
       );
 
-      // Log the response body
       print('Response body: ${response.body}');
-
-      // Check if the response is a valid JSON object
       try {
         final data = jsonDecode(response.body);
         return data['message'] ?? "Login successful!";
       } catch (e) {
-        // If response body is not JSON, treat it as a plain string
         return response.body ?? "An error occurred.";
       }
-
     } catch (e) {
       print("Error: $e");
       return "An error occurred. Please check your internet connection.";

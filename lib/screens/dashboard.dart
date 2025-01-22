@@ -35,6 +35,8 @@ class _DashboardState extends State<Dashboard> {
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
+
+
                           ),
                           const SizedBox(height: 20),
                           CategoryButtonsRow(),
