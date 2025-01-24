@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
+import '../models/user.dart'; // Import the User model
 import 'loginpage.dart';
-
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -25,14 +25,18 @@ class _RegisterPageState extends State<RegisterPage> {
       final String email = _emailController.text.trim();
       final String password = _passwordController.text.trim();
 
-      // API call
-      final result = await ApiService.registerUser(name, email, password);
+      // Create a User object
+      final user = User(name: name, email: email, password: password);
 
-      // Show response message
+      // API call
+      final result = await ApiService.registerUser(user);
+
+      // Show response message in SnackBar
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
 
-      if (result == "Registration successful!") {
-        Navigator.push(
+      // Navigate to LoginPage on success
+      if (result.contains("successful")) {
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
         );
@@ -40,12 +44,13 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+    // The rest of the code remains unchanged...
     return Scaffold(
       body: Stack(
         children: [
-          // Existing gradient background and title (unchanged)
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -87,6 +92,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     child: Column(
                       children: [
                         const SizedBox(height: 80),
+                        // Full Name TextField
                         TextFormField(
                           controller: _nameController,
                           style: const TextStyle(color: Colors.black),
@@ -110,6 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
+                        // Email TextField
                         TextFormField(
                           controller: _emailController,
                           style: const TextStyle(color: Colors.black),
@@ -136,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
+                        // Password TextField
                         TextFormField(
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
@@ -169,6 +177,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
+                        // Confirm Password TextField
                         TextFormField(
                           controller: _confirmPasswordController,
                           obscureText: !_isConfirmPasswordVisible,
@@ -231,16 +240,17 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                         ),
                         const SizedBox(height: 120),
+                        // Sign Up Navigation
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               const Text(
-                                "Have account?",
+                                "Already have account?",
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
+                                  fontSize: 16,
                                   color: Colors.grey,
                                 ),
                               ),
@@ -265,7 +275,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 20),
                       ],
                     ),
                   ),

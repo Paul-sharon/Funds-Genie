@@ -9,7 +9,9 @@ import '../services/api_service.dart';
 import 'dashboard.dart'; // Import the ApiService
 
 class Homenavbar extends StatefulWidget {
-  const Homenavbar({Key? key}) : super(key: key);
+  final String username;
+
+  const Homenavbar({Key? key, required this.username}) : super(key: key);
 
   @override
   State<Homenavbar> createState() => _HomenavbarState();
@@ -59,7 +61,11 @@ class _HomenavbarState extends State<Homenavbar> {
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
+
                   userName, // Display the fetched username
+
+                  widget.username.toUpperCase(),
+
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
