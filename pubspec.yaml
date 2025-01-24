@@ -13,8 +13,6 @@ dependencies:
   flutter:
     sdk: flutter
   fl_chart: ^0.70.2
-
-  http: ^1.2.2
   http: ^1.2.2 # Updated version for HTTP requests
   jwt_decoder: ^2.0.1
   dio: ^5.1.0

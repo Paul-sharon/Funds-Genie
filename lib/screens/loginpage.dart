@@ -1,56 +1,55 @@
-import 'package:flutter/material.dart';  
-import '../models/user.dart' as model_user;  
+import 'package:flutter/material.dart';
+import '../models/user.dart' as model_user;
 
-import 'registerpage.dart'; // Ensure you import the RegisterPage file  
-import 'homenavbar.dart'; // Import your home page  
-import '../services/api_service.dart'; // Import the ApiService  
-import 'forgotpasswordscreen.dart'; // Ensure you have a ForgotPasswordScreen file  
+import 'registerpage.dart'; // Ensure you import the RegisterPage file
+import 'homenavbar.dart'; // Import your home page
+import '../services/api_service.dart'; // Import the ApiService
 
-class LoginPage extends StatefulWidget {  
-  @override  
-  _LoginPageState createState() => _LoginPageState();  
-}  
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
-class _LoginPageState extends State<LoginPage> {  
-  final _formKey = GlobalKey<FormState>();  
-  final TextEditingController _usernameController = TextEditingController();  
-  final TextEditingController _passwordController = TextEditingController();  
+class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  bool _isPasswordVisible = false;  
+  bool _isPasswordVisible = false; // To manage password visibility
 
-  // Login function using ApiService  
-  void _login() async {  
-    if (_formKey.currentState!.validate()) {  
-      final String email = _usernameController.text.trim();  
-      final String password = _passwordController.text.trim();  
+  // Login function using ApiService
+  void _login() async {
+    if (_formKey.currentState!.validate()) {
+      final String email = _usernameController.text.trim();
+      final String password = _passwordController.text.trim();
 
-      print('Attempting login with email: $email and password: $password');  
-      final String result = await ApiService.loginUser(email, password);  
+      print('Attempting login with email: $email and password: $password');
+      final String result = await ApiService.loginUser(email, password);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));  
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
 
-      if (result == 'Login successful!') {  
-        print('Login successful, fetching user details...');  
-        final model_user.User? user = await ApiService.fetchCurrentUser();  
+      if (result == 'Login successful!') {
+        print('Login successful, fetching user details...');
+        final model_user.User? user = await ApiService.fetchCurrentUser();
 
-        if (user != null) {  
-          print('User details fetched: ${user.name}');  
-          Navigator.pushReplacement(  
-            context,  
-            MaterialPageRoute(  
-              builder: (context) => Homenavbar(username: user.name ?? 'User'),  
-            ),  
-          );  
-        } else {  
-          print('Failed to fetch user details.');  
-          ScaffoldMessenger.of(context).showSnackBar(  
-            SnackBar(content: Text("Failed to fetch user details.")),  
-          );  
-        }  
-      } else {  
-        print('Login failed with message: $result');  
-      }  
-    }  
+        if (user != null) {
+          print('User details fetched: ${user.name}');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homenavbar(username: user.name ?? 'User'),
+            ),
+          );
+        } else {
+          print('Failed to fetch user details.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to fetch user details.")),
+          );
+        }
+      } else {
+        print('Login failed with message: $result');
+      }
+    }
   }
 
   @override
@@ -58,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
+          // Background gradient
           Container(
             height: double.infinity,
             width: double.infinity,
@@ -79,6 +79,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          // Foreground content
           Padding(
             padding: const EdgeInsets.only(top: 200.0),
             child: Container(
@@ -99,6 +100,7 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       children: [
                         const SizedBox(height: 100),
+                        // Email Input
                         TextFormField(
                           controller: _usernameController,
                           style: const TextStyle(color: Colors.black),
@@ -126,6 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: 20),
+                        // Password Input
                         TextFormField(
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
@@ -133,7 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                           decoration: InputDecoration(
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
                                 color: Colors.grey,
                               ),
                               onPressed: () {
@@ -161,26 +166,19 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         const SizedBox(height: 60),
-                        Align(
+                        const Align(
                           alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
-                              );
-                            },
-                            child: const Text(
-                              'Forgot Password?',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                                color: Color(0xff281537),
-                              ),
+                          child: Text(
+                            'Forgot Password?',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                              color: Color(0xff281537),
                             ),
                           ),
                         ),
                         const SizedBox(height: 30),
+                        // Sign In Button
                         GestureDetector(
                           onTap: _login,
                           child: Container(
@@ -208,6 +206,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         ),
                         const SizedBox(height: 120),
+                        // Sign Up Navigation
                         Align(
                           alignment: Alignment.bottomRight,
                           child: Column(
