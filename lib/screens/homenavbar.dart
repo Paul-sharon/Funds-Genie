@@ -5,7 +5,9 @@ import '../portfolio/portfolio.dart';
 import '../More/Morepage.dart';
 
 class Homenavbar extends StatefulWidget {
-  const Homenavbar({Key? key}) : super(key: key);
+  final String username;
+
+  const Homenavbar({Key? key, required this.username}) : super(key: key);
 
   @override
   State<Homenavbar> createState() => _HomenavbarState();
@@ -35,14 +37,14 @@ class _HomenavbarState extends State<Homenavbar> {
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Welcome,',
                   style: TextStyle(color: Colors.white, fontSize: 14),
                 ),
                 Text(
-                  'SHARON',
-                  style: TextStyle(
+                  widget.username.toUpperCase(),
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

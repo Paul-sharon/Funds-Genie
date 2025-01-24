@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../models/user.dart' as model_user;
+
 import 'registerpage.dart'; // Ensure you import the RegisterPage file
 import 'homenavbar.dart'; // Import your home page
 import '../services/api_service.dart'; // Import the ApiService
@@ -21,18 +23,31 @@ class _LoginPageState extends State<LoginPage> {
       final String email = _usernameController.text.trim();
       final String password = _passwordController.text.trim();
 
-      // Call the API to login
+      print('Attempting login with email: $email and password: $password');
       final String result = await ApiService.loginUser(email, password);
 
-      // Show response message
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
 
       if (result == 'Login successful!') {
-        // Navigate to home page on successful login
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Homenavbar()),
-        );
+        print('Login successful, fetching user details...');
+        final model_user.User? user = await ApiService.fetchCurrentUser();
+
+        if (user != null) {
+          print('User details fetched: ${user.name}');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Homenavbar(username: user.name ?? 'User'),
+            ),
+          );
+        } else {
+          print('Failed to fetch user details.');
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Failed to fetch user details.")),
+          );
+        }
+      } else {
+        print('Login failed with message: $result');
       }
     }
   }
