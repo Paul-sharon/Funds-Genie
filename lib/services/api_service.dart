@@ -41,12 +41,15 @@ class ApiService {
           'email': email,
           'password': password,
         },
-        options: Options(headers: {'Content-Type': 'application/json'}),
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+          validateStatus: (status) => status! < 500, // Allow 401 to be processed
+        ),
       );
 
       if (response.statusCode == 200) {
-        // Store the token after successful login
-        _token = response.data['token']; // Assuming the token is in the 'token' key
+        // Store the token after a successful login
+        _token = response.data['token'];
         print("Login successful. Token saved: $_token");
         return response.data['message'] ?? "Login successful!";
       } else if (response.statusCode == 401) {
@@ -55,6 +58,8 @@ class ApiService {
         return "Login failed. Please try again.";
       }
     } catch (e) {
+      // Log the error for debugging purposes
+      print("Error during login: $e");
       return "An error occurred. Please check your internet connection.";
     }
   }
@@ -105,4 +110,32 @@ class ApiService {
       return null;
     }
   }
+  static Future<String> logoutUser() async {
+    try {
+      final response = await _dio.post(
+        '$baseUrl/logout', // Your logout endpoint
+        options: Options(
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $_token', // Add the token for authentication
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        // Clear token or session data if needed
+        _token = null;
+        print("Logout successful.");
+        return response.data['message'] ?? "Logout successful!";
+      } else {
+        print("Logout failed with status code: ${response.statusCode}");
+        return response.data['error'] ?? "Logout failed. Please try again.";
+      }
+    } catch (e) {
+      // Handle network or other unexpected errors
+      print("Error in logoutUser: $e");
+      return "An error occurred. Please check your internet connection.";
+    }
+  }
+
 }

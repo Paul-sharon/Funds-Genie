@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import '../portfolio/portfolio.dart';
 import '../screens/dashboard.dart';
 import '../invest/invest.dart';
+import '../screens/loginpage.dart';
 import 'SIPCalculator.dart';
 import 'WealthCalculator.dart';
-import 'package:flutter/services.dart';
+import '../services/api_service.dart';
 
 class Morepage extends StatefulWidget {
   @override
@@ -12,6 +13,33 @@ class Morepage extends StatefulWidget {
 }
 
 class _MorepageState extends State<Morepage> {
+  void _logout() async {
+    try {
+      // Call the logout API
+      final String result = await ApiService.logoutUser();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+
+      if (result.contains('successful')) {
+        // Navigate to LoginPage on successful logout
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (Route<dynamic> route) => false, // Clears all previous routes
+        );
+      } else {
+        // Display error message if logout fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Logout failed: $result")),
+        );
+      }
+    } catch (e) {
+      // Handle unexpected errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("An error occurred: $e")),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,7 +48,7 @@ class _MorepageState extends State<Morepage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 20), // Add space at the top
+                SizedBox(height: 20), // Space at the top
                 Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -67,6 +95,26 @@ class _MorepageState extends State<Morepage> {
                             },
                           ),
                         ],
+                      ),
+                      SizedBox(height: 16), // Space before logout button
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            _logout(); // Call the void function without expecting a value
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xFFf44336), // Red color for the logout button
+                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Text(
+                            'Logout',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       ),
                     ],
                   ),
