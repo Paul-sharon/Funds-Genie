@@ -10,6 +10,12 @@ class DynamicAssetAllocation extends StatefulWidget {
 class _DynamicAssetAllocationState extends State<DynamicAssetAllocation> {
   String selectedPeriod = "1M";
   @override
+  void initState() {
+
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF2A2E34),// Light black background

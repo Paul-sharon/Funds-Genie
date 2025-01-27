@@ -43,8 +43,6 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     // The rest of the code remains unchanged...

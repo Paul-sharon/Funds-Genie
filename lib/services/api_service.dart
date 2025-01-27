@@ -10,14 +10,13 @@ class ApiService {
   // Dio instance with cookie management
   static final Dio _dio = Dio()
     ..interceptors.add(CookieManager(CookieJar())); // Attach CookieManager
-
   // Register User
   static Future<String> registerUser(User user) async {
     try {
       final response = await _dio.post(
         '$baseUrl/register',
         data: user.toJson(),
-        options: Options(headers: {'Content-Type': 'application/json'}),
+        options: Options(headers: {'Content-Type': 'application/json'}), //Content type-HTTP HEADER
       );
 
       if (response.statusCode == 201) {
@@ -43,13 +42,14 @@ class ApiService {
         },
         options: Options(
           headers: {'Content-Type': 'application/json'},
-          validateStatus: (status) => status! < 500, // Allow 401 to be processed
+          validateStatus: (status) => status! < 500, // Allow 401 to be processed //By default, Dio treats status codes from 200 to 299 as successful.
         ),
       );
 
       if (response.statusCode == 200) {
         // Store the token after a successful login
         _token = response.data['token'];
+
         print("Login successful. Token saved: $_token");
         return response.data['message'] ?? "Login successful!";
       } else if (response.statusCode == 401) {
