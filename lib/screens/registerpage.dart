@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../models/user.dart'; // Import the User model
@@ -17,6 +18,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
+  String? _base64Image;
+
+  // Image picker function
+
 
   // Validate and Register User
   void _register() async {
@@ -25,8 +30,13 @@ class _RegisterPageState extends State<RegisterPage> {
       final String email = _emailController.text.trim();
       final String password = _passwordController.text.trim();
 
-      // Create a User object
-      final user = User(name: name, email: email, password: password);
+      // Create a User object with the Base64 image (if available)
+      final user = User(
+        name: name,
+        email: email,
+        password: password,
+        profileImage: _base64Image,  // Pass the Base64 image string or null
+      );
 
       // API call
       final result = await ApiService.registerUser(user);
@@ -43,9 +53,9 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    // The rest of the code remains unchanged...
     return Scaffold(
       body: Stack(
         children: [
@@ -209,6 +219,33 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                             return null;
                           },
+                        ),
+                        const SizedBox(height: 20),
+                        // Image picker button
+                        GestureDetector(
+                          child: Container(
+                            height: 50,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Color(0xffB81736),
+                                  Color(0xff281537),
+                                ],
+                              ),
+                            ),
+                            child: const Center(
+                              child: Text(
+                                'Choose Profile Image',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 30),
                         GestureDetector(
