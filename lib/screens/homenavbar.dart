@@ -23,6 +23,18 @@ class _HomenavbarState extends State<Homenavbar> {
     Morepage(),
   ];
 
+  /// Function to extract initials from username
+  String getInitials(String name) {
+    List<String> words = name.trim().split(" ");
+    if (words.isEmpty) return "?";
+
+    if (words.length == 1) {
+      return words[0][0].toUpperCase(); // Single word, take the first letter
+    } else {
+      return "${words[0][0]}${words[1][0]}".toUpperCase(); // Take first letter of first and second word
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +43,16 @@ class _HomenavbarState extends State<Homenavbar> {
         backgroundColor: const Color(0xFF2A2E34),
         title: Row(
           children: [
-            const CircleAvatar(
-              backgroundImage: AssetImage('assets/paul.jpg'),
+            CircleAvatar(
+              backgroundColor: Colors.greenAccent,
+              child: Text(
+                getInitials(widget.username),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
             const SizedBox(width: 10),
             Column(
@@ -50,7 +70,6 @@ class _HomenavbarState extends State<Homenavbar> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
               ],
             ),
             const Spacer(),

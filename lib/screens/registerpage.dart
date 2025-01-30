@@ -53,7 +53,6 @@ class _RegisterPageState extends State<RegisterPage> {
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -221,32 +220,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        // Image picker button
-                        GestureDetector(
-                          child: Container(
-                            height: 50,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xffB81736),
-                                  Color(0xff281537),
-                                ],
-                              ),
-                            ),
-                            child: const Center(
-                              child: Text(
-                                'Choose Profile Image',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
                         const SizedBox(height: 30),
                         GestureDetector(
                           onTap: _register,
