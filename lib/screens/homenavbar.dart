@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'ProfilePage.dart';
 import 'dashboard.dart';
 import '../invest/invest.dart';
 import '../portfolio/portfolio.dart';
@@ -23,7 +24,7 @@ class _HomenavbarState extends State<Homenavbar> {
     Morepage(),
   ];
 
-  /// Function to extract initials from username
+
   String getInitials(String name) {
     List<String> words = name.trim().split(" ");
     if (words.isEmpty) return "?";
@@ -43,14 +44,24 @@ class _HomenavbarState extends State<Homenavbar> {
         backgroundColor: const Color(0xFF2A2E34),
         title: Row(
           children: [
-            CircleAvatar(
-              backgroundColor: Colors.greenAccent,
-              child: Text(
-                getInitials(widget.username),
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(username: widget.username), // Navigate to ProfilePage
+                  ),
+                );
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.teal,
+                child: Text(
+                  getInitials(widget.username),
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
