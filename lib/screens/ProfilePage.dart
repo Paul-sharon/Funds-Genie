@@ -10,7 +10,7 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text("$username's Profile"),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color(0xFF2A2E34),
       ),
       body: Center(
         child: Text(
