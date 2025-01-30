@@ -17,19 +17,20 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: CustomAppBar(username: widget.username),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // White Container
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Colors.white,
               ),
               child: Column(
                 children: [
+                  SizedBox(height: 20),
                   // Image from Assets
                   Container(
                     height: 150,
@@ -50,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     "Get Started on your Investment Journey!",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: 20,
+                      fontSize: 21,
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
@@ -85,9 +86,9 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(height: 20),
             // Black Container
             Container(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.symmetric(vertical: 35,horizontal: 20),
               decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
+                borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Color(0xFF2A2E34),
               ),
               child: Column(
@@ -107,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: const [
                       Text(
                         "Demat",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.grey,fontSize: 16),
                       ),
                       Row(
                         children: [
@@ -121,13 +122,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
                         "Physical",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.grey,fontSize: 16),
                       ),
                       Row(
                         children: [
@@ -144,6 +145,68 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 35,horizontal: 20),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                color: Color(0xFF2A2E34),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Membership Details",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Demat",
+                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.circle, color: Colors.green, size: 12),
+                          SizedBox(width: 5),
+                          Text(
+                            "Active",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: const [
+                      Text(
+                        "Physical",
+                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                      ),
+                      Row(
+                        children: [
+                          Icon(Icons.circle, color: Colors.grey, size: 12),
+                          SizedBox(width: 5),
+                          Text(
+                            "Inactive",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
           ],
         ),
       ),
