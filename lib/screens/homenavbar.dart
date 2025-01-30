@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../components/custom_app_bar.dart';
 import 'ProfilePage.dart';
 import 'dashboard.dart';
 import '../invest/invest.dart';
@@ -39,55 +40,7 @@ class _HomenavbarState extends State<Homenavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: const Color(0xFF2A2E34),
-        title: Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(username: widget.username), // Navigate to ProfilePage
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                backgroundColor: Colors.teal,
-                child: Text(
-                  getInitials(widget.username),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Welcome,',
-                  style: TextStyle(color: Colors.white, fontSize: 15),
-                ),
-                Text(
-                  widget.username.toUpperCase(),
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
-          ],
-        ),
-      ),
+      appBar: CustomAppBar(username: widget.username),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
