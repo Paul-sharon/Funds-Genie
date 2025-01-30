@@ -40,16 +40,17 @@ class _HomenavbarState extends State<Homenavbar> {
               children: [
                 const Text(
                   'Welcome,',
-                  style: TextStyle(color: Colors.white, fontSize: 14),
+                  style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 Text(
                   widget.username.toUpperCase(),
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
               ],
             ),
             const Spacer(),

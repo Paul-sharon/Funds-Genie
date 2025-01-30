@@ -9,10 +9,10 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
+    return SingleChildScrollView( // Wrap with SingleChildScrollView
+      child: Column(
+        children: [
+          Padding(
             padding: const EdgeInsets.only(top: 20.0),
             child: Column(
               children: [
@@ -21,30 +21,26 @@ class _DashboardState extends State<Dashboard> {
                     borderRadius: BorderRadius.all(Radius.circular(30)),
                     color: Color(0xFF2A2E34),
                   ),
-                  child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(width: 40),
-                          const Text(
-                            'Explore All Mutual Funds',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
-
-
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 40),
+                        const Text(
+                          'Explore All Mutual Funds',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 20),
-                          CategoryButtonsRow(),
-                          const SizedBox(height: 10),
-                          FundOptionsGrid(),
-                          const SizedBox(height: 40),
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 20),
+                        CategoryButtonsRow(),
+                        const SizedBox(height: 30),
+                        FundOptionsGrid(),
+                        const SizedBox(height: 40),
+                      ],
                     ),
                   ),
                 ),
@@ -55,8 +51,8 @@ class _DashboardState extends State<Dashboard> {
               ],
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -70,6 +66,7 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 10), // Corrected
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -111,6 +108,7 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+
 }
 
 

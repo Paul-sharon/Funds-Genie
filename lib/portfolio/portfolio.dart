@@ -14,129 +14,126 @@ class Portfolio extends StatefulWidget {
 class _PortfolioState extends State<Portfolio> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade300,
-                    blurRadius: 8.0,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 14),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(25.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade300,
+                blurRadius: 8.0,
+                offset: const Offset(0, 4),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: const [
+                    Text(
+                      "Transaction Summary  ",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    Text(
+                      "(Last 30 days)",
+                      style: TextStyle(
+                        fontSize: 15.0,
+                        color: Colors.black87,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
+                    const SizedBox(height: 30.0),
                     Row(
-                      children: const [
-                        Text(
-                          "Transaction Summary  ",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        Text(
-                          "(Last 30 days)",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            color: Colors.black87,
-                          ),
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(height: 10.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              flex: 1,
-                              child: _buildSummaryCard("11", "Completed", Colors.green.shade100),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: _buildSummaryCard("12", "In Progress", Colors.orange.shade100),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: _buildSummaryCard("525", "   Failed   ", Colors.red.shade100),
-                            ),
-                          ],
+                        Flexible(
+                          flex: 1,
+                          child: _buildSummaryCard("11", "Completed", Colors.green.shade100),
                         ),
-                        Container(
-                          color: Colors.red, // Debug color
-                          child: const SizedBox(height: 2.0),
+                        Flexible(
+                          flex: 1,
+                          child: _buildSummaryCard("12", "In Progress", Colors.orange.shade100),
+                        ),
+                        Flexible(
+                          flex: 1,
+                          child: _buildSummaryCard("525", "   Failed   ", Colors.red.shade100),
                         ),
                       ],
                     ),
-                    Expanded(
-                      child: ListView(
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero, // Adding zero padding
-                        children: [
-                          _buildTransactionItem(
-                            date: "26 Nov 2024",
-                            status: "IN PROGRESS",
-                            type: "LUMPSUM",
-                            fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
-                            amount: "₹10,000",
-                          ),
-                          _buildTransactionItem(
-                            date: "26 Nov 2024",
-                            status: "IN PROGRESS",
-                            type: "LUMPSUM",
-                            fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
-                            amount: "₹5,000",
-                          ),
-                          _buildTransactionItem(
-                            date: "26 Nov 2024",
-                            status: "IN PROGRESS",
-                            type: "LUMPSUM",
-                            fundName: "Axis Mid Cap Fund - Regular\nGrowth",
-                            amount: "₹100",
-                          ),
-                        ],
-                      ),
-                    ),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => TransactionProgress()),
-                          );
-                        },
-                        child: const Text(
-                          "View more →",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                    Container(
+                      color: Colors.red, // Debug color
+                      child: const SizedBox(height: 2.0),
                     ),
                   ],
                 ),
-              ),
+                ListView(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(), // Disable inner scrolling
+                  padding: EdgeInsets.zero,
+                  children: [
+                    _buildTransactionItem(
+                      date: "26 Nov 2024",
+                      status: "IN PROGRESS",
+                      type: "LUMPSUM",
+                      fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
+                      amount: "₹10,000",
+                    ),
+                    _buildTransactionItem(
+                      date: "26 Nov 2024",
+                      status: "IN PROGRESS",
+                      type: "LUMPSUM",
+                      fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
+                      amount: "₹5,000",
+                    ),
+                    _buildTransactionItem(
+                      date: "26 Nov 2024",
+                      status: "IN PROGRESS",
+                      type: "LUMPSUM",
+                      fundName: "Axis Mid Cap Fund - Regular\nGrowth",
+                      amount: "₹100",
+                    ),
+                  ],
+                ),
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => TransactionProgress()),
+                      );
+                    },
+                    child: const Text(
+                      "View more →",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
-      ],
+      ),
     );
   }
+
 
   Widget _buildSummaryCard(String title, String value, Color backgroundColor) {
     return GestureDetector(
