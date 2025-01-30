@@ -156,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Membership Details",
+                    "Contact Details",
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -168,15 +168,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        "Demat",
+                        "Email",
                         style: TextStyle(color: Colors.grey,fontSize: 16),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.circle, color: Colors.green, size: 12),
                           SizedBox(width: 5),
                           Text(
-                            "Active",
+                            "sandeepnair@gmail.com",
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -188,15 +187,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: const [
                       Text(
-                        "Physical",
+                        "Mobile",
                         style: TextStyle(color: Colors.grey,fontSize: 16),
                       ),
                       Row(
                         children: [
-                          Icon(Icons.circle, color: Colors.grey, size: 12),
                           SizedBox(width: 5),
                           Text(
-                            "Inactive",
+                            "8089352312",
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
@@ -206,7 +204,118 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                color: Color(0xFF2A2E34),
+              ),
 
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Bank Details Title
+                  const Text(
+                    "Bank Details",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // HDFC Bank Details Row
+                  Row(
+                    children: [
+                      Image.asset('assets/hdfcimg.png', width: 50, height: 50),
+                      const SizedBox(width: 20),
+                      Expanded(   // <-- FIXES OVERFLOW
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: const [
+                            Text(
+                              "HDFC BANK LTD",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              overflow: TextOverflow.ellipsis,  // <-- Prevents text overflow
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              "Acc. No: XXXXXXXXXX3488",
+                              style: TextStyle(color: Colors.grey, fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(25)),
+                color: Color(0xFF2A2E34),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "Nominee Details",
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Add nominee action
+                        },
+                        child: Column(
+                          children: [
+                            const Row(
+                              children: [
+                                Text(
+                                  "Add Nominee",
+                                  style: TextStyle(color: Colors.white, fontSize: 14),
+                                ),
+                                SizedBox(width: 5),
+                                Icon(Icons.add, color: Colors.white, size: 18),
+                              ],
+                            ),
+                            const SizedBox(height: 5),
+                            Container(
+                              height: 2, // height of the underline
+                              width: 100, // width of the underline, adjust as needed
+                              color: Colors.white, // color of the underline
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  const Center(
+                    child: Text(
+                      "No nominees added yet.",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
