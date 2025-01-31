@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mutualfund_gtl/screens/ForgotPasswordScreen.dart';
 import '../models/user.dart' as model_user;
 
 import 'registerpage.dart'; // Ensure you import the RegisterPage file
@@ -62,10 +63,15 @@ class _LoginPageState extends State<LoginPage> {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xffB81736),
-                Color(0xff281537),
-              ]),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFFD700), // Bright Gold
+                  Color(0xFFB8860B), // Dark Goldenrod
+                  Color(0xFF3A1D25), // Deep Burgundy
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
@@ -99,21 +105,53 @@ class _LoginPageState extends State<LoginPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: 100),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: Image.asset(
+                            'assets/FundGenie.png',  // Make sure this file exists in your assets folder
+                            width: 700,  // Adjust size as needed
+                            height: 200,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                         // Email Input
+                        const SizedBox(height: 20),
                         TextFormField(
                           controller: _usernameController,
                           style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                            suffixIcon: Icon(
+                          decoration: InputDecoration(
+                            labelText: "Email", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Black label text
+                            ),
+                            hintText: "Enter your email",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background
+                            suffixIcon: const Icon(
                               Icons.email,
                               color: Colors.grey,
                             ),
-                            label: Text(
-                              'Email',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
@@ -134,11 +172,20 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: !_isPasswordVisible,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
+                            labelText: "Password", // Label above input
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Black label
+                            ),
+                            hintText: "Enter Password",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
                                 color: Colors.grey,
                               ),
                               onPressed: () {
@@ -147,11 +194,23 @@ class _LoginPageState extends State<LoginPage> {
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
@@ -159,21 +218,28 @@ class _LoginPageState extends State<LoginPage> {
                             if (value == null || value.isEmpty) {
                               return "Password cannot be empty.";
                             }
-                            if (value.length < 6) {
-                              return "Password must be at least 6 characters.";
-                            }
+                            // You can add more password validations here if needed (e.g., min length, special characters, etc.)
                             return null;
                           },
                         ),
                         const SizedBox(height: 60),
-                        const Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              color: Color(0xff281537),
+                        GestureDetector(
+                          onTap: () {
+                            // Navigate to ForgotPasswordPage
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                            );
+                          },
+                          child: const Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                                color: Color(0xff281537),
+                              ),
                             ),
                           ),
                         ),
@@ -183,29 +249,32 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: _login,
                           child: Container(
                             height: 55,
-                            width: 300,
+                            width: 350,
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
                               gradient: const LinearGradient(
                                 colors: [
-                                  Color(0xffB81736),
-                                  Color(0xff281537),
+                                  Color(0xFFFFD700), // Bright Gold
+                                  Color(0xFFB8860B), // Dark Goldenrod
+                                  Color(0xFF3A1D25), // Deep Burgundy
                                 ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
+                              borderRadius: BorderRadius.circular(25), // Rounded corners with radius of 25
                             ),
                             child: const Center(
                               child: Text(
-                                'SIGN IN',
+                                'Login',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  fontSize: 20,
+                                  fontSize: 21,
                                   color: Colors.white,
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 120),
+                        const SizedBox(height: 40),
                         // Sign Up Navigation
                         Align(
                           alignment: Alignment.bottomRight,
