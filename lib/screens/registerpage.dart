@@ -62,15 +62,20 @@ class _RegisterPageState extends State<RegisterPage> {
             height: double.infinity,
             width: double.infinity,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color(0xffB81736),
-                Color(0xff281537),
-              ]),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFFFD700), // Bright Gold (left)
+                  Color(0xFFDAA520), // Slightly lighter Dark Goldenrod (middle)
+                  Color(0xFF8B6A3B), // Darker Golden (right)
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
               child: Text(
-                'Create Your\nAccount',
+                'Create Your\nAccount!',
                 style: TextStyle(
                   fontSize: 30,
                   color: Colors.white,
@@ -98,45 +103,98 @@ class _RegisterPageState extends State<RegisterPage> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: 80),
+                        Center(
+                          child: Image.asset(
+                            'assets/Genie.png',  // Make sure this file exists in your assets folder
+                            width: 150,  // Adjust size as needed
+                            height: 170,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                         // Full Name TextField
                         TextFormField(
                           controller: _nameController,
                           style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                            suffixIcon: Icon(
-                              Icons.check,
-                              color: Colors.grey,
+                          decoration: InputDecoration(
+                            labelText: "Full Name", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Custom red label color
                             ),
-                            label: Text(
-                              'Full Name',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            hintText: "Enter your full name",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background
+                            suffixIcon: const Icon(
+                              Icons.check,
+                              color: Colors.grey, // Check icon at the end
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400, // Border color when enabled
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Name cannot be empty.";
+                              return "Name cannot be empty."; // Validation for empty name
                             }
                             return null;
                           },
                         ),
-                        // Email TextField
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: _emailController,
                           style: const TextStyle(color: Colors.black),
-                          decoration: const InputDecoration(
-                            suffixIcon: Icon(
-                              Icons.check,
+                          decoration: InputDecoration(
+                            labelText: "Email", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Custom red color for the label
+                            ),
+                            hintText: "Enter your email",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background for the text field
+                            suffixIcon: const Icon(
+                              Icons.check, // Check icon at the end
                               color: Colors.grey,
                             ),
-                            label: Text(
-                              'Email',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border color
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400, // Border color when enabled
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
@@ -150,17 +208,27 @@ class _RegisterPageState extends State<RegisterPage> {
                             return null;
                           },
                         ),
+                        const SizedBox(height: 10),
                         // Password TextField
                         TextFormField(
                           controller: _passwordController,
                           obscureText: !_isPasswordVisible,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
+                            labelText: "Password", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Custom red color for the label
+                            ),
+                            hintText: "Enter your password",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background for the text field
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off, // Toggle icon visibility
                                 color: Colors.grey,
                               ),
                               onPressed: () {
@@ -169,11 +237,23 @@ class _RegisterPageState extends State<RegisterPage> {
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border color
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400, // Border color when enabled
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
@@ -185,55 +265,130 @@ class _RegisterPageState extends State<RegisterPage> {
                           },
                         ),
                         // Confirm Password TextField
+                        const SizedBox(height: 10),
                         TextFormField(
                           controller: _confirmPasswordController,
                           obscureText: !_isConfirmPasswordVisible,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
+                            labelText: "Confirm Password", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Custom red color for the label
+                            ),
+                            hintText: "Re-enter your password",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background for the text field
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isConfirmPasswordVisible
-                                    ? Icons.visibility
-                                    : Icons.visibility_off,
+                                _isConfirmPasswordVisible ? Icons.visibility : Icons.visibility_off, // Toggle icon visibility
                                 color: Colors.grey,
                               ),
                               onPressed: () {
                                 setState(() {
-                                  _isConfirmPasswordVisible =
-                                  !_isConfirmPasswordVisible;
+                                  _isConfirmPasswordVisible = !_isConfirmPasswordVisible;
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Confirm Password',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xffB81736),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border color
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400, // Border color when enabled
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
                               ),
                             ),
                           ),
                           validator: (value) {
                             if (value != _passwordController.text) {
-                              return "Passwords do not match.";
+                              return "Passwords do not match."; // Validation for matching passwords
                             }
                             return null;
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          //controller: _phoneNumberController,
+                          style: const TextStyle(color: Colors.black),
+                          keyboardType: TextInputType.phone, // Ensures the keyboard is suited for phone numbers
+                          decoration: InputDecoration(
+                            labelText: "Phone Number", // Label above input field
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black, // Custom red color for the label
+                            ),
+                            hintText: "Enter your phone number",
+                            hintStyle: const TextStyle(
+                              color: Colors.grey, // Light gray hint text
+                            ),
+                            filled: true,
+                            fillColor: Colors.white, // White background for the text field
+                            prefixText: "+91 ", // Prefix the country code
+                            prefixStyle: const TextStyle(
+                              color: Colors.black, // Color for the prefix
+                              fontWeight: FontWeight.bold,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Light gray border color
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade400, // Border color when enabled
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(
+                                color: Colors.blue, // Blue border when focused
+                                width: 1.5,
+                              ),
+                            ),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Phone number cannot be empty.";
+                            }
+                            if (!RegExp(r'^\+91\d{10}$').hasMatch(value)) {
+                              return "Please enter a valid phone number with +91.";
+                            }
+                            return null;
+                          },
+                        ),
                         const SizedBox(height: 30),
                         GestureDetector(
                           onTap: _register,
                           child: Container(
                             height: 55,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              gradient: const LinearGradient(
+                            width: 370,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
                                 colors: [
-                                  Color(0xffB81736),
-                                  Color(0xff281537),
+                                  Color(0xFFFFD700), // Bright Gold (left)
+                                  Color(0xFFDAA520), // Slightly lighter Dark Goldenrod (middle)
+                                  Color(0xFF8B6A3B), // Darker Golden (right)
                                 ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
                               ),
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
                             ),
                             child: const Center(
                               child: Text(
@@ -247,7 +402,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 120),
+                        const SizedBox(height: 30),
                         // Sign Up Navigation
                         Align(
                           alignment: Alignment.bottomRight,

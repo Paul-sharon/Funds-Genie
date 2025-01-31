@@ -65,13 +65,14 @@ class _LoginPageState extends State<LoginPage> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Color(0xFFFFD700), // Bright Gold
-                  Color(0xFFB8860B), // Dark Goldenrod
-                  Color(0xFF3A1D25), // Deep Burgundy
+                  Color(0xFF88D8D2), // Lighter shade of teal (left)
+                  Color(0xFF66B7B0), // Medium teal (middle)
+                  Color(0xFF155F54), // Darker shade of teal (right)
                 ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+                begin: Alignment.centerRight, // Start from the left
+                end: Alignment.centerLeft,  // End at the right
               ),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
@@ -222,7 +223,7 @@ class _LoginPageState extends State<LoginPage> {
                             return null;
                           },
                         ),
-                        const SizedBox(height: 60),
+                        const SizedBox(height: 40),
                         GestureDetector(
                           onTap: () {
                             // Navigate to ForgotPasswordPage
@@ -249,18 +250,18 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: _login,
                           child: Container(
                             height: 55,
-                            width: 350,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
+                            width: 370,
+                            decoration: const BoxDecoration(
+                              gradient: LinearGradient(
                                 colors: [
-                                  Color(0xFFFFD700), // Bright Gold
-                                  Color(0xFFB8860B), // Dark Goldenrod
-                                  Color(0xFF3A1D25), // Deep Burgundy
+                                  Color(0xFF88D8D2), // Lighter shade of teal (left)
+                                  Color(0xFF66B7B0), // Medium teal (middle)
+                                  Color(0xFF155F54), // Darker shade of teal (right)
                                 ],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                                begin: Alignment.centerRight, // Start from the left
+                                end: Alignment.centerLeft,  // End at the right
                               ),
-                              borderRadius: BorderRadius.circular(25), // Rounded corners with radius of 25
+                              borderRadius: BorderRadius.all(Radius.circular(25)),
                             ),
                             child: const Center(
                               child: Text(
