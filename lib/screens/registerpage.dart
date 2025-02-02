@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../services/api_service.dart';
 import '../models/user.dart'; // Import the User model
@@ -15,13 +14,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-  String? _base64Image;
-
-  // Image picker function
-
 
   // Validate and Register User
   void _register() async {
@@ -29,13 +25,14 @@ class _RegisterPageState extends State<RegisterPage> {
       final String name = _nameController.text.trim();
       final String email = _emailController.text.trim();
       final String password = _passwordController.text.trim();
+      final String phoneNumber = _phoneController.text.trim();
 
-      // Create a User object with the Base64 image (if available)
+      // Create a User object
       final user = User(
         name: name,
         email: email,
         password: password,
-        profileImage: _base64Image,  // Pass the Base64 image string or null
+        phoneNumber: phoneNumber,
       );
 
       // API call
@@ -366,10 +363,13 @@ class _RegisterPageState extends State<RegisterPage> {
                             if (value == null || value.isEmpty) {
                               return "Phone number cannot be empty.";
                             }
-                            if (!RegExp(r'^\+91\d{10}$').hasMatch(value)) {
-                              return "Please enter a valid phone number with +91.";
+
+                            // Updated regex to accept both formats
+                            if (!RegExp(r'^(?:\+91\s?\d{10}|\d{10})$').hasMatch(value)) {
+                              return "Please enter a valid phone number (10 digits or +91 followed by 10 digits).";
                             }
-                            return null;
+
+                            return null; // Return null if the validation passes
                           },
                         ),
                         const SizedBox(height: 30),

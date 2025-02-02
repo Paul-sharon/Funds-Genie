@@ -15,9 +15,9 @@ class ApiService {
     try {
       final response = await _dio.post(
         '$baseUrl/register',
-        data: user.toJson(),  // Serialize the User object to JSON
+        data: user.toJson(),
         options: Options(
-          headers: {'Content-Type': 'application/json'},  // Set Content-Type header to JSON
+          headers: {'Content-Type': 'application/json'},
         ),
       );
 
@@ -29,7 +29,6 @@ class ApiService {
         return "Registration failed. Please try again.";
       }
     } catch (e) {
-      // Handle any errors, including network issues
       return "An error occurred. Please check your internet connection.";
     }
   }

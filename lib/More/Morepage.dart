@@ -48,7 +48,7 @@ class _MorepageState extends State<Morepage> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(height: 20), // Space at the top
+                SizedBox(height: 50), // Space at the top
                 Container(
                   padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
@@ -97,25 +97,25 @@ class _MorepageState extends State<Morepage> {
                         ],
                       ),
                       SizedBox(height: 16), // Space before logout button
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            _logout(); // Call the void function without expecting a value
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFFf44336), // Red color for the logout button
-                            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: Text(
-                            'Logout',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
+                      // Align(
+                      //   alignment: Alignment.centerRight,
+                      //   child: ElevatedButton(
+                      //     onPressed: () {
+                      //       _logout(); // Call the void function without expecting a value
+                      //     },
+                      //     style: ElevatedButton.styleFrom(
+                      //       backgroundColor: Color(0xFFf44336), // Red color for the logout button
+                      //       padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(8),
+                      //       ),
+                      //     ),
+                      //     child: Text(
+                      //       'Logout',
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

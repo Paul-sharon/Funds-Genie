@@ -175,7 +175,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           SizedBox(width: 5),
                           Text(
-                            "sandeepnair@gmail.com",
+                            "paulsharons66@gmail.com",
                             style: TextStyle(color: Colors.white),
                           ),
                         ],
