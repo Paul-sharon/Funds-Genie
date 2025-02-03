@@ -3,8 +3,15 @@ import '../components/custom_app_bar.dart';
 
 class ProfilePage extends StatefulWidget {
   final String username;
+  final String email;
+  final String phoneNumber;
 
-  const ProfilePage({Key? key, required this.username}) : super(key: key);
+  const ProfilePage({
+    Key? key,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -14,16 +21,20 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(username: widget.username),
+      appBar: CustomAppBar(
+        username: widget.username,
+        email: widget.email,
+        phoneNumber: widget.phoneNumber,
+      ),
       backgroundColor: Colors.black,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 2),
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // White Container
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 20,horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Colors.white,
@@ -72,7 +83,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      padding: const EdgeInsets.symmetric(vertical: 12,horizontal: 120),
+                      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 120),
                     ),
                     onPressed: () {},
                     child: const Text(
@@ -84,9 +95,9 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 20),
-            // Black Container
+            // Black Container - Membership Details
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 35,horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Color(0xFF2A2E34),
@@ -108,7 +119,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: const [
                       Text(
                         "Demat",
-                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Row(
                         children: [
@@ -128,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     children: const [
                       Text(
                         "Physical",
-                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Row(
                         children: [
@@ -145,9 +156,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            // Black Container - Contact Details
             Container(
-              padding: const EdgeInsets.symmetric(vertical: 35,horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Color(0xFF2A2E34),
@@ -166,17 +178,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "Email",
-                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Row(
                         children: [
                           SizedBox(width: 5),
                           Text(
-                            "paulsharons66@gmail.com",
-                            style: TextStyle(color: Colors.white),
+                            widget.email,
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -185,17 +197,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         "Mobile",
-                        style: TextStyle(color: Colors.grey,fontSize: 16),
+                        style: TextStyle(color: Colors.grey, fontSize: 16),
                       ),
                       Row(
                         children: [
                           SizedBox(width: 5),
                           Text(
-                            "8089352312",
-                            style: TextStyle(color: Colors.white),
+                            widget.phoneNumber,
+                            style: const TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
@@ -204,18 +216,17 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            // Black Container - Bank Details
             Container(
               padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(25)),
                 color: Color(0xFF2A2E34),
               ),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Bank Details Title
                   const Text(
                     "Bank Details",
                     style: TextStyle(
@@ -225,13 +236,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-
-                  // HDFC Bank Details Row
                   Row(
                     children: [
                       Image.asset('assets/hdfcimg.png', width: 50, height: 50),
                       const SizedBox(width: 20),
-                      Expanded(   // <-- FIXES OVERFLOW
+                      Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
@@ -242,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
-                              overflow: TextOverflow.ellipsis,  // <-- Prevents text overflow
+                              overflow: TextOverflow.ellipsis,
                             ),
                             SizedBox(height: 5),
                             Text(
@@ -258,7 +267,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
+            // Black Container - Nominee Details
             Container(
               padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
               decoration: const BoxDecoration(
@@ -284,8 +294,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           // Add nominee action
                         },
                         child: Column(
-                          children: [
-                            const Row(
+                          children: const [
+                            Row(
                               children: [
                                 Text(
                                   "Add Nominee",
@@ -295,12 +305,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 Icon(Icons.add, color: Colors.white, size: 18),
                               ],
                             ),
-                            const SizedBox(height: 5),
-                            Container(
-                              height: 2, // height of the underline
-                              width: 100, // width of the underline, adjust as needed
-                              color: Colors.white, // color of the underline
-                            ),
+                            SizedBox(height: 5),
                           ],
                         ),
                       ),
@@ -315,7 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

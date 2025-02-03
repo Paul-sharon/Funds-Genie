@@ -319,7 +319,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                         const SizedBox(height: 10),
                         TextFormField(
-                          //controller: _phoneNumberController,
+                          controller: _phoneController,
                           style: const TextStyle(color: Colors.black),
                           keyboardType: TextInputType.phone, // Ensures the keyboard is suited for phone numbers
                           decoration: InputDecoration(

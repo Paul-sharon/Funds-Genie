@@ -29,7 +29,7 @@ class ApiService {
         return "Registration failed. Please try again.";
       }
     } catch (e) {
-      return "An error occurred. Please check your internet connection.";
+      return "Email is already registered.";
     }
   }
 

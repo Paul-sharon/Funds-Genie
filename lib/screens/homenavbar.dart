@@ -8,8 +8,15 @@ import '../More/Morepage.dart';
 
 class Homenavbar extends StatefulWidget {
   final String username;
+  final String email;      // Add email field
+  final String phoneNumber; // Add phoneNumber field
 
-  const Homenavbar({Key? key, required this.username}) : super(key: key);
+  const Homenavbar({
+    Key? key,
+    required this.username,
+    required this.email,      // Add email parameter to constructor
+    required this.phoneNumber, // Add phoneNumber parameter to constructor
+  }) : super(key: key);
 
   @override
   State<Homenavbar> createState() => _HomenavbarState();
@@ -25,7 +32,6 @@ class _HomenavbarState extends State<Homenavbar> {
     Morepage(),
   ];
 
-
   String getInitials(String name) {
     List<String> words = name.trim().split(" ");
     if (words.isEmpty) return "?";
@@ -40,7 +46,11 @@ class _HomenavbarState extends State<Homenavbar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(username: widget.username),
+      appBar: CustomAppBar(
+        username: widget.username,
+        email: widget.email,       // Pass email to CustomAppBar
+        phoneNumber: widget.phoneNumber, // Pass phoneNumber to CustomAppBar
+      ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,

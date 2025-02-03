@@ -38,7 +38,11 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Homenavbar(username: user.name ?? 'User'),
+              builder: (context) => Homenavbar(
+                username: user.name ?? 'User',
+                email: user.email ?? 'Email not available',
+                phoneNumber: user.phoneNumber ?? 'Phone number not available',
+              ),
             ),
           );
         } else {

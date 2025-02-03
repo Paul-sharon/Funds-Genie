@@ -3,8 +3,15 @@ import '../screens/ProfilePage.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String username;
+  final String email;
+  final String phoneNumber;
 
-  const CustomAppBar({Key? key, required this.username}) : super(key: key);
+  const CustomAppBar({
+    Key? key,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+  }) : super(key: key);
 
   String getInitials(String name) {
     List<String> words = name.trim().split(" ");
@@ -26,7 +33,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(username: username),
+                  builder: (context) => ProfilePage(
+                    username: username,
+                    email: email,
+                    phoneNumber: phoneNumber,
+                  ),
                 ),
               );
             },
