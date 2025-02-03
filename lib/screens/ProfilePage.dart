@@ -294,18 +294,24 @@ class _ProfilePageState extends State<ProfilePage> {
                           // Add nominee action
                         },
                         child: Column(
-                          children: const [
+                          children: [
                             Row(
-                              children: [
+                              children: const [
                                 Text(
-                                  "Add Nominee",
-                                  style: TextStyle(color: Colors.white, fontSize: 14),
+                                  "   Add Nominee",
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
                                 SizedBox(width: 5),
                                 Icon(Icons.add, color: Colors.white, size: 18),
                               ],
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 3),
+                            // Underline effect
+                            Container(
+                              width: 101, // Adjust the width based on text length
+                              height: 1, // Thickness of the underline
+                              color: Colors.white,
+                            ),
                           ],
                         ),
                       ),
@@ -318,6 +324,70 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                   ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: const Color(0xFF2A2E34),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Text Section
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          " Know your risk profile.",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        const Text(
+                          " Generating your risk profile will help\n geojit to recommend funds based on\n your risk appetite",
+                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                        const SizedBox(height: 15),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Action when button is pressed
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 12),
+                          ),
+                          child: const Text(
+                            "Take Assessment",
+                            style: TextStyle(color: Colors.white, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10), // Space between text and image
+
+                  // Image Section (You can replace this with your actual image)
+                  Container(
+                    width: 95, // Adjust width as needed
+                    height: 150, // Adjust height as needed
+                    child: ClipRRect(
+                      child: Image.asset(
+                        "assets/Riskassessment.png", // Correct path for the image
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
