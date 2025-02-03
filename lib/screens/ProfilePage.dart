@@ -367,6 +367,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             padding: const EdgeInsets.symmetric(horizontal: 75, vertical: 12),
                           ),
+
                           child: const Text(
                             "Take Assessment",
                             style: TextStyle(color: Colors.white, fontSize: 14),
