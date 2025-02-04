@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../screens/ProfilePage.dart';
+
 class Question {
   final String questionText;
   final List<Option> options;
@@ -107,6 +109,7 @@ class _RiskAssessmentScreenState extends State<RiskAssessmentScreen> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('You have completed the assessment!')),
                     );
+                    Navigator.pop(context);
                   }
                 },
                 child: const Text(
