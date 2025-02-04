@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import '../More/SIPCalculator.dart';
 import '../RiskAssessment/Riskassessment.dart';
 import '../components/custom_app_bar.dart';
+import '../portfolio/Folioupdates.dart';
+import '../portfolio/MandatesPage.dart';
+import '../portfolio/TransactionProgress.dart';
+import '../portfolio/portfolio.dart';
+import '../services/api_service.dart';
+import 'loginpage.dart';
 
 class ProfilePage extends StatefulWidget {
   final String username;
@@ -19,7 +26,32 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  @override
+  void _logout() async {
+    try {
+      // Call the logout API
+      final String result = await ApiService.logoutUser();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+
+      if (result.contains('successful')) {
+        // Navigate to LoginPage on successful logout
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (Route<dynamic> route) => false, // Clears all previous routes
+        );
+      } else {
+        // Display error message if logout fails
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Logout failed: $result")),
+        );
+      }
+    } catch (e) {
+      // Handle unexpected errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("An error occurred: $e")),
+      );
+    }
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
@@ -462,9 +494,157 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                color: const Color(0xFF2A2E34), // Dark Gray Background
+                borderRadius: BorderRadius.circular(15), // Rounded Corners
+              ),
+              child: Column(
+                children: [
+                  _buildMenuItem(context, "My SIPs", Icons.calendar_month, Sipcalculator()),
+                  _buildMenuItem(context, "Mandates", Icons.assignment, MandatesPage()),
+                  _buildMenuItem(context, "Transactions", Icons.swap_horiz_sharp, TransactionProgress()),
+                  _buildMenuItem(context, "Folio Updations", Icons.work, Folioupdates()),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Color(0xFF2A2E34), // Dark Gray Background
+                borderRadius: BorderRadius.circular(15), // Rounded Corners
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.settings_outlined, color: Colors.white, size: 24), // Settings Icon
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Text(
+                      "Settings",
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 24), // Right Arrow
+                ],
+              ),
+            ),
+             const SizedBox(height: 10),
+            GestureDetector(
+              onTap: () {
+                _logout(); // Call the logout function when tapped
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFF2A2E34), // Dark Gray Background
+                  borderRadius: BorderRadius.circular(15), // Rounded Corners
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.logout, color: Colors.white, size: 24), // Logout Icon
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        "Logout",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                    const Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 24), // Right Arrow
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+              decoration: BoxDecoration(
+                color: Colors.black, // Dark Gray Background
+                borderRadius: BorderRadius.circular(15), // Rounded Corners
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // Version Text
+                  Text(
+                    "Version 5.0.0 Build 75",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                  // Placeholder for Image
+                  Image.asset(
+                    'assets/geojitlogo.png', // Replace with actual image path
+                    height: 80, // Adjust height as needed
+                    width: 150, // Adjust width as needed
+                    fit: BoxFit.contain,
+                  ),
+                  // SEBI Registration Text
+                  Text(
+                    "SEBI Registration: INZ000031633\n"
+                        "CDSL - SEBI Registration: IN- DP- 431-2019\n",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 13),
+                  ),
+                  const SizedBox(height: 5),
+
+                  // Corporate Office Heading
+                  Text(
+                    "Corporate Office",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 5),
+
+                  // Corporate Office Details
+                  Text(
+                    "Geojit Financial Services Ltd., Registered Office: 34/659-P, Civil Line Road,\n"
+                        "Padivattom, Kochi-682024, Kerala, India, Tel: +91 484-2901000\n"
+                        "Corporate Identity Number: L67120KL1994PLC008403,SEBI Stock Broker"
+                        "\nRegistration No INZ000104737,"
+                        "Research Entity SEBI Reg No: \n"
+                        "INH200000345, Investment Adviser SEBI Reg No: INA200002817,"
+                        "Portfolio\nManager: INP00003203,"
+                        "Depository Participant: IN-DP-325-2017,"
+                        "ARN\nRegn.Nos:0098, IRDA Corporate Agent (Composite) No.: CA0226.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white, fontSize: 11),
+                  ),
+                ],
+              ),
+            )
+
           ],
         ),
       ),
     );
   }
+}
+Widget _buildMenuItem(BuildContext context, String title, IconData icon, Widget page) {
+  return GestureDetector(
+    onTap: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => page),
+      );
+    },
+    child: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12), // Spacing between rows
+      child: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 24), // Left Icon
+          const SizedBox(width: 15),
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(color: Colors.white, fontSize: 16),
+            ),
+          ),
+          const Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 24), // Right Arrow
+        ],
+      ),
+    ),
+  );
 }
