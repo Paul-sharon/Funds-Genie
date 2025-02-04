@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../RiskAssessment/Riskassessment.dart';
 import '../components/custom_app_bar.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -358,7 +359,76 @@ class _ProfilePageState extends State<ProfilePage> {
                         const SizedBox(height: 15),
                         ElevatedButton(
                           onPressed: () {
-                            // Action when button is pressed
+                            // Navigates to the RiskAssessment screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => RiskAssessmentScreen(
+                                  questions: [
+                                    Question(
+                                      questionText: 'What is your primary investment goal?',
+                                      options: [
+                                        Option(title: 'Capital Preservation', subtitle: 'e.g. Secure initial investment'),
+                                        Option(title: 'Steady Income', subtitle: 'e.g. Fixed returns, lower risk'),
+                                        Option(title: 'Balanced Growth and Income', subtitle: 'e.g. Moderate risk for moderate returns'),
+                                        Option(title: 'Growth', subtitle: 'e.g. Seeking higher returns. Willing to take moderate risks'),
+                                        Option(title: 'Aggressive Growth', subtitle: 'e.g. Maximizing returns, Accepting high risks'),
+                                      ],
+                                    ),
+                                    Question(
+                                      questionText: 'What is your investment time horizon?',
+                                      options: [
+                                        Option(title: 'Less than 1 year', subtitle: ''),
+                                        Option(title: '1-3 years', subtitle: ''),
+                                        Option(title: '3-5 years', subtitle: ''),
+                                        Option(title: '5-10 years', subtitle: ''),
+                                        Option(title: 'More than 10 years', subtitle: ''),
+                                      ],
+                                    ),
+                                    Question(
+                                      questionText: 'What is your risk tolerance with market fluctuations?',
+                                      options: [
+                                        Option(title: 'Cannot tolerate any losses', subtitle: 'e.g., Uncomfortable with any negative performance'),
+                                        Option(title: 'Can tolerate minor losses', subtitle: 'e.g., Loss within 5% of investment'),
+                                        Option(title: 'Can tolerate moderate losses', subtitle: 'e.g., Loss within 10-15% of investment'),
+                                        Option(title: 'Comfortable with substantial losses', subtitle: 'e.g., Up to 20%'),
+                                        Option(title: 'Willing to take significant risks for high potential returns', subtitle: 'e.g., Over 25% loss'),
+                                      ],
+                                    ),
+                                    Question(
+                                      questionText: 'How would you react if the value of your investment drops by 20% in a short time?',
+                                      options: [
+                                        Option(title: 'Immediately sell to prevent further losses', subtitle: ''),
+                                        Option(title: 'Sell a portion to reduce risk', subtitle: ''),
+                                        Option(title: 'Do nothing and wait for recovery', subtitle: ''),
+                                        Option(title: 'Buy more, considering it an opportunity', subtitle: ''),
+                                        Option(title: 'Invest more aggressively to increase exposure', subtitle: ''),
+                                      ],
+                                    ),
+                                    Question(
+                                      questionText: 'What is your experience with investments like stocks, mutual funds, or bonds?',
+                                      options: [
+                                        Option(title: 'No experience', subtitle: 'Score: 1'),
+                                        Option(title: 'Limited experience', subtitle: 'e.g., Savings accounts or FD'),
+                                        Option(title: 'Moderate experience', subtitle: 'e.g., Mutual funds or bonds'),
+                                        Option(title: 'Good experience', subtitle: 'e.g., Individual stocks or equity funds'),
+                                        Option(title: 'Extensive experience', subtitle: 'e.g., Active trading or derivatives'),
+                                      ],
+                                    ),
+                                    Question(
+                                      questionText: 'How much of your overall income are you willing to allocate for Equity Asset Class?',
+                                      options: [
+                                        Option(title: 'Less than 10%', subtitle: ''),
+                                        Option(title: '10% to 20%', subtitle: ''),
+                                        Option(title: '20% to 30%', subtitle: ''),
+                                        Option(title: '30% to 50%', subtitle: ''),
+                                        Option(title: 'More than 50%', subtitle: ''),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.teal,

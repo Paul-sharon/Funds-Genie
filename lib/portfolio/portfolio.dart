@@ -12,6 +12,9 @@ class Portfolio extends StatefulWidget {
 }
 
 class _PortfolioState extends State<Portfolio> {
+  int completedCount = 11;
+  int inProgressCount = 0;  // Initially 0, update dynamically
+  int failedCount = 525;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

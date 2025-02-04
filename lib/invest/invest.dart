@@ -127,15 +127,16 @@ class GenieRecommendationSection extends StatelessWidget {
               SizedBox(height: 10),
               Divider(color: Colors.white),
               SizedBox(height: 16),
-              RecommendationTile(
-                avatarText: 'CR',
-                fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
-                returnPercentage: '17.87%',
-              ),
+
               RecommendationTile(
                 avatarText: 'BB',
                 fundName: 'BARODA BNP \nPARIBAS LARGE \nCAP FUND - REGULAR',
                 returnPercentage: '17.77%',
+              ),
+              RecommendationTile(
+                avatarText: 'CR',
+                fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
+                returnPercentage: '17.87%',
               ),
             ],
           ),
