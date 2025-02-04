@@ -1,62 +1,143 @@
 import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
 
+
 class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+
   @override
-  _DashboardState createState() => _DashboardState();
+  State<Dashboard> createState() => _DashboardState();
 }
 
 class _DashboardState extends State<Dashboard> {
+  int _selectedCategoryIndex = 1;
+
+  final Map<int, List<Map<String, dynamic>>> _categoryGrids = {
+    0: [
+      {"icon": Icons.trending_up, "label": "Large Cap", "page": DynamicAssetAllocation()},
+      {"icon": Icons.show_chart, "label": "Mid Cap", "page": DynamicAssetAllocation()},
+      {"icon": Icons.bar_chart, "label": "Small Cap", "page": DynamicAssetAllocation()},
+      {"icon": Icons.pie_chart, "label": "Multi Cap", "page": DynamicAssetAllocation()},
+      {"icon": Icons.stacked_line_chart, "label": "Flexi Cap", "page": DynamicAssetAllocation()},
+      {"icon": Icons.savings, "label": "ELSS (Tax Savings)", "page": DynamicAssetAllocation()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": DynamicAssetAllocation()},
+    ],
+    1: [
+      {"icon": Icons.savings, "label": "Dynamic assets", "page": DynamicAssetAllocation()},
+      {"icon": Icons.bar_chart, "label": "Balanced allocation", "page": BalancedAllocation()},
+      {"icon": Icons.pie_chart, "label": "Multi asset Allocation", "page": MultiAssetAllocation()},
+      {"icon": Icons.trending_up, "label": "Aggressive Allocation", "page": AggressiveAllocation()},
+      {"icon": Icons.credit_card, "label": "Equity saving", "page": EquitySavings()},
+      {"icon": Icons.graphic_eq, "label": "Arbitrage Fund", "page": ArbitrageFund()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": ViewAll()},
+    ],
+    2: [
+      {"icon": Icons.water_drop, "label": "Liquid", "page": DynamicAssetAllocation()},
+      {"icon": Icons.timeline, "label": "Short Duration", "page": DynamicAssetAllocation()},
+      {"icon": Icons.business, "label": "Corporate Bond", "page": DynamicAssetAllocation()},
+      {"icon": Icons.warning, "label": "Credit Risk", "page": DynamicAssetAllocation()},
+      {"icon": Icons.account_balance, "label": "Government Bond", "page": DynamicAssetAllocation()},
+      {"icon": Icons.autorenew, "label": "Dynamic Bond", "page": DynamicAssetAllocation()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": DynamicAssetAllocation()},
+    ]
+  };
+
+  void _selectCategory(int index) {
+    setState(() {
+      _selectedCategoryIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView( // Wrap with SingleChildScrollView
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+    return Scaffold(
+      backgroundColor: const Color(0xFF1E1E1E),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 5),
             child: Column(
               children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                    color: Color(0xFF2A2E34),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 40),
-                        const Text(
-                          'Explore All Mutual Funds',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        CategoryButtonsRow(),
-                        const SizedBox(height: 30),
-                        FundOptionsGrid(),
-                        const SizedBox(height: 40),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: _buildPortfolioSyncCard(),
-                ),
+                _buildCategorySection(),
+                const SizedBox(height: 16),
+                _buildPortfolioSyncSection(),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategorySection() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2A2E34),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Explore All Mutual Funds",
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              _buildCategoryButton('Equity', 0),
+              _buildCategoryButton('Hybrid', 1),
+              _buildCategoryButton('Debt', 2),
+            ],
+          ),
+          const SizedBox(height: 20),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              return ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxHeight: constraints.maxWidth < 600 ? 280 : 200,
+                ),
+                child: GridView.count(
+                  crossAxisCount: 4,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                  children: _categoryGrids[_selectedCategoryIndex]!.map((data) {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Color(0xFF2A2E34),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Color(0xFF4A3E45),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: _buildIconButton(data["icon"], data["label"], data["page"]),
+                    );
+                  }).toList(),
+                ),
+              );
+            },
           ),
         ],
       ),
     );
   }
-
-  Widget _buildPortfolioSyncCard() {
+  Widget _buildPortfolioSyncSection() {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: const BoxDecoration(
@@ -109,117 +190,60 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 
-}
-
-
-class FundOptionsGrid extends StatelessWidget {
-  final List<Map<String, dynamic>> fundOptions = [
-    {'title': 'Dynamic Asset', 'icon': Icons.savings, 'route': DynamicAssetAllocation()},
-    {'title': 'Balanced Allocation', 'icon': Icons.bar_chart, 'route': BalancedAllocation()},
-    {'title': 'Multi Asset Allocation', 'icon': Icons.pie_chart, 'route': MultiAssetAllocation()},
-    {'title': 'Aggressive Allocation', 'icon': Icons.trending_up, 'route': AggressiveAllocation()},
-    {'title': 'Equity Savings', 'icon': Icons.money, 'route': EquitySavings()},
-    {'title': 'Arbitrage Fund', 'icon': Icons.swap_horiz, 'route': ArbitrageFund()},
-    {'title': 'View All', 'icon': Icons.arrow_forward, 'route': ViewAll()},
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      shrinkWrap: true,
-      crossAxisCount: 4,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 20,
-      physics: NeverScrollableScrollPhysics(),
-      children: fundOptions.map((fund) {
-        return GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => fund['route']),
-            );
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Color(0xFF2A2E34),
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Color(0xFF4A3E45), // Border color
-                width: 1.5, // Border width (adjust as needed)
-              ),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(fund['icon'], size: 30, color: Colors.white),
-                SizedBox(height: 8),
-                Text(
-                  fund['title'],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                ),
-              ],
-            ),
-          ),
-        );
-      }).toList(),
-    );
-  }
-}
-
-class CategoryButtonsRow extends StatefulWidget {
-  @override
-  _CategoryButtonsRowState createState() => _CategoryButtonsRowState();
-}
-
-class _CategoryButtonsRowState extends State<CategoryButtonsRow> {
-  int _selectedCategoryIndex = 1; // Default to "Hybrid"
-
-  void _selectCategory(int index) {
-    setState(() {
-      _selectedCategoryIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildCategoryButton('Equity', 0),
-        _buildCategoryButton('Hybrid', 1),
-        _buildCategoryButton('Debt', 2),
-      ],
-    );
-  }
-
   Widget _buildCategoryButton(String text, int index) {
     bool isSelected = _selectedCategoryIndex == index;
-    return GestureDetector(
-      onTap: () => _selectCategory(index),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.greenAccent : Colors.transparent,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-            color: isSelected ? Color(0xFF00A299) : Colors.white,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5), // Add spacing here
+      child: GestureDetector(
+        onTap: () => _selectCategory(index),
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 35),
+          decoration: BoxDecoration(
+            color: isSelected ? Colors.greenAccent : Colors.transparent,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: isSelected ? const Color(0xFF00A299) : Colors.white,
+            ),
           ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.black : Colors.white,
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
+          child: Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: isSelected ? Colors.black : Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget _buildIconButton(IconData icon, String label, Widget page) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page),
+        );
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(icon, color: Colors.teal, size: 25),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 12, color: Colors.white),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
-// Placeholder pages for navigation
 
 class BalancedAllocation extends StatelessWidget {
   @override
@@ -280,3 +304,6 @@ class ViewAll extends StatelessWidget {
     );
   }
 }
+
+
+
