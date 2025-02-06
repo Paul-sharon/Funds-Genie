@@ -75,13 +75,88 @@ class _DashboardState extends State<Dashboard> {
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
             child: Column(
               children: [
+                _buildPortfolioAnalysisSection(),
+                SizedBox(height: 15),
                 _buildCategorySection(),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 _buildPortfolioSyncSection(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+  Widget _buildPortfolioAnalysisSection() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xFF30B8AC), // Medium teal (middle)
+            Color(0xFF155F54), // Darker shade of teal (bottom)
+          ],
+          begin: Alignment.topCenter, // Start from the top
+          end: Alignment.bottomCenter, // End at the bottom
+        ),
+        borderRadius: BorderRadius.circular(25), // Rounded corners with radius 25
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Text Section
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Genie Portfolio Analysis",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Get detailed insights on your portfolio\nand make more informed investment\ndecisions",
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                ),
+                const SizedBox(height: 15),
+                ElevatedButton(
+                  onPressed: () {
+                    // Navigate to portfolio analysis screen
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 12),
+                  ),
+                  child: const Text(
+                    "Analyze Portfolio",
+                    style: TextStyle(color: Colors.black, fontSize: 14),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 10), // Space between text and image
+
+          // Image Section
+          Container(
+            width: 110, // Adjust width as needed
+            height: 170, // Adjust height as needed
+            child: ClipRRect(
+              child: Image.asset(
+                "assets/genies.png", // Replace with actual image
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -325,12 +400,3 @@ class ViewAll extends StatelessWidget {
   }
 }
 
-class DynamicAssetAllocation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Dynamic Asset Allocation')),
-      body: Center(child: Text('Dynamic Asset Allocation Page')),
-    );
-  }
-}

@@ -66,17 +66,17 @@ class _LoginPageState extends State<LoginPage> {
           Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
                 colors: [
-                  Color(0xFF88D8D2), // Lighter shade of teal (left)
+                  Color(0xFF88D8D2), // Lighter shade of teal (top)
                   Color(0xFF66B7B0), // Medium teal (middle)
-                  Color(0xFF155F54), // Darker shade of teal (right)
+                  Color(0xFF155F54), // Darker shade of teal (bottom)
                 ],
-                begin: Alignment.centerRight, // Start from the left
-                end: Alignment.centerLeft,  // End at the right
+                begin: Alignment.topCenter, // Start from the top
+                end: Alignment.bottomCenter, // End at the bottom
               ),
-              borderRadius: BorderRadius.all(Radius.circular(8)),
+              borderRadius: BorderRadius.circular(25), // Rounded corners with radius 25
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
