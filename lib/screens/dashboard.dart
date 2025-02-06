@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dynamicasset.dart';
-
+import 'dart:async';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -11,6 +11,23 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   int _selectedCategoryIndex = 1;
+  Color _borderColor = Colors.blueGrey;
+  double _borderWidth = 1.5;
+
+  @override
+  void initState() {
+    super.initState();
+    _startBorderAnimation();
+  }
+
+  void _startBorderAnimation() {
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _borderColor = _borderColor == Colors.blueGrey ? Colors.cyanAccent : Colors.blueGrey;
+        _borderWidth = _borderWidth == 1.5 ? 3.0 : 1.5;
+      });
+    });
+  }
 
   final Map<int, List<Map<String, dynamic>>> _categoryGrids = {
     0: [
@@ -55,11 +72,11 @@ class _DashboardState extends State<Dashboard> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 5),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 5),
             child: Column(
               children: [
                 _buildCategorySection(),
-                const SizedBox(height: 16),
+                SizedBox(height: 20),
                 _buildPortfolioSyncSection(),
               ],
             ),
@@ -117,13 +134,15 @@ class _DashboardState extends State<Dashboard> {
                   crossAxisSpacing: 16,
                   mainAxisSpacing: 16,
                   children: _categoryGrids[_selectedCategoryIndex]!.map((data) {
-                    return Container(
+                    return AnimatedContainer(
+                      duration: const Duration(seconds: 1),
+                      curve: Curves.easeInOut,
                       decoration: BoxDecoration(
-                        color: Color(0xFF2A2E34),
+                        color: const Color(0xFF2A2E34),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: Color(0xFF4A3E45),
-                          width: 1.5,
+                          color: _borderColor,
+                          width: _borderWidth,
                         ),
                       ),
                       child: _buildIconButton(data["icon"], data["label"], data["page"]),
@@ -137,6 +156,7 @@ class _DashboardState extends State<Dashboard> {
       ),
     );
   }
+
   Widget _buildPortfolioSyncSection() {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -147,7 +167,7 @@ class _DashboardState extends State<Dashboard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 10), // Corrected
+          const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: const [
@@ -193,11 +213,11 @@ class _DashboardState extends State<Dashboard> {
   Widget _buildCategoryButton(String text, int index) {
     bool isSelected = _selectedCategoryIndex == index;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5), // Add spacing here
+      padding: const EdgeInsets.symmetric(horizontal: 5),
       child: GestureDetector(
         onTap: () => _selectCategory(index),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 35),
+        child: AnimatedContainer(
+          duration: const Duration(seconds: 1),
           decoration: BoxDecoration(
             color: isSelected ? Colors.greenAccent : Colors.transparent,
             borderRadius: BorderRadius.circular(16),
@@ -205,6 +225,7 @@ class _DashboardState extends State<Dashboard> {
               color: isSelected ? const Color(0xFF00A299) : Colors.white,
             ),
           ),
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 35),
           child: Center(
             child: Text(
               text,
@@ -243,7 +264,6 @@ class _DashboardState extends State<Dashboard> {
     );
   }
 }
-
 
 class BalancedAllocation extends StatelessWidget {
   @override
@@ -305,5 +325,12 @@ class ViewAll extends StatelessWidget {
   }
 }
 
-
-
+class DynamicAssetAllocation extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Dynamic Asset Allocation')),
+      body: Center(child: Text('Dynamic Asset Allocation Page')),
+    );
+  }
+}
