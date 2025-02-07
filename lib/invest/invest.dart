@@ -362,12 +362,12 @@ class _InvestState extends State<Invest> {
         final investment = filteredInvestments[index];
         return GestureDetector(
           onTap: () {
-            // Navigator.push(
-            //   context,
-            //   // MaterialPageRoute(
-            //   //  // builder: (context) => Funddetails(investment: investment),
-            //   // ),
-            // );
+            Navigator.push(
+            context,
+            MaterialPageRoute(
+             builder: (context) => FundDetailsPage(investment: investment),
+             ),
+            );
           },
           child: Container(
             margin: const EdgeInsets.all(6),
