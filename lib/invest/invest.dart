@@ -245,16 +245,14 @@ class _InvestState extends State<Invest> {
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.centerLeft, // Start from the left
-                  end: Alignment.centerRight, // End at the right
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                   colors: [
-                    Color(0xFF008678), // Darker shade
-                    Color(0xFF008F82), // Lighter shade (occupies more space)
-                    Color(0xFF009588), // Darker shade again
+                    Color(0xFF00766C), // Darker shade
+                    Color(0xFF60BAAE), // Darker shade
                   ],
-                  stops: [0.0, 0.35, 1.0], // Make the middle color take up more space
                 ),
-                borderRadius: BorderRadius.circular(16), // Rounded corners
+                borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
                 children: [
@@ -307,15 +305,16 @@ class _InvestState extends State<Invest> {
                             indicatorColor: Colors.white,
                             labelColor: Colors.white,
                             unselectedLabelColor: Colors.white,
+                            tabAlignment: TabAlignment.start,
                             indicatorWeight: 1,
                             labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                             unselectedLabelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
                             tabs: [
                               Tab(text: 'Large Cap'),
-                              Tab(text: 'Mid Cap'),
+                              Tab(text: ' Mid Cap '),
                               Tab(text: 'Small Cap'),
-                              Tab(text: 'Debt'),
-                              Tab(text: 'Other'),
+                              Tab(text: '   Debt  '),
+                              Tab(text: '  Other  '),
                             ],
                           ),
                           Expanded(
