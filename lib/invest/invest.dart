@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'dart:convert';
 import '../services/api_service.dart';
 import 'FundDetailsPage.dart';
 
@@ -249,8 +249,10 @@ class _InvestState extends State<Invest> {
                   end: Alignment.centerRight,
                   colors: [
                     Color(0xFF00766C), // Darker shade
+                    // Lighter shade
                     Color(0xFF60BAAE), // Darker shade
                   ],
+                  stops: [0.0, 0.25],
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
@@ -342,50 +344,98 @@ class _InvestState extends State<Invest> {
   }
 
   Widget buildInvestmentList(String type, List<Map<String, dynamic>> investments, BuildContext context) {
+    List<Map<String, dynamic>> filteredInvestments =
+    investments.where((investment) => investment['investType'] == type).toList();
+
+    if (filteredInvestments.isEmpty) {
+      return const Center(
+        child: Text(
+          'No investments available',
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      );
+    }
+
     return ListView.builder(
-      itemCount: investments.length,
+      itemCount: filteredInvestments.length,
       itemBuilder: (context, index) {
+        final investment = filteredInvestments[index];
         return GestureDetector(
           onTap: () {
-            // Navigate to fund details page
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => FundDetailsPage(avatarText: '', fundName: '', returnPercentage: '',
-
-                ),
-              ),
-            );
+            // Navigator.push(
+            //   context,
+            //   // MaterialPageRoute(
+            //   //  // builder: (context) => Funddetails(investment: investment),
+            //   // ),
+            // );
           },
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 8.0),
-            padding: const EdgeInsets.all(10),
+            margin: const EdgeInsets.all(6),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
                   color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 6.0,
+                  blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Row(
               children: [
-                const Icon(Icons.account_balance, color: Colors.black, size: 30),
-                const SizedBox(width: 10),
+                // Fund Logo
+                if (investment['companyImg'] != null)
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.memory(
+                      base64Decode(investment['companyImg']),
+                      width: 40,
+                      height: 40,
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                else
+                  const Icon(Icons.image, size: 40, color: Colors.grey),
+
+                const SizedBox(width: 12), // Space between image and text
+
+                // Fund Name and Returns
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        investment['companyName'] ?? 'Unknown Fund',
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Return Percentage & Time Period
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      investments[index]['fundName'],
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      "${investment['returnPercentage']}%",
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 4),
                     Text(
-                      investments[index]['fundType'],
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                      "${investment['returnsIn']} return (p.a)",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
                     ),
                   ],
                 ),
@@ -396,6 +446,7 @@ class _InvestState extends State<Invest> {
       },
     );
   }
+
 }
 class DotsIndicator extends StatelessWidget {
   @override

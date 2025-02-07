@@ -139,7 +139,7 @@ class ApiService {
       return "An error occurred. Please check your internet connection.";
     }
   }
-  static Future<List<Map<String, dynamic>>?> getInvestments() async {
+  static Future<List<Map<String, dynamic>>> getInvestments() async {
     try {
       final response = await _dio.get(
         '$baseUrl/investments',
@@ -148,17 +148,20 @@ class ApiService {
         ),
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 && response.data != null) {
         print("Investments fetched successfully.");
-        return List<Map<String, dynamic>>.from(response.data);
+
+        // Ensure all values inside the list are non-null
+        return List<Map<String, dynamic>>.from(
+          (response.data as List).map((item) => item ?? {}).toList(),
+        );
       } else {
         print("Failed to fetch investments: ${response.data}");
-        return null;
+        return [];
       }
     } catch (e) {
       print("Error fetching investments: $e");
-      return null;
+      return [];
     }
   }
-
 }
