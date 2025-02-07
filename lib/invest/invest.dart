@@ -1,277 +1,418 @@
 import 'package:flutter/material.dart';
-import '../screens/dashboard.dart';
+
+import '../services/api_service.dart';
 import 'FundDetailsPage.dart';
-import '../portfolio/portfolio.dart';
-import '../More/Morepage.dart';
+
 
 class Invest extends StatefulWidget {
+  const Invest({super.key});
+
   @override
-  _InvestState createState() => _InvestState();
+  State<Invest> createState() => _InvestState();
 }
 
 class _InvestState extends State<Invest> {
+  List<Map<String, dynamic>> investments = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchInvestments();
+  }
+
+  Future<void> fetchInvestments() async {
+    final data = await ApiService.getInvestments();
+    if (data != null) {
+      setState(() {
+        investments = data;
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+    return Container(
+      color: const Color(0xFF1E1E1E), // Background color for the screen
+      padding: const EdgeInsets.all(0), // Optional padding for content
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Ongoing NFOs Section
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: Color(0xFF2A2E34),
+                borderRadius: BorderRadius.circular(16),
+
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 24),
-                  OngoingNFOsSection(),
-                  SizedBox(height: 24),
-                  GenieRecommendationSection(),
+                  const Text(
+                    "Ongoing NFOs (5)",
+                    style: TextStyle(
+                      fontSize: 21,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  const Text(
+                    "Explore new fund offerings",
+                    style: TextStyle(fontSize: 15, color: Colors.white70),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: 200, // Set the height for the container
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal, // Enables horizontal scrolling
+                      itemCount: 4, // Number of items in the list
+                      itemBuilder: (context, index) {
+                        return Container(
+                          width: 346, // Set the width of each item
+                          margin: const EdgeInsets.fromLTRB(10, 10, 1, 1), // Space between items
+                          decoration: BoxDecoration(
+                            color: Colors.white12, // Background color of each item
+                            borderRadius: BorderRadius.circular(16), // Rounded corners
+                          ),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(vertical: 16,horizontal: 18),
+                                decoration: BoxDecoration(
+                                  color: Color(0xFFFFFFFF),
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.upcoming_outlined, color: Colors.black),
+                                            const SizedBox(width: 15),
+                                            Flexible(
+                                              child: const Text(
+                                                "UNION ACTIVE MOMENTUM FUND REGULAR IDCW PAYOUT",
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                maxLines: 2,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(height:6),
+                                        Row(
+                                          children: [
+                                            const SizedBox(width: 40),
+                                            const Text(
+                                              "Equity other",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Open date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        const SizedBox(width: 25),
+                                        const Text(
+                                          "Close date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        const SizedBox(width: 30),
+                                        const Text(
+                                          "Risk",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(width: 3),
+                                        const Text(
+                                          "28 Nov",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 40),
+                                        const Text(
+                                          "12 Dec",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 53),
+                                        const Text(
+                                          "||| very High",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 13),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      DotsIndicator(),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Add your sync action here
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // Transparent background
+                          elevation: 0, // No elevation
+                          padding: EdgeInsets.zero, // Remove default padding
+                        ),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'View more',
+                                  style: TextStyle(
+                                    color: Colors.white, // Match text color
+                                    fontSize: 15, // Adjust size as needed
+                                    height: 1.0, // Reduce spacing above the text
+                                  ),
+                                ),
+                                Container(
+                                  height: 2, // Thickness of the underline
+                                  width: 72, // Match text width or adjust as needed
+                                  color: Colors.grey, // Match underline color
+                                  margin: const EdgeInsets.only(top: 2), // Space between text and underline
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 4), // Add spacing between text and arrow
+                            Icon(
+                              Icons.arrow_forward, // Use forward arrow icon
+                              color: Colors.white, // Match icon color
+                              size: 16, // Adjust icon size
+                            ),
+                          ],
+                        ),
+                      ),
+
+                    ],
+                  ),
+
                 ],
               ),
             ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-class OngoingNFOsSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('Ongoing NFOs (5)', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
-        SizedBox(height: 8),
-        Text('Explore New Fund offerings', style: TextStyle(color: Colors.grey, fontSize: 14)),
-        SizedBox(height: 16),
-        Container(
-          decoration: BoxDecoration(color: Color(0xFFFFFFFF), borderRadius: BorderRadius.circular(8)),
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('UNION ACTIVE MOMENTUM FUND REGULAR IDCW PAYOUT',
-                    style: TextStyle(color: Colors.black, fontSize: 16, fontWeight: FontWeight.bold)),
-                Text('Equity Other', style: TextStyle(color: Colors.grey.shade600, fontSize: 12, fontWeight: FontWeight.bold)),
-                SizedBox(height: 12),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InfoTile(title: 'Open Date', value: '28 Nov', valueColor: Colors.black),
-                    InfoTile(title: 'Close Date', value: '12 Dec', valueColor: Colors.black),
-                    InfoTile(title: 'Risk', value: 'Very High', valueColor: Colors.red),
+            // Genie Recommendation Section
+            Container(
+              height: MediaQuery.of(context).size.height * 0.4,
+              margin: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft, // Start from the left
+                  end: Alignment.centerRight, // End at the right
+                  colors: [
+                    Color(0xFF008678), // Darker shade
+                    Color(0xFF008F82), // Lighter shade (occupies more space)
+                    Color(0xFF009588), // Darker shade again
                   ],
+                  stops: [0.0, 0.35, 1.0], // Make the middle color take up more space
                 ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 12),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            DotsIndicator(),
-            Text(
-              'View more ->',
-              style: TextStyle(color: Colors.blue, fontSize: 14),
+                borderRadius: BorderRadius.circular(16), // Rounded corners
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "Genie Recommendation",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            "Expert handpicked collection for \nmutual funds curated for you",
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      Container(
+                        width: 130, // Width of the image container
+                        height: 105, // Height of the image container
+                        alignment: Alignment.centerRight,
+                        child: Image.asset(
+                          'assets/Genieclouds.png',
+                          fit: BoxFit.contain, // Ensures the image scales to fit
+                        ),
+                      ),
+                    ],
+                  ),
+                  Flexible(
+                    child: isLoading
+                        ? const Center(child: CircularProgressIndicator())
+                        : DefaultTabController(
+                      length: 5,
+                      child: Column(
+                        children: [
+                          const TabBar(
+                            isScrollable: true,
+                            indicatorColor: Colors.white,
+                            labelColor: Colors.white,
+                            unselectedLabelColor: Colors.white,
+                            indicatorWeight: 1,
+                            labelStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                            unselectedLabelStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
+                            tabs: [
+                              Tab(text: 'Large Cap'),
+                              Tab(text: 'Mid Cap'),
+                              Tab(text: 'Small Cap'),
+                              Tab(text: 'Debt'),
+                              Tab(text: 'Other'),
+                            ],
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              children: [
+                                buildInvestmentList('l', investments, context), // Large Cap
+                                buildInvestmentList('m', investments, context), // Mid Cap
+                                buildInvestmentList('s', investments, context), // Small Cap
+                                buildInvestmentList('d', investments, context), // Debt
+                                buildInvestmentList('o', investments, context), // Other
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
-        ),
-      ],
-    );
-  }
-}
-
-class GenieRecommendationSection extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xFF66B7B0),
-                Color(0xFF155F54),
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Genie Recommendation',
-                style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8),
-              Text(
-                'Expert handpicked collection for \n mutual funds curated for you',
-                style: TextStyle(color: Colors.white, fontSize: 14),
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TabItem(title: 'Large Cap'),
-                  TabItem(title: 'Mid Cap'),
-                  TabItem(title: 'Small Cap'),
-                  TabItem(title: 'Debt'),
-                ],
-              ),
-              SizedBox(height: 10),
-              Divider(color: Colors.white),
-              SizedBox(height: 16),
-
-              RecommendationTile(
-                avatarText: 'BB',
-                fundName: 'BARODA BNP \nPARIBAS LARGE \nCAP FUND - REGULAR',
-                returnPercentage: '17.77%',
-              ),
-              RecommendationTile(
-                avatarText: 'CR',
-                fundName: 'Canara Robeco Blue \nChip Equity Fund - \nRegular Growth',
-                returnPercentage: '17.87%',
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 16),
-      ],
-    );
-  }
-}
-
-class RecommendationTile extends StatelessWidget {
-  final String avatarText;
-  final String fundName;
-  final String returnPercentage;
-
-  RecommendationTile({
-    required this.avatarText,
-    required this.fundName,
-    required this.returnPercentage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to FundDetailsPage when tapped
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FundDetailsPage(
-              avatarText: avatarText,
-              fundName: fundName,
-              returnPercentage: returnPercentage,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        margin: EdgeInsets.only(bottom: 12),
-        decoration: BoxDecoration(
-          color: Color(0xFF2A2E34),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.black,
-                      child: Text(
-                        avatarText,
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        fundName,
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 12),
-              Text(
-                returnPercentage,
-                style: TextStyle(color: Colors.green, fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
         ),
       ),
     );
   }
-}
 
+  Widget buildInvestmentList(String type, List<Map<String, dynamic>> investments, BuildContext context) {
+    return ListView.builder(
+      itemCount: investments.length,
+      itemBuilder: (context, index) {
+        return GestureDetector(
+          onTap: () {
+            // Navigate to fund details page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FundDetailsPage(avatarText: '', fundName: '', returnPercentage: '',
 
-class InfoTile extends StatelessWidget {
-  final String title;
-  final String value;
-  final Color valueColor;
-
-  InfoTile({required this.title, required this.value, this.valueColor = Colors.black});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(color: Colors.grey.shade600, fontSize: 12),
-        ),
-        Text(
-          value,
-          style: TextStyle(color: valueColor, fontSize: 14, fontWeight: FontWeight.bold),
-        ),
-      ],
+                ),
+              ),
+            );
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(vertical: 8.0),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  blurRadius: 6.0,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.account_balance, color: Colors.black, size: 30),
+                const SizedBox(width: 10),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      investments[index]['fundName'],
+                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      investments[index]['fundType'],
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
-
 class DotsIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        CircleAvatar(radius: 4, backgroundColor: Colors.white),
+        CircleAvatar(radius: 6, backgroundColor: Colors.white),
         SizedBox(width: 4),
-        CircleAvatar(radius: 4, backgroundColor: Colors.grey),
+        CircleAvatar(radius: 5, backgroundColor: Colors.grey),
         SizedBox(width: 4),
-        CircleAvatar(radius: 4, backgroundColor: Colors.grey),
+        CircleAvatar(radius: 5, backgroundColor: Colors.grey),
+        SizedBox(width: 4),
+        CircleAvatar(radius: 5, backgroundColor: Colors.grey),
+        SizedBox(width: 4),
+        CircleAvatar(radius: 5, backgroundColor: Colors.grey),
       ],
-    );
-  }
-}
-
-class TabItem extends StatelessWidget {
-  final String title;
-
-  TabItem({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
     );
   }
 }

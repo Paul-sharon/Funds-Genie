@@ -238,8 +238,8 @@ class FundCard extends StatelessWidget {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: Colors.red,
-                    child: Icon(Icons.fireplace, color: Colors.white),
+                    backgroundImage: AssetImage('assets/Bandhan.png'), // Replace with your image path
+                    backgroundColor: Colors.red, // Optional background color
                   ),
                   SizedBox(width: 10),
                   Expanded(
@@ -251,22 +251,14 @@ class FundCard extends StatelessWidget {
                           color: Colors.black),
                     ),
                   ),
-                  Text(
-                    'UNRATED',
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
                 ],
               ),
               SizedBox(height: 10),
-              Row(
-                children: [
-                  Icon(Icons.star, color: Colors.orange),
-                  SizedBox(width: 8),
-                  Text(
-                    "2 Below Average",
-                    style: TextStyle(fontSize: 12, color: Colors.red),
-                  ),
-                ],
+              Image.asset(
+                'assets/dynamicg.png', // Ensure the image is in the assets folder
+                width: 350, // Adjust width as needed
+                height: 60, // Adjust height as needed
+                fit: BoxFit.contain, // Adjust fit as needed
               ),
               SizedBox(height: 50),
               Row(
@@ -324,9 +316,8 @@ class FundCard extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 30),
+              SizedBox(height: 15),
               Divider(color: Colors.grey),
-              SizedBox(height: 10),
               Align(
                 alignment: Alignment.centerRight,
                 child: OutlinedButton(
@@ -335,7 +326,7 @@ class FundCard extends StatelessWidget {
                     side: BorderSide(color: Colors.teal),
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(25.0),
                     ),
                   ),
                   child: Text('Invest Now', style: TextStyle(color: Colors.teal)),

@@ -139,5 +139,26 @@ class ApiService {
       return "An error occurred. Please check your internet connection.";
     }
   }
+  static Future<List<Map<String, dynamic>>?> getInvestments() async {
+    try {
+      final response = await _dio.get(
+        '$baseUrl/investments',
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        print("Investments fetched successfully.");
+        return List<Map<String, dynamic>>.from(response.data);
+      } else {
+        print("Failed to fetch investments: ${response.data}");
+        return null;
+      }
+    } catch (e) {
+      print("Error fetching investments: $e");
+      return null;
+    }
+  }
 
 }
