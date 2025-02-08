@@ -147,30 +147,245 @@ class FundDetailsPage extends StatelessWidget {
               ),
               const SizedBox(height: 10.0),
               // Invest Button
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Add action here
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25.0),
+              Center(
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xFF66B7B0),
+                        Color(0xFF155F54),
+                      ],
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft,
                     ),
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
-                  child: const Text(
-                    "Invest",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Fund Rating",
+                        style: TextStyle(
+                          fontSize: 23,
+                          fontFamily: 'serif',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Geojit Rating
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "3",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.orange,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "GEOJIT",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      "AVERAGE",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Morningstar Rating
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      "4",
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.star,
+                                      color: Colors.green,
+                                      size: 15,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(width: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "MORNINGSTAR",
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.red,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      "GOOD",
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
+              SizedBox(height: 10),
+              Container(
+                decoration: BoxDecoration(
+                  color: Color(0xFF2A2E34),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Scheme Details",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Expense Ratio", style: TextStyle(color: Colors.grey[400])),
+                        Text("1.66% (as on Oct 31, 2024)", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                    Divider(color: Colors.grey[700]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Exit Load", style: TextStyle(color: Colors.grey[400])),
+                        Text("1.0%", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                    Divider(color: Colors.grey[700]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("AUM (Fund Size)", style: TextStyle(color: Colors.grey[400])),
+                        Text("14580.92 Cr", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                    Divider(color: Colors.grey[700]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Lock-In", style: TextStyle(color: Colors.grey[400])),
+                        Text("No lock in", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                    Divider(color: Colors.grey[700]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text("Age", style: TextStyle(color: Colors.grey[400])),
+                        Text("14y 4m (since Aug 20, 2010)", style: TextStyle(color: Colors.white)),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xFF004D40),
+              Color(0xFF66B7B0),
+            ],
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        child: SizedBox(
+          width: double.infinity,
+          child: ElevatedButton(
+            onPressed: () {
+              // Add your action here
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.transparent,
+              shadowColor: Colors.transparent,
+              padding: EdgeInsets.symmetric(vertical: 16.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.0),
+              ),
+            ),
+            child: Text(
+              "Invest",
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
       ),
