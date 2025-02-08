@@ -1,8 +1,21 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 class FundDetailsPage extends StatelessWidget {
   final Map<String, dynamic> investment;
+  String formatDate(String dateString) {
+    try {
+      print("Received date: $dateString"); // Debugging log
+      DateTime parsedDate = DateTime.parse(dateString);
+      String formattedDate = DateFormat('MMM dd, yyyy').format(parsedDate);
+      print("Formatted date: $formattedDate"); // Debugging log
+      return formattedDate;
+    } catch (e) {
+      print("Error formatting date: $e"); // Debugging log
+      return 'Invalid Date';
+    }
+  }
 
   const FundDetailsPage({super.key, required this.investment});
 
@@ -10,17 +23,17 @@ class FundDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(investment['companyName'] ?? 'Fund Details'),
+        backgroundColor: const Color(0xFF2A2E34),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Fund Details Card
               Card(
-                color: const Color(0xFF2A2E34),
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18.0),
                 ),
@@ -30,61 +43,82 @@ class FundDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.black,
-                            backgroundImage: investment['companyImg'] != null
-                                ? MemoryImage(base64Decode(investment['companyImg']))
-                                : null,
-                          ),
-                          const SizedBox(width: 12.0),
-                          Expanded(
-                            child: Text(
-                              investment['companyName'] ?? 'Unknown Fund',
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                              ),
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(0.0), // Adjust for rounded corners
+                            child: investment['companyImg'] != null
+                                ? Image.memory(
+                              base64Decode(investment['companyImg']),
+                              width: 40, // Set width and height as needed
+                              height: 40,
+                              fit: BoxFit.cover,
+                            )
+                                : Container(
+                              width: 40,
+                              height: 40,
+                              color: Colors.black, // Placeholder color
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12.0),
+                      const SizedBox(height: 12.0),
+                      Text(
+                        investment['companyName'] ?? 'Unknown Fund',
+                        style: const TextStyle(
+                          fontSize: 21.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                      SizedBox(height: 5),
                       Row(
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 26.0, vertical: 4.0),
                             decoration: BoxDecoration(
-                              color: Colors.grey[700],
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all( // Adding border
+                                color: Colors.black12, // Border color
+                                width: 1.5, // Border thickness
+                              ),
                             ),
                             child: const Text(
                               'Growth',
                               style: TextStyle(
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: Colors.black,
                               ),
                             ),
                           ),
                         ],
                       ),
                       const SizedBox(height: 12.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            'Equity • Large Cap',
-                            style: TextStyle(color: Colors.grey[400]),
-                          ),
                           Row(
                             children: [
+                              Text(
+                                'Equity • ',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              Text(
+                                investment['recommendationType'] ?? 'Others',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                              Text(
+                                ' • ',
+                                style: TextStyle(color: Colors.black54),
+                              ),
                               const Icon(Icons.bar_chart, color: Colors.red, size: 16.0),
                               const SizedBox(width: 4.0),
                               Text(
-                                investment['risk'] ?? 'N/A',
+                                investment['riskType'] ?? 'N/A',
                                 style: const TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.bold,
@@ -94,8 +128,8 @@ class FundDetailsPage extends StatelessWidget {
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 5.0),
-                      Divider(color: Colors.grey[800]),
                       const SizedBox(height: 5.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -103,38 +137,60 @@ class FundDetailsPage extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                'NAV (Nov 29, 2024)',
-                                style: TextStyle(color: Colors.grey[400]),
+                              Row(
+                                children: [
+                                  Text(
+                                    'NAV (',
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  Text(
+                                    formatDate(investment['date'] ?? ''), // Format the date here
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                  Text(
+                                    ')',
+                                    style: TextStyle(color: Colors.black54),
+                                  ),
+                                ],
                               ),
                               const SizedBox(height: 4.0),
-                              const Text(
-                                '₹61.02',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                '+0.47% (1 D Change)',
-                                style: TextStyle(color: Colors.green),
+                              Row(
+                                children: [
+                                  const Text(
+                                    '₹61.02',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8.0), // Add spacing between elements
+                                  const Text(
+                                    '+0.47% (1 D Change)',
+                                    style: TextStyle(color: Colors.green),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const Text(
-                                '5 Y CAGR',
+                              Text(
+                                '${investment['returnsIn'] ?? '5'} Y CAGR   ',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 15.0, // Set font size to 16
+                                ),
                               ),
+
                               const SizedBox(height: 4.0),
                               Text(
-                                investment['returnPercentage'] != null ? investment['returnPercentage'].toString() : 'N/A',
+                                '${investment['returnPercentage'] != null ? investment['returnPercentage'].toString() : 'N/A'}%  ',
                                 style: const TextStyle(
                                   fontSize: 20.0,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.white,
+                                  color: Colors.black,
                                 ),
                               ),
                             ],
@@ -180,10 +236,10 @@ class FundDetailsPage extends StatelessWidget {
                         children: [
                           // Geojit Rating
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 35, vertical: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 48, vertical: 5),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
@@ -231,10 +287,10 @@ class FundDetailsPage extends StatelessWidget {
                           ),
                           // Morningstar Rating
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
@@ -290,7 +346,7 @@ class FundDetailsPage extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: Color(0xFF2A2E34),
-                  borderRadius: BorderRadius.circular(12.0),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                 child: Column(
@@ -299,7 +355,7 @@ class FundDetailsPage extends StatelessWidget {
                     Text(
                       "Scheme Details",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
@@ -308,42 +364,58 @@ class FundDetailsPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Expense Ratio", style: TextStyle(color: Colors.grey[400])),
-                        Text("1.66% (as on Oct 31, 2024)", style: TextStyle(color: Colors.white)),
+                        Text(
+                          "Expense Ratio",
+                          style: TextStyle(color: Colors.grey[400], fontSize: 17),
+                        ),
+                        Text(
+                          "1.66% (as on Oct 31, 2024)",
+                          style: TextStyle(color: Colors.white, fontSize: 17),
+                        ),
                       ],
                     ),
-                    Divider(color: Colors.grey[700]),
+                    Divider(color: Colors.grey[800]), // Updated to 800
+                    SizedBox(height: 10), // Updated spacing
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Exit Load", style: TextStyle(color: Colors.grey[400])),
-                        Text("1.0%", style: TextStyle(color: Colors.white)),
+                        Text("Exit Load", style: TextStyle(color: Colors.grey[400], fontSize: 17)),
+                        Text("1.0%", style: TextStyle(color: Colors.white, fontSize: 17)),
                       ],
                     ),
-                    Divider(color: Colors.grey[700]),
+                    Divider(color: Colors.grey[800]),
+                    SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("AUM (Fund Size)", style: TextStyle(color: Colors.grey[400])),
-                        Text("14580.92 Cr", style: TextStyle(color: Colors.white)),
+                        Text("AUM (Fund Size)", style: TextStyle(color: Colors.grey[400], fontSize: 17)),
+                        Text("14580.92 Cr", style: TextStyle(color: Colors.white, fontSize: 17)),
                       ],
                     ),
-                    Divider(color: Colors.grey[700]),
+                    Divider(color: Colors.grey[800]),
+                    SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Lock-In", style: TextStyle(color: Colors.grey[400])),
-                        Text("No lock in", style: TextStyle(color: Colors.white)),
+                        Text("Lock-In", style: TextStyle(color: Colors.grey[400], fontSize: 17)),
+                        Text("No lock in", style: TextStyle(color: Colors.white, fontSize: 17)),
                       ],
                     ),
-                    Divider(color: Colors.grey[700]),
+                    Divider(color: Colors.grey[800]),
+                    SizedBox(height: 10),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Age", style: TextStyle(color: Colors.grey[400])),
-                        Text("14y 4m (since Aug 20, 2010)", style: TextStyle(color: Colors.white)),
+                        Text("Age", style: TextStyle(color: Colors.grey[400], fontSize: 17)),
+                        Text("14y 4m (since Aug 20, 2010)", style: TextStyle(color: Colors.white, fontSize: 17)),
                       ],
                     ),
+                    Divider(color: Colors.grey[800]),
+                    SizedBox(height: 10),
                   ],
                 ),
               ),
