@@ -156,8 +156,8 @@ class FundDetailsPage extends StatelessWidget {
                               const SizedBox(height: 4.0),
                               Row(
                                 children: [
-                                  const Text(
-                                    '₹61.02',
+                                  Text(
+                                    '₹${investment['navRate'] != null ? investment['navRate'].toString() : 'N/A'} ',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.bold,

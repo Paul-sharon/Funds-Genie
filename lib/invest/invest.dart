@@ -240,7 +240,7 @@ class _InvestState extends State<Invest> {
             ),
             // Genie Recommendation Section
             Container(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.5,
               margin: const EdgeInsets.all(8.0),
               padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
@@ -295,6 +295,7 @@ class _InvestState extends State<Invest> {
                       ),
                     ],
                   ),
+                  SizedBox(height: 16),
                   Flexible(
                     child: isLoading
                         ? const Center(child: CircularProgressIndicator())
@@ -319,6 +320,7 @@ class _InvestState extends State<Invest> {
                               Tab(text: '  Other  '),
                             ],
                           ),
+                          SizedBox(height: 15),
                           Expanded(
                             child: TabBarView(
                               children: [
@@ -371,7 +373,7 @@ class _InvestState extends State<Invest> {
           },
           child: Container(
             margin: const EdgeInsets.all(6),
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
