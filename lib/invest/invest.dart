@@ -105,7 +105,7 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                       ),
                       const SizedBox(height: 10),
                       SizedBox(
-                        height: 200,
+                        height: 190,
                         child: PageView.builder(
                           controller: _pageController,
                           itemCount: 4,
@@ -126,14 +126,13 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(Icons.upcoming_outlined,
-                                            color: Colors.black),
-                                        const SizedBox(width: 10),
-                                        const Expanded(
-                                          child: Text(
+                                        Icon(Icons.upcoming_outlined, color: Colors.black),
+                                        const SizedBox(width: 15),
+                                        Flexible(
+                                          child: const Text(
                                             "UNION ACTIVE MOMENTUM FUND REGULAR IDCW PAYOUT",
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 16,
                                               color: Colors.black,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -143,31 +142,70 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 8),
-                                    const Text(
-                                      "Equity other",
-                                      style: TextStyle(
-                                          fontSize: 14, color: Colors.black),
-                                    ),
-                                    const Spacer(),
+                                    SizedBox(height:10),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: const [
-                                        Text("Open: 28 Nov",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                        Text("Close: 12 Dec",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.black)),
-                                        Text("Risk: Very High",
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: Colors.red)),
+                                      children: [
+                                        const SizedBox(width: 40),
+                                        const Text(
+                                          "Equity other",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
                                       ],
                                     ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                          "Open date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        const SizedBox(width: 30),
+                                        const Text(
+                                          "Close date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        const SizedBox(width: 40),
+                                        const Text(
+                                          "Risk",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(width: 3),
+                                        const Text(
+                                          "28 Nov",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 45),
+                                        const Text(
+                                          "12 Dec",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 63),
+                                        const Text(
+                                          "||| very High",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 13),
                                   ],
                                 ),
                               ),
@@ -179,16 +217,42 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           DotsIndicator(currentIndex: currentPage),
-                          TextButton(
-                            onPressed: () {},
+                          ElevatedButton(
+                            onPressed: () {
+                              // Add your sync action here
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent, // Transparent background
+                              elevation: 0, // No elevation
+                              padding: EdgeInsets.zero, // Remove default padding
+                            ),
                             child: Row(
                               children: [
-                                const Text('View more',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15)),
-                                const SizedBox(width: 4),
-                                const Icon(Icons.arrow_forward,
-                                    color: Colors.white, size: 16),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'View more',
+                                      style: TextStyle(
+                                        color: Colors.white, // Match text color
+                                        fontSize: 15, // Adjust size as needed
+                                        height: 1.0, // Reduce spacing above the text
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 2, // Thickness of the underline
+                                      width: 72, // Match text width or adjust as needed
+                                      color: Colors.grey, // Match underline color
+                                      margin: const EdgeInsets.only(top: 2), // Space between text and underline
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(width: 4), // Add spacing between text and arrow
+                                Icon(
+                                  Icons.arrow_forward, // Use forward arrow icon
+                                  color: Colors.white, // Match icon color
+                                  size: 16, // Adjust icon size
+                                ),
                               ],
                             ),
                           ),
@@ -348,13 +412,6 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
             ),
             child: Row(
               children: [
@@ -429,13 +486,14 @@ class DotsIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisSize: MainAxisSize.min, // Ensures row takes minimal space
       children: List.generate(
         4,
-        (index) => AnimatedContainer(
+            (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: const EdgeInsets.symmetric(horizontal: 4),
-          width: currentIndex == index ? 8 : 6,
-          height: currentIndex == index ? 8 : 6,
+          width: currentIndex == index ? 12 : 10, // Increase the size
+          height: currentIndex == index ? 12 : 10, // Increase the size
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             color: currentIndex == index ? Colors.white : Colors.grey,
@@ -445,3 +503,4 @@ class DotsIndicator extends StatelessWidget {
     );
   }
 }
+
