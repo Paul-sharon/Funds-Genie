@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: Image.asset(
-                        'assets/gold.png', // Ensure this asset is added in pubspec.yaml
+                        'assets/Investers.png', // Ensure this asset is added in pubspec.yaml
                         fit: BoxFit.cover,
                       ),
                     ),
