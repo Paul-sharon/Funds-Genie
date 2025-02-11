@@ -26,9 +26,13 @@ class _TransactionProgressState extends State<TransactionProgress> {
   Future<void> fetchTransactions() async {
     try {
       final fetchedTransactions = await ApiService.getTransactions();
+
       if (mounted) {
         setState(() {
-          transactions = fetchedTransactions;
+          transactions = fetchedTransactions
+              .where((tx) =>
+          tx['transactionStatus']?.toString().toLowerCase() == 'in progress')
+              .toList();
           isLoading = false;
         });
       }
@@ -37,18 +41,6 @@ class _TransactionProgressState extends State<TransactionProgress> {
     }
   }
 
-  String formatDate(String dateString) {
-    try {
-      print("Received date: $dateString"); // Debugging log
-      DateTime parsedDate = DateTime.parse(dateString);
-      String formattedDate = DateFormat('dd MMM yyyy').format(parsedDate);
-      print("Formatted date: $formattedDate"); // Debugging log
-      return formattedDate;
-    } catch (e) {
-      print("Error formatting date: $e"); // Debugging log
-      return 'Invalid Date';
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +79,9 @@ class _TransactionProgressState extends State<TransactionProgress> {
             ? const Center(child: CircularProgressIndicator()) // Loading spinner
             : TabBarView(
           children: [
-            const CompletedTransactionsTab(),
+            TransactionCompleted(),
             ProgressTransactionsTab(transactions: transactions),
-            const FailedTransactionsTab(),
+            TransactionFailed(),
           ],
         ),
       ),
@@ -107,8 +99,12 @@ class ProgressTransactionsTab extends StatelessWidget {
     if (transactions.isEmpty) {
       return const Center(
         child: Text(
-          "No transactions found.",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+          "No Transactions found.",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.blueGrey,  // Set text color to black
+          ),
         ),
       );
     }

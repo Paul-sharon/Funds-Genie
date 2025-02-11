@@ -1,122 +1,117 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'TransactionFailed.dart';
-import 'TransactionProgress.dart';
+import 'package:intl/intl.dart';
+import '../services/api_service.dart';
 import 'TransactionStatus.dart';
-class TransactionCompleted extends StatelessWidget {
+
+class TransactionCompleted extends StatefulWidget {
   const TransactionCompleted({Key? key}) : super(key: key);
 
   @override
+  _TransactionCompletedState createState() => _TransactionCompletedState();
+}
+
+class _TransactionCompletedState extends State<TransactionCompleted> {
+  List<Map<String, dynamic>> transactions = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTransactions();
+  }
+
+  Future<void> fetchTransactions() async {
+    try {
+      final fetchedTransactions = await ApiService.getTransactions();
+
+      if (mounted) {
+        setState(() {
+          transactions = fetchedTransactions
+              .where((tx) =>
+          tx['transactionStatus']?.toString().toLowerCase() == 'completed') // 🔥 Only "Completed"
+              .toList();
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error fetching transactions: $e");
+    }
+  }
+
+
+  @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF2A2E34),
-          title: const Text(
-            'Transaction Details',
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48.0), // Standard TabBar height
-            child: TabBar(
-              labelColor: Colors.white, // Active tab text color
-              unselectedLabelColor: Colors.white70, // Inactive tab text color
-              indicator: const UnderlineTabIndicator(
-                borderSide: BorderSide(
-                  color: Colors.teal, // Indicator color
-                  width: 5.0, // Thickness of the indicator
-                ),
-                insets: EdgeInsets.fromLTRB(75.0, 0.0, 80.0, 0.0), // Adjusts the length of the indicator
-              ),
-              tabs: const [
-                Tab(text: 'Completed'),
-                Tab(text: 'In Progress'),
-                Tab(text: 'Failed'),
-              ],
-            ),
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Colors.white,
-                size: 36.0,
-              ),
-              onPressed: () {
-                // Search button functionality
-              },
-            ),
-          ],
-        ),
-        body: Container(
-          color: Colors.white, // Set background color to blue
-          child: const TabBarView(
-            children: [
-              CompletedTransactionsTab(),
-              //ProgressTransactionsTab(),
-              FailedTransactionsTab(),
-            ],
-          ),
-        ),
-      ),
-    );
+    return isLoading
+        ? const Center(child: CircularProgressIndicator()) // Loading spinner
+        : CompletedTransactionsTab(transactions: transactions);
   }
 }
 
 class CompletedTransactionsTab extends StatelessWidget {
-  const CompletedTransactionsTab({Key? key}) : super(key: key);
+  final List<Map<String, dynamic>> transactions;
+
+  const CompletedTransactionsTab({Key? key, required this.transactions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (transactions.isEmpty) {
+      return const Center(
+        child: Text(
+          "No Completed Transactions found.",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: Colors.blueGrey,  // Set text color to black
+          ),
+        ),
+      );
+    }
+
+    String monthYear = transactions.isNotEmpty
+        ? formatMonthYear(transactions.last['investDate']?.toString() ?? '')
+        : 'No Transactions';
+
     return ListView(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Text(
-            'NOVEMBER 2024',
-            style: TextStyle(
+            monthYear,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
-              color: Colors.black, // Black text
+              color: Colors.black,
             ),
           ),
         ),
-        TransactionCard(
-          date: '22 Nov 2024',
-          fundName: 'Aditya Birla Sun Life Flexi Cap Fund - IDCW-Regular Plan',
-          units: '0.064 Unit',
-        ),
-        TransactionCard(
-          date: '22 Nov 2024',
-          fundName: 'Aditya Birla Sun Life Flexi Cap Fund - IDCW-Regular Plan',
-          units: '0.067 Unit',
-        ),
-        TransactionCard(
-          date: '22 Nov 2024',
-          fundName: 'Aditya Birla Sun Life Flexi Cap Fund - IDCW-Regular Plan',
-          units: '0.068 Unit',
-        ),
-        TransactionCard(
-          date: '22 Nov 2024',
-          fundName: 'Aditya Birla Sun Life Flexi Cap Fund - IDCW-Regular Plan',
-          units: '1.057 Unit',
-        ),
-        TransactionCard(
-          date: '12 Nov 2024',
-          fundName: 'Kotak Bluechip Fund',
-          units: '0.183 Unit',
-          tag: 'PURCHASE-LUMPSUM',
-        ),
-        TransactionCard(
-          date: '11 Nov 2024',
-          fundName: 'Canara Robeco Blue Chip Equity',
-          units: '0.150 Unit',
-        ),
+        ...transactions.map((transaction) => TransactionCard(
+          date: formatDate(transaction['investDate']?.toString() ?? 'Unknown Date'),
+          fundName: transaction['companyName']?.toString() ?? 'Unknown Fund',
+          units: transaction['units']?.toString() ?? '0.000 Unit',
+          tag: transaction['tag']?.toString(),
+          companyImgBase64: transaction['companyImg']?.toString(),
+        )),
       ],
     );
+  }
+
+  String formatDate(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return 'Invalid Date';
+    }
+  }
+
+  String formatMonthYear(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('MMMM yyyy').format(parsedDate).toUpperCase();
+    } catch (e) {
+      return 'Invalid Date';
+    }
   }
 }
 
@@ -125,6 +120,7 @@ class TransactionCard extends StatelessWidget {
   final String fundName;
   final String units;
   final String? tag;
+  final String? companyImgBase64;
 
   const TransactionCard({
     Key? key,
@@ -132,15 +128,16 @@ class TransactionCard extends StatelessWidget {
     required this.fundName,
     required this.units,
     this.tag,
+    this.companyImgBase64,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white, // Set background color to white
+      color: Colors.white,
       child: ListTile(
+        leading: _buildImage(),
         onTap: () {
-          // Navigate to TransactionStatus
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -155,20 +152,20 @@ class TransactionCard extends StatelessWidget {
               date,
               style: const TextStyle(
                 fontSize: 14,
-                color: Colors.black, // Black text
+                color: Colors.black,
               ),
             ),
             const Icon(
               Icons.arrow_forward_ios_sharp,
               color: Colors.black54,
-              size: 20.0, // Icon size
+              size: 20.0,
             ),
           ],
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 9), // Space between title and subtitle
+            const SizedBox(height: 9),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -178,23 +175,23 @@ class TransactionCard extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: Colors.black, // Black text
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 Text(
-                  units,
+                  '${double.tryParse(units)?.toStringAsFixed(3) ?? '0.000'} Unit',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black, // Black text
+                    color: Colors.black,
                   ),
                 ),
               ],
             ),
             if (tag != null)
               Container(
-                margin: const EdgeInsets.only(top: 8), // Space above the tag
+                margin: const EdgeInsets.only(top: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Colors.teal.shade100,
@@ -209,13 +206,31 @@ class TransactionCard extends StatelessWidget {
                   ),
                 ),
               ),
-            const SizedBox(height: 18), // Space below the tag
+            const SizedBox(height: 18),
           ],
         ),
-        trailing: null, // No trailing logic as tag is moved to subtitle
       ),
     );
   }
+
+  Widget _buildImage() {
+    if (companyImgBase64 == null || companyImgBase64!.isEmpty) {
+      return const Icon(Icons.business, size: 40, color: Colors.grey);
+    }
+    try {
+      final bytes = base64Decode(companyImgBase64!);
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(8),
+        child: Image.memory(
+          bytes,
+          width: 50,
+          height: 50,
+          fit: BoxFit.cover,
+        ),
+      );
+    } catch (e) {
+      print("Error decoding Base64 image: $e");
+      return const Icon(Icons.error, size: 40, color: Colors.red);
+    }
+  }
 }
-
-
