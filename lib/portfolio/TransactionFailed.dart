@@ -28,8 +28,7 @@ class _TransactionFailedState extends State<TransactionFailed> {
       if (mounted) {
         setState(() {
           transactions = fetchedTransactions
-              .where((tx) =>
-          tx['transactionStatus']?.toString().toLowerCase() == 'failed')
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'failed') // Only "Failed"
               .toList();
           isLoading = false;
         });
@@ -42,7 +41,7 @@ class _TransactionFailedState extends State<TransactionFailed> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? const Center(child: CircularProgressIndicator()) // Show loading spinner
+        ? const Center(child: CircularProgressIndicator()) // Loading spinner
         : FailedTransactionsTab(transactions: transactions);
   }
 }
@@ -57,11 +56,11 @@ class FailedTransactionsTab extends StatelessWidget {
     if (transactions.isEmpty) {
       return const Center(
         child: Text(
-          "No failed Transactions found.",
+          "No Failed Transactions found.",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.blueGrey,  // Set text color to black
+            color: Colors.blueGrey,
           ),
         ),
       );
@@ -90,6 +89,7 @@ class FailedTransactionsTab extends StatelessWidget {
           units: transaction['units']?.toString() ?? '0.000 Unit',
           tag: transaction['tag']?.toString(),
           companyImgBase64: transaction['companyImg']?.toString(),
+          transactions: transactions,
         )),
       ],
     );
@@ -120,6 +120,7 @@ class TransactionCard extends StatelessWidget {
   final String units;
   final String? tag;
   final String? companyImgBase64;
+  final List<Map<String, dynamic>> transactions;
 
   const TransactionCard({
     Key? key,
@@ -128,19 +129,21 @@ class TransactionCard extends StatelessWidget {
     required this.units,
     this.tag,
     this.companyImgBase64,
+    required this.transactions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Colors.white,
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       child: ListTile(
         leading: _buildImage(),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const TransactionStatus(),
+              builder: (context) => TransactionStatus(transactions: transactions),
             ),
           );
         },
@@ -214,7 +217,7 @@ class TransactionCard extends StatelessWidget {
 
   Widget _buildImage() {
     if (companyImgBase64 == null || companyImgBase64!.isEmpty) {
-      return const Icon(Icons.business, size: 40, color: Colors.grey);
+      return const Icon(Icons.business, size: 50, color: Colors.grey);
     }
     try {
       final bytes = base64Decode(companyImgBase64!);
@@ -229,7 +232,7 @@ class TransactionCard extends StatelessWidget {
       );
     } catch (e) {
       print("Error decoding Base64 image: $e");
-      return const Icon(Icons.error, size: 40, color: Colors.red);
+      return const Icon(Icons.error, size: 50, color: Colors.red);
     }
   }
 }

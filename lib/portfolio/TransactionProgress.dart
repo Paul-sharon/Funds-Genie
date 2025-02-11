@@ -31,7 +31,8 @@ class _TransactionProgressState extends State<TransactionProgress> {
         setState(() {
           transactions = fetchedTransactions
               .where((tx) =>
-          tx['transactionStatus']?.toString().toLowerCase() == 'in progress')
+          tx['transactionStatus']?.toString().toLowerCase() ==
+              'in progress')
               .toList();
           isLoading = false;
         });
@@ -40,7 +41,6 @@ class _TransactionProgressState extends State<TransactionProgress> {
       print("Error fetching transactions: $e");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -79,9 +79,9 @@ class _TransactionProgressState extends State<TransactionProgress> {
             ? const Center(child: CircularProgressIndicator()) // Loading spinner
             : TabBarView(
           children: [
-            TransactionCompleted(),
+            const TransactionCompleted(),
             ProgressTransactionsTab(transactions: transactions),
-            TransactionFailed(),
+            const TransactionFailed(),
           ],
         ),
       ),
@@ -92,7 +92,8 @@ class _TransactionProgressState extends State<TransactionProgress> {
 class ProgressTransactionsTab extends StatelessWidget {
   final List<Map<String, dynamic>> transactions;
 
-  const ProgressTransactionsTab({Key? key, required this.transactions}) : super(key: key);
+  const ProgressTransactionsTab({Key? key, required this.transactions})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class ProgressTransactionsTab extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.blueGrey,  // Set text color to black
+            color: Colors.blueGrey,
           ),
         ),
       );
@@ -133,12 +134,12 @@ class ProgressTransactionsTab extends StatelessWidget {
           units: transaction['units']?.toString() ?? '0.000 Unit',
           tag: transaction['tag']?.toString(),
           companyImgBase64: transaction['companyImg']?.toString(), // Base64 Image Handling
+          transactions: transactions, // Pass the transactions list
         )),
       ],
     );
   }
 
-  // Function to format "dd MMM yyyy" (e.g., 11 Feb 2025)
   String formatDate(String dateString) {
     try {
       DateTime parsedDate = DateTime.parse(dateString);
@@ -148,7 +149,6 @@ class ProgressTransactionsTab extends StatelessWidget {
     }
   }
 
-  // Function to format "MONTH YEAR" (e.g., FEBRUARY @2025)
   String formatMonthYear(String dateString) {
     try {
       DateTime parsedDate = DateTime.parse(dateString);
@@ -159,13 +159,13 @@ class ProgressTransactionsTab extends StatelessWidget {
   }
 }
 
-// Transaction Card with Image Handling
 class TransactionCard extends StatelessWidget {
   final String date;
   final String fundName;
   final String units;
   final String? tag;
   final String? companyImgBase64;
+  final List<Map<String, dynamic>> transactions;
 
   const TransactionCard({
     Key? key,
@@ -174,6 +174,7 @@ class TransactionCard extends StatelessWidget {
     required this.units,
     this.tag,
     this.companyImgBase64,
+    required this.transactions,
   }) : super(key: key);
 
   @override
@@ -181,12 +182,13 @@ class TransactionCard extends StatelessWidget {
     return Card(
       color: Colors.white,
       child: ListTile(
-        leading: _buildImage(), // Base64 Image Support
+        leading: _buildImage(),
         onTap: () {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const TransactionStatus(),
+              builder: (context) =>
+                  TransactionStatus(transactions: transactions),
             ),
           );
         },
@@ -258,7 +260,6 @@ class TransactionCard extends StatelessWidget {
     );
   }
 
-  // Function to handle Base64 image conversion
   Widget _buildImage() {
     if (companyImgBase64 == null || companyImgBase64!.isEmpty) {
       return const Icon(Icons.business, size: 40, color: Colors.grey);

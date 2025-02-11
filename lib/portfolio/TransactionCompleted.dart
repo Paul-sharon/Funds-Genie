@@ -28,8 +28,7 @@ class _TransactionCompletedState extends State<TransactionCompleted> {
       if (mounted) {
         setState(() {
           transactions = fetchedTransactions
-              .where((tx) =>
-          tx['transactionStatus']?.toString().toLowerCase() == 'completed') // 🔥 Only "Completed"
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'completed') // Only "Completed"
               .toList();
           isLoading = false;
         });
@@ -38,7 +37,6 @@ class _TransactionCompletedState extends State<TransactionCompleted> {
       print("Error fetching transactions: $e");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +60,7 @@ class CompletedTransactionsTab extends StatelessWidget {
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.blueGrey,  // Set text color to black
+            color: Colors.blueGrey,
           ),
         ),
       );
@@ -91,6 +89,7 @@ class CompletedTransactionsTab extends StatelessWidget {
           units: transaction['units']?.toString() ?? '0.000 Unit',
           tag: transaction['tag']?.toString(),
           companyImgBase64: transaction['companyImg']?.toString(),
+          transactions: transactions,
         )),
       ],
     );
@@ -121,6 +120,7 @@ class TransactionCard extends StatelessWidget {
   final String units;
   final String? tag;
   final String? companyImgBase64;
+  final List<Map<String, dynamic>> transactions;
 
   const TransactionCard({
     Key? key,
@@ -129,6 +129,7 @@ class TransactionCard extends StatelessWidget {
     required this.units,
     this.tag,
     this.companyImgBase64,
+    required this.transactions,
   }) : super(key: key);
 
   @override
@@ -141,7 +142,7 @@ class TransactionCard extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const TransactionStatus(),
+              builder: (context) => TransactionStatus(transactions: transactions),
             ),
           );
         },
