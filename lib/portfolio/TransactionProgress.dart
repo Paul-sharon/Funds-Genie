@@ -36,11 +36,12 @@ class _TransactionProgressState extends State<TransactionProgress> {
       print("Error fetching transactions: $e");
     }
   }
+
   String formatDate(String dateString) {
     try {
       print("Received date: $dateString"); // Debugging log
       DateTime parsedDate = DateTime.parse(dateString);
-      String formattedDate = DateFormat('MMM dd, yyyy').format(parsedDate);
+      String formattedDate = DateFormat('dd MMM yyyy').format(parsedDate);
       print("Formatted date: $formattedDate"); // Debugging log
       return formattedDate;
     } catch (e) {
@@ -112,13 +113,18 @@ class ProgressTransactionsTab extends StatelessWidget {
       );
     }
 
+    // Extract the formatted month-year from the first transaction date
+    String monthYear = transactions.isNotEmpty
+        ? formatMonthYear(transactions.last['investDate']?.toString() ?? '')
+        : 'No Transactions';
+
     return ListView(
       children: [
-        const Padding(
-          padding: EdgeInsets.all(16.0),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Text(
-            'NOVEMBER 2024',
-            style: TextStyle(
+            monthYear,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 16,
               color: Colors.black,
@@ -126,7 +132,7 @@ class ProgressTransactionsTab extends StatelessWidget {
           ),
         ),
         ...transactions.map((transaction) => TransactionCard(
-          date: transaction['investDate']?.toString() ?? 'Unknown Date',
+          date: formatDate(transaction['investDate']?.toString() ?? 'Unknown Date'),
           fundName: transaction['companyName']?.toString() ?? 'Unknown Fund',
           units: transaction['units']?.toString() ?? '0.000 Unit',
           tag: transaction['tag']?.toString(),
@@ -134,6 +140,26 @@ class ProgressTransactionsTab extends StatelessWidget {
         )),
       ],
     );
+  }
+
+  // Function to format "dd MMM yyyy" (e.g., 11 Feb 2025)
+  String formatDate(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return 'Invalid Date';
+    }
+  }
+
+  // Function to format "MONTH YEAR" (e.g., FEBRUARY @2025)
+  String formatMonthYear(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('MMMM yyyy').format(parsedDate).toUpperCase();
+    } catch (e) {
+      return 'Invalid Date';
+    }
   }
 }
 
@@ -203,7 +229,7 @@ class TransactionCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  units,
+                  '${double.tryParse(units)?.toStringAsFixed(3) ?? '0.000'} Unit',
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
