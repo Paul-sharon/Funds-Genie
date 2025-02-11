@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mutualfund_gtl/invest/invest.dart';
 import 'package:mutualfund_gtl/portfolio/TransactionFailed.dart';
 import 'package:mutualfund_gtl/portfolio/TransactionProgress.dart';
-import '../screens/dashboard.dart';
 import 'TransactionCompleted.dart';
-import '../More/Morepage.dart';
+
 
 class Portfolio extends StatefulWidget {
   @override

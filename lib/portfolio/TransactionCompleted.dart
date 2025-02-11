@@ -56,7 +56,7 @@ class TransactionCompleted extends StatelessWidget {
           child: const TabBarView(
             children: [
               CompletedTransactionsTab(),
-              ProgressTransactionsTab(),
+              //ProgressTransactionsTab(),
               FailedTransactionsTab(),
             ],
           ),

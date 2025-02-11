@@ -440,7 +440,29 @@ class FundDetailsPage extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              // Add your action here
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(
+                    "Investment initiated. May take up to 24 hours to process.",
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                  backgroundColor: Colors.blueGrey,
+                  duration: Duration(seconds: 3),
+                ),
+              );
+
+              Future.delayed(Duration(seconds: 4), () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      "Track progress in the 'In-progress' section of your portfolio.",
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                    backgroundColor: Colors.green,
+                    duration: Duration(seconds: 3),
+                  ),
+                );
+              });
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.transparent,

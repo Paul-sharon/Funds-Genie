@@ -164,4 +164,30 @@ class ApiService {
       return [];
     }
   }
+  static Future<List<Map<String, dynamic>>> getTransactions() async {
+    try {
+      final response = await _dio.get(
+        '$baseUrl/transactions', // Replace with the actual API endpoint
+        options: Options(
+          headers: {'Content-Type': 'application/json'},
+        ),
+      );
+
+      if (response.statusCode == 200 && response.data != null) {
+        print("Transactions fetched successfully.");
+
+        // Ensure all values inside the list are non-null
+        return List<Map<String, dynamic>>.from(
+          (response.data as List).map((item) => item ?? {}).toList(),
+        );
+      } else {
+        print("Failed to fetch transactions: ${response.data}");
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching transactions: $e");
+      return [];
+    }
+  }
+
 }
