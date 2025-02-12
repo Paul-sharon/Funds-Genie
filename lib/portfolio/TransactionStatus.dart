@@ -100,20 +100,24 @@ class FundCard extends StatelessWidget {
                 Expanded(
                   child: Text(
                     transaction['companyName'] ?? 'Unknown Fund',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 2, // Allow up to 2 lines
+                    overflow: TextOverflow.ellipsis, // Add "..." if text is too long
+                    softWrap: true, // Enable text wrapping
                   ),
                 ),
                 const SizedBox(width: 10),
-                Text(
-                  '₹${transaction['nav']?.toString() ?? '0.00'}',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
+                // Text(
+                //   '₹${transaction['nav']?.toString() ?? '0.00'}',
+                //   style: const TextStyle(
+                //     fontSize: 16,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.white,
+                //   ),
+                // ),
               ],
             ),
             const SizedBox(height: 16),
@@ -136,7 +140,7 @@ class FundCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _infoColumn('Units', '${double.tryParse(transaction['units']?.toString() ?? '0')?.toStringAsFixed(3) ?? '0.000'}'),
-                _infoColumn('NAV', transaction['nav']?.toString() ?? '0.00'),
+                _infoColumn('NAV', transaction['navRate']?.toString() ?? '0.00'),
                 _infoColumn('NAV Date', transaction['investDate'] ?? 'N/A'),
               ],
             ),
