@@ -65,7 +65,7 @@ class TransactionStatus extends StatelessWidget {
   }
 }
 
-// -------------------- FundCard Component --------------------
+
 class FundCard extends StatelessWidget {
   final Map<String, dynamic> transaction;
 
@@ -178,7 +178,6 @@ class FundCard extends StatelessWidget {
   }
 }
 
-// -------------------- TransactionStatusScreen Component --------------------
 class TransactionStatusScreen extends StatelessWidget {
   final Map<String, dynamic> transaction;
 
