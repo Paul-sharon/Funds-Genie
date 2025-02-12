@@ -142,7 +142,7 @@ class _PortfolioState extends State<Portfolio> {
         if (value == "Completed") {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TransactionCompleted()),
+            MaterialPageRoute(builder: (context) => TransactionProgress()),
           );
         }
         else if(value=="In Progress")
@@ -155,7 +155,7 @@ class _PortfolioState extends State<Portfolio> {
         else{
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => TransactionFailed()),
+            MaterialPageRoute(builder: (context) => TransactionProgress()),
           );
         }
 

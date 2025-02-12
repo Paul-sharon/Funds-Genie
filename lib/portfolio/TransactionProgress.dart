@@ -14,7 +14,9 @@ class TransactionProgress extends StatefulWidget {
 }
 
 class _TransactionProgressState extends State<TransactionProgress> {
-  List<Map<String, dynamic>> transactions = [];
+  List<Map<String, dynamic>> completedTransactions = [];
+  List<Map<String, dynamic>> inProgressTransactions = [];
+  List<Map<String, dynamic>> failedTransactions = [];
   bool isLoading = true;
 
   @override
@@ -29,10 +31,14 @@ class _TransactionProgressState extends State<TransactionProgress> {
 
       if (mounted) {
         setState(() {
-          transactions = fetchedTransactions
-              .where((tx) =>
-          tx['transactionStatus']?.toString().toLowerCase() ==
-              'in progress')
+          completedTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'completed')
+              .toList();
+          inProgressTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'in progress')
+              .toList();
+          failedTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'failed')
               .toList();
           isLoading = false;
         });
@@ -46,7 +52,7 @@ class _TransactionProgressState extends State<TransactionProgress> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      initialIndex: 1, // Set default tab to "In Progress"
+      initialIndex: 1, // Default to "In Progress"
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -59,12 +65,12 @@ class _TransactionProgressState extends State<TransactionProgress> {
             ),
           ),
           bottom: const TabBar(
-            labelColor: Colors.white, // Active tab text color
-            unselectedLabelColor: Colors.white70, // Inactive tab text color
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white70,
             indicator: UnderlineTabIndicator(
               borderSide: BorderSide(
-                color: Colors.teal, // Indicator color
-                width: 5.0, // Thickness of the indicator
+                color: Colors.teal,
+                width: 5.0,
               ),
               insets: EdgeInsets.fromLTRB(75.0, 0.0, 80.0, 0.0),
             ),
@@ -76,12 +82,12 @@ class _TransactionProgressState extends State<TransactionProgress> {
           ),
         ),
         body: isLoading
-            ? const Center(child: CircularProgressIndicator()) // Loading spinner
+            ? const Center(child: CircularProgressIndicator())
             : TabBarView(
           children: [
-            const TransactionCompleted(),
-            ProgressTransactionsTab(transactions: transactions),
-            const TransactionFailed(),
+            TransactionsTab(transactions: completedTransactions),
+            TransactionsTab(transactions: inProgressTransactions),
+            TransactionsTab(transactions: failedTransactions),
           ],
         ),
       ),
@@ -89,11 +95,10 @@ class _TransactionProgressState extends State<TransactionProgress> {
   }
 }
 
-class ProgressTransactionsTab extends StatelessWidget {
+class TransactionsTab extends StatelessWidget {
   final List<Map<String, dynamic>> transactions;
 
-  const ProgressTransactionsTab({Key? key, required this.transactions})
-      : super(key: key);
+  const TransactionsTab({Key? key, required this.transactions}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -110,33 +115,47 @@ class ProgressTransactionsTab extends StatelessWidget {
       );
     }
 
-    // Extract the formatted month-year from the first transaction date
-    String monthYear = transactions.isNotEmpty
-        ? formatMonthYear(transactions.last['investDate']?.toString() ?? '')
-        : 'No Transactions';
+    final Map<String, List<Map<String, dynamic>>> groupedTransactions = {};
+    for (var transaction in transactions) {
+      String monthYear = formatMonthYear(transaction['investDate']?.toString() ?? '');
+      groupedTransactions.putIfAbsent(monthYear, () => []);
+      groupedTransactions[monthYear]!.add(transaction);
+    }
 
-    return ListView(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            monthYear,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-              color: Colors.black,
+    return ListView.builder(
+      itemCount: groupedTransactions.length,
+      itemBuilder: (context, index) {
+        String monthYear = groupedTransactions.keys.elementAt(index);
+        List<Map<String, dynamic>> monthTransactions = groupedTransactions[monthYear]!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              child: Text(
+                monthYear,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
             ),
-          ),
-        ),
-        ...transactions.map((transaction) => TransactionCard(
-          date: formatDate(transaction['investDate']?.toString() ?? 'Unknown Date'),
-          fundName: transaction['companyName']?.toString() ?? 'Unknown Fund',
-          units: transaction['units']?.toString() ?? '0.000 Unit',
-          tag: transaction['tag']?.toString(),
-          companyImgBase64: transaction['companyImg']?.toString(), // Base64 Image Handling
-          transactions: transactions, // Pass the transactions list
-        )),
-      ],
+            ...monthTransactions.asMap().entries.map((entry) {
+              return TransactionCard(
+                date: formatDate(entry.value['investDate']?.toString() ?? 'Unknown Date'),
+                fundName: entry.value['companyName']?.toString() ?? 'Unknown Fund',
+                units: entry.value['units']?.toString() ?? '0.000 Unit',
+                tag: entry.value['tag']?.toString(),
+                companyImgBase64: entry.value['companyImg']?.toString(),
+                transactions: transactions,
+                selectedIndex: entry.key,
+              );
+            }).toList(),
+          ],
+        );
+      },
     );
   }
 
@@ -166,6 +185,7 @@ class TransactionCard extends StatelessWidget {
   final String? tag;
   final String? companyImgBase64;
   final List<Map<String, dynamic>> transactions;
+  final int selectedIndex;
 
   const TransactionCard({
     Key? key,
@@ -175,6 +195,7 @@ class TransactionCard extends StatelessWidget {
     this.tag,
     this.companyImgBase64,
     required this.transactions,
+    required this.selectedIndex,
   }) : super(key: key);
 
   @override
@@ -188,7 +209,7 @@ class TransactionCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  TransactionStatus(transactions: transactions),
+                  TransactionStatus(transactions: transactions, selectedIndex: selectedIndex),
             ),
           );
         },
@@ -265,18 +286,8 @@ class TransactionCard extends StatelessWidget {
       return const Icon(Icons.business, size: 40, color: Colors.grey);
     }
     try {
-      final bytes = base64Decode(companyImgBase64!);
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Image.memory(
-          bytes,
-          width: 50,
-          height: 50,
-          fit: BoxFit.cover,
-        ),
-      );
+      return Image.memory(base64Decode(companyImgBase64!), width: 50, height: 50, fit: BoxFit.cover);
     } catch (e) {
-      print("Error decoding Base64 image: $e");
       return const Icon(Icons.error, size: 40, color: Colors.red);
     }
   }
