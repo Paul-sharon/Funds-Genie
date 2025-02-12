@@ -165,6 +165,12 @@ class ApiService {
     }
   }
   static Future<List<Map<String, dynamic>>> getTransactions() async {
+
+    if (_token == null) {
+      print("No token available. Please log in first.");
+      return []; // Token is null, return early
+    }
+
     try {
       final response = await _dio.get(
         '$baseUrl/transactions', // Replace with the actual API endpoint
