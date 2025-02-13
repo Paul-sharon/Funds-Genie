@@ -3,6 +3,8 @@ import 'package:mutualfund_gtl/portfolio/TransactionProgress.dart';
 import 'package:mutualfund_gtl/services/api_service.dart'; // Import API service
 import 'package:intl/intl.dart';
 
+import 'TransactionStatus.dart';
+
 class Portfolio extends StatefulWidget {
   @override
   _PortfolioState createState() => _PortfolioState();
@@ -61,7 +63,7 @@ class _PortfolioState extends State<Portfolio> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,7 +72,7 @@ class _PortfolioState extends State<Portfolio> {
                     Text(
                       "Transaction Summary  ",
                       style: TextStyle(
-                        fontSize: 18.0,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
@@ -97,17 +99,17 @@ class _PortfolioState extends State<Portfolio> {
                         Flexible(
                           flex: 1,
                           child: _buildSummaryCard(completedTransactions.length.toString(),
-                              "Completed", Colors.green.shade100, TransactionProgress()),
+                              "Completed", Colors.green.shade100, Colors.green.shade700 ,TransactionProgress()),
                         ),
                         Flexible(
                           flex: 1,
                           child: _buildSummaryCard(inProgressTransactions.length.toString(),
-                              "In Progress", Colors.orange.shade100, TransactionProgress()),
+                              "In Progress", Colors.orange.shade100,  Colors.orange ,TransactionProgress()),
                         ),
                         Flexible(
                           flex: 1,
                           child: _buildSummaryCard(failedTransactions.length.toString(),
-                              "Failed", Colors.red.shade100, TransactionProgress()),
+                              "Failed", Colors.red.shade100, Colors.redAccent , TransactionProgress()),
                         ),
                       ],
                     ),
@@ -123,21 +125,24 @@ class _PortfolioState extends State<Portfolio> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: inProgressTransactions.length >= 3
-                      ? 3  // ✅ Show only last 3 transactions
+                      ? 3
                       : inProgressTransactions.length,
                   itemBuilder: (context, index) {
-                    final reversedTransactions = inProgressTransactions.reversed.toList(); // ✅ Reverse the list
-                    final transaction = reversedTransactions[index]; // ✅ Get the latest 3 transactions
+                    final reversedTransactions = inProgressTransactions.reversed.toList();
+                    final transaction = reversedTransactions[index];
 
                     return _buildTransactionItem(
                       date: formatDate(transaction['investDate']?.toString() ?? 'Unknown Date'),
                       status: (transaction['transactionStatus']?.toString() ?? 'N/A').toUpperCase(),
                       type: transaction['type'] ?? 'LUMPSUM',
                       fundName: transaction['companyName'] ?? 'N/A',
-                      amount: "₹${transaction['amount'] ?? '0'}",
+                      amount: "₹${NumberFormat('#,##0', 'en_IN').format((transaction['amount'] ?? 0).toInt())}",
+                      selectedIndex: index,
+                      transactions: reversedTransactions, // Pass transactions list
                     );
                   },
                 ),
+
 
                 Center(
                   child: TextButton(
@@ -172,14 +177,14 @@ class _PortfolioState extends State<Portfolio> {
       return 'Invalid Date';
     }
   }
-  Widget _buildSummaryCard(String value, String title, Color backgroundColor, Widget page) {
+  Widget _buildSummaryCard(String value, String title, Color backgroundColor,Color textColor, Widget page) {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
       child: SizedBox(
-        width: 125, // Set fixed width
-        height:85, // Set fixed height
+        width: 122, // Set fixed width
+        height:88, // Set fixed height
         child: Container(
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
@@ -200,9 +205,9 @@ class _PortfolioState extends State<Portfolio> {
               Text(
                 value,
                 textAlign: TextAlign.center, // Center text horizontally
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  color: Colors.black54,
+                style: TextStyle(
+                  fontSize: 21.0,
+                  color: textColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
@@ -220,81 +225,99 @@ class _PortfolioState extends State<Portfolio> {
     required String type,
     required String fundName,
     required String amount,
+    required int selectedIndex,
+    required List<Map<String, dynamic>> transactions, // Pass transactions list
   }) {
-    return Container(
-      width: 125, // Set fixed width
-      height:163,
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200,
-            blurRadius: 4.0,
-            offset: const Offset(0, 2),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionStatus(
+              transactions: transactions,
+              selectedIndex: selectedIndex,
+            ),
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 8.0),
-          Row(
-            children: [
-              Text(
-                date,
-                style: const TextStyle(
-                  fontSize: 14.0,
-                  color: Colors.black54,
+        );
+      },
+      child: Container(
+        width: 125, // Set fixed width
+        height: 163,
+        margin: const EdgeInsets.symmetric(vertical: 8.0),
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 4.0,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 8.0),
+            Row(
+              children: [
+                Text(
+                  date,
+                  style: const TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.black54,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 25.0),
-              _buildStatusBadge(status, Colors.red.shade100,Colors.red),
-              const SizedBox(width: 20.0),
-              _buildStatusBadge(type, Colors.blue.shade100, Colors.blue.shade900),
-              const Spacer(),
-              const Icon(
-                Icons.arrow_forward_ios_sharp,
-                color: Colors.black54,
-                size: 20.0,
-              ),
-            ],
-          ),
-          const SizedBox(height: 8.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded( // ✅ Allow fundName to take flexible space
-                child: Text(
-                  fundName,
+                const SizedBox(width: 10.0),
+                const Icon(Icons.circle, size: 8, color: Colors.grey),
+                const SizedBox(width: 10.0),
+                _buildStatusBadge(status, Colors.red.shade100, Colors.red),
+                const SizedBox(width: 20.0),
+                _buildStatusBadge(type, Colors.blue.shade100, Colors.blue.shade900),
+                const Spacer(),
+                const Icon(
+                  Icons.arrow_forward_ios_sharp,
+                  color: Colors.black54,
+                  size: 20.0,
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    fundName,
+                    style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    softWrap: true,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  amount,
                   style: const TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis, // ✅ Show "..." if text is too long
-                  softWrap: true, // ✅ Ensure text wraps properly
                 ),
-              ),
-              const SizedBox(width: 10), // ✅ Add space between fundName and amount
-              Text(
-                amount,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30.0),
-        ],
+              ],
+            ),
+            const SizedBox(height: 30.0),
+          ],
+        ),
       ),
     );
   }
+
 
   Widget _buildStatusBadge(String text, Color backgroundColor, Color textColor) {
     return Container(
