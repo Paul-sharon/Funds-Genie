@@ -13,6 +13,7 @@ class _DashboardState extends State<Dashboard> {
   int _selectedCategoryIndex = 1;
   Color _borderColor = Colors.blueGrey;
   double _borderWidth = 1.5;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -21,12 +22,21 @@ class _DashboardState extends State<Dashboard> {
   }
 
   void _startBorderAnimation() {
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        _borderColor = _borderColor == Colors.blueGrey ? Colors.cyanAccent : Colors.blueGrey;
-        _borderWidth = _borderWidth == 1.5 ? 3.0 : 1.5;
-      });
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (mounted) {
+        setState(() {
+          _borderColor = _borderColor == Colors.blueGrey ? Colors.cyanAccent : Colors.blueGrey;
+          _borderWidth = _borderWidth == 1.5 ? 3.0 : 1.5;
+        });
+      } else {
+        timer.cancel(); // Stop the timer if the widget is disposed
+      }
     });
+  }
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel the timer when the widget is removed
+    super.dispose();
   }
 
   final Map<int, List<Map<String, dynamic>>> _categoryGrids = {

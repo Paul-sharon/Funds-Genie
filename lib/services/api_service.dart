@@ -112,6 +112,7 @@ class ApiService {
       return null;
     }
   }
+
   static Future<String> logoutUser() async {
     try {
       final response = await _dio.post(
@@ -165,15 +166,25 @@ class ApiService {
     }
   }
   static Future<List<Map<String, dynamic>>> getTransactions() async {
-
-    if (_token == null) {
-      print("No token available. Please log in first.");
-      return []; // Token is null, return early
-    }
-
     try {
+      User? currentUser = await fetchCurrentUser();
+
+      if (currentUser == null) {
+        print("User not logged in.");
+        return [];
+      }
+
+      // ✅ Check if id is null
+      if (currentUser.id == null) {
+        print("User ID is missing!");
+        return [];
+      }
+
+      String userId = currentUser.id!.toString();
+      print("Current User ID: $userId");
+
       final response = await _dio.get(
-        '$baseUrl/transactions', // Replace with the actual API endpoint
+        '$baseUrl/transactions',
         options: Options(
           headers: {'Content-Type': 'application/json'},
         ),
@@ -181,11 +192,7 @@ class ApiService {
 
       if (response.statusCode == 200 && response.data != null) {
         print("Transactions fetched successfully.");
-
-        // Ensure all values inside the list are non-null
-        return List<Map<String, dynamic>>.from(
-          (response.data as List).map((item) => item ?? {}).toList(),
-        );
+        return List<Map<String, dynamic>>.from(response.data as List);
       } else {
         print("Failed to fetch transactions: ${response.data}");
         return [];
@@ -195,5 +202,7 @@ class ApiService {
       return [];
     }
   }
+
+
 
 }
