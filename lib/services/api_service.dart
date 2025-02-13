@@ -180,13 +180,21 @@ class ApiService {
         return [];
       }
 
-      String userId = currentUser.id!.toString();
+      int userId = currentUser.id!;
       print("Current User ID: $userId");
 
+      if (_token == null) {
+        print("No token found, user needs to log in again.");
+        return [];
+      }
+
       final response = await _dio.get(
-        '$baseUrl/transactions',
+        '$baseUrl/transactions/user/$userId',
         options: Options(
-          headers: {'Content-Type': 'application/json'},
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $_token',
+          },
         ),
       );
 
