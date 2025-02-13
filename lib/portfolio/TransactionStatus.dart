@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionStatus extends StatelessWidget {
   final List<Map<String, dynamic>> transactions;
@@ -13,7 +14,6 @@ class TransactionStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Ensure selectedIndex is within range
     if (selectedIndex < 0 || selectedIndex >= transactions.length) {
       return Scaffold(
         appBar: AppBar(
@@ -46,10 +46,10 @@ class TransactionStatus extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
-      backgroundColor: Colors.black, // Dark background
+      backgroundColor: Colors.black,
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 3,vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -105,13 +105,9 @@ class TransactionStatus extends StatelessWidget {
                       children: [
                         Text(
                           'Order No: ${transaction['orderNo'] ?? 'N/A'}',
-                          style: const TextStyle(
-                            fontSize: 16,
-
-                            color: Colors.black,
-                          ),
+                          style: const TextStyle(fontSize: 16, color: Colors.black),
                         ),
-                        SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         const Icon(Icons.circle, size: 10, color: Colors.green),
                       ],
                     ),
@@ -121,7 +117,7 @@ class TransactionStatus extends StatelessWidget {
                       children: [
                         _infoColumn('Units', '${double.tryParse(transaction['units']?.toString() ?? '0')?.toStringAsFixed(3) ?? '0.000'}'),
                         _infoColumn('NAV', transaction['navRate']?.toString() ?? '0.00'),
-                        _infoColumn('NAV Date', transaction['investDate'] ?? 'N/A'),
+                        _infoColumn('NAV Date', formatDate(transaction['navDate'] ?? 'N/A')),
                       ],
                     ),
                     const SizedBox(height: 16),
@@ -144,15 +140,16 @@ class TransactionStatus extends StatelessWidget {
                   ],
                 ),
               ),
-
-              const SizedBox(height: 10.0),
-
-              // ✅ Transaction Status Section Wrapped in Container
+              const SizedBox(height: 15.0),
               Container(
+                width: double.infinity, // Take full width
+                constraints: const BoxConstraints(
+                  minHeight: 300, // Ensures a large enough container
+                ),
                 padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: const Color(0xFF2A2E34),
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,43 +158,71 @@ class TransactionStatus extends StatelessWidget {
                       'Transaction Status',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 18.0,
+                        fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 16.0),
-                    _buildStatusTile(
-                      icon: Icons.check_circle,
-                      iconColor: Colors.green,
-                      title: 'Order placed with BSE',
-                      date: transaction['investDate'] ?? 'N/A',
-                    ),
-                    _buildStatusTile(
-                      icon: Icons.access_time,
-                      iconColor: Colors.yellow,
-                      title: 'Payment Received',
-                    ),
-                    _buildStatusTile(
-                      icon: Icons.check_circle,
-                      iconColor: Colors.green,
-                      title: 'Order accepted by RTA',
-                      date: transaction['investDate'] ?? 'N/A',
-                    ),
-                    _buildStatusTile(
-                      icon: Icons.check_circle,
-                      iconColor: Colors.green,
-                      title: 'Portfolio updation',
-                      date: transaction['investDate'] ?? 'N/A',
-                      showLine: false,
-                    ),
+                    const SizedBox(height: 20.0),
+
+                    if (transaction['transactionStatus']?.toString().toLowerCase() == 'in progress') ...[
+                      _buildStatusTile(
+                        icon: Icons.check_circle,
+                        iconColor: Colors.green,
+                        title: 'Order placed with BSE',
+                        date: formatDate(transaction['investDate'] ?? 'N/A'),
+                      ),
+                    ]
+                    else if (transaction['transactionStatus']?.toString().toLowerCase() == 'completed') ...[
+                      _buildStatusTile(
+                        icon: Icons.check_circle,
+                        iconColor: Colors.green,
+                        title: 'Order placed with BSE',
+                        date: formatDate(transaction['investDate'] ?? 'N/A'),
+                      ),
+                      _buildStatusTile(
+                        icon: Icons.access_time,
+                        iconColor: Colors.yellow,
+                        title: 'Payment Received',
+                      ),
+                      _buildStatusTile(
+                        icon: Icons.check_circle,
+                        iconColor: Colors.green,
+                        title: 'Order accepted by RTA',
+                        date: formatDate(transaction['investDate'] ?? 'N/A'),
+                      ),
+                      _buildStatusTile(
+                        icon: Icons.check_circle,
+                        iconColor: Colors.green,
+                        title: 'Portfolio updation',
+                        date: formatDate(transaction['investDate'] ?? 'N/A'),
+                        showLine: false,
+                      ),
+                    ]
+                    else if (transaction['transactionStatus']?.toString().toLowerCase() == 'failed') ...[
+                        const Center(
+                          child: Text(
+                            'Transaction Failed',
+                            style: TextStyle(color: Colors.red, fontSize: 16.0),
+                          ),
+                        ),
+                      ],
                   ],
                 ),
-              ),
+              )
             ],
           ),
         ),
       ),
     );
+  }
+
+  static String formatDate(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return 'Invalid Date';
+    }
   }
 
   static Widget _infoColumn(String label, String value) {
@@ -217,7 +242,6 @@ class TransactionStatus extends StatelessWidget {
           value,
           style: const TextStyle(
             fontSize: 16,
-
             color: Colors.black,
           ),
         ),
@@ -232,30 +256,34 @@ class TransactionStatus extends StatelessWidget {
     String? date,
     bool showLine = true,
   }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        children: [
-          Column(
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Column(
+          children: [
+            Icon(icon, color: iconColor, size: 32), // ✅ Tick or 🕒 Clock icon
+            if (showLine)
+              Container(height: 40.0, width: 2.0, color: iconColor), // Vertical line
+          ],
+        ),
+        const SizedBox(width: 12.0),
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(icon, color: iconColor),
-              if (showLine)
-                Container(height: 25.0, width: 2.0, color: iconColor),
+              Text(
+                title,
+                style: const TextStyle(color: Colors.white, fontSize: 18.0),
+              ),
+              if (date != null)
+                Text(
+                  date,
+                  style: const TextStyle(color: Colors.white, fontSize: 18.0),
+                ),
             ],
           ),
-          const SizedBox(width: 16.0),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(title, style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                if (date != null)
-                  Text(date, style: const TextStyle(color: Colors.grey)),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
