@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mutualfund_gtl/portfolio/TransactionFailed.dart';
 import 'package:mutualfund_gtl/portfolio/TransactionProgress.dart';
-import 'TransactionCompleted.dart';
-
+import 'package:mutualfund_gtl/services/api_service.dart'; // Import API service
+import 'package:intl/intl.dart';
 
 class Portfolio extends StatefulWidget {
   @override
@@ -10,9 +9,40 @@ class Portfolio extends StatefulWidget {
 }
 
 class _PortfolioState extends State<Portfolio> {
-  int completedCount = 11;
-  int inProgressCount = 0;  // Initially 0, update dynamically
-  int failedCount = 525;
+  List<Map<String, dynamic>> completedTransactions = [];
+  List<Map<String, dynamic>> inProgressTransactions = [];
+  List<Map<String, dynamic>> failedTransactions = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTransactions(); // Call API on widget initialization
+  }
+
+  Future<void> fetchTransactions() async {
+    try {
+      final fetchedTransactions = await ApiService.getTransactions();
+
+      if (mounted) {
+        setState(() {
+          completedTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'completed')
+              .toList();
+          inProgressTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'in progress')
+              .toList();
+          failedTransactions = fetchedTransactions
+              .where((tx) => tx['transactionStatus']?.toString().toLowerCase() == 'failed')
+              .toList();
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      print("Error fetching transactions: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -55,7 +85,9 @@ class _PortfolioState extends State<Portfolio> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Column(
+                isLoading
+                    ? Center(child: CircularProgressIndicator()) // Show loader while fetching data
+                    : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 30.0),
@@ -64,15 +96,18 @@ class _PortfolioState extends State<Portfolio> {
                       children: [
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard("11", "Completed", Colors.green.shade100),
+                          child: _buildSummaryCard(completedTransactions.length.toString(),
+                              "Completed", Colors.green.shade100, TransactionProgress()),
                         ),
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard("12", "In Progress", Colors.orange.shade100),
+                          child: _buildSummaryCard(inProgressTransactions.length.toString(),
+                              "In Progress", Colors.orange.shade100, TransactionProgress()),
                         ),
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard("525", "   Failed   ", Colors.red.shade100),
+                          child: _buildSummaryCard(failedTransactions.length.toString(),
+                              "Failed", Colors.red.shade100, TransactionProgress()),
                         ),
                       ],
                     ),
@@ -82,34 +117,28 @@ class _PortfolioState extends State<Portfolio> {
                     ),
                   ],
                 ),
-                ListView(
+                isLoading
+                    ? SizedBox()
+                    : ListView.builder(
                   shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(), // Disable inner scrolling
-                  padding: EdgeInsets.zero,
-                  children: [
-                    _buildTransactionItem(
-                      date: "26 Nov 2024",
-                      status: "IN PROGRESS",
-                      type: "LUMPSUM",
-                      fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
-                      amount: "₹10,000",
-                    ),
-                    _buildTransactionItem(
-                      date: "26 Nov 2024",
-                      status: "IN PROGRESS",
-                      type: "LUMPSUM",
-                      fundName: "BARODA BNP PARIBAS LARGE\nCAP FUND - REGULAR\nGROWTH",
-                      amount: "₹5,000",
-                    ),
-                    _buildTransactionItem(
-                      date: "26 Nov 2024",
-                      status: "IN PROGRESS",
-                      type: "LUMPSUM",
-                      fundName: "Axis Mid Cap Fund - Regular\nGrowth",
-                      amount: "₹100",
-                    ),
-                  ],
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: inProgressTransactions.length >= 3
+                      ? 3  // ✅ Show only last 3 transactions
+                      : inProgressTransactions.length,
+                  itemBuilder: (context, index) {
+                    final reversedTransactions = inProgressTransactions.reversed.toList(); // ✅ Reverse the list
+                    final transaction = reversedTransactions[index]; // ✅ Get the latest 3 transactions
+
+                    return _buildTransactionItem(
+                      date: formatDate(transaction['investDate']?.toString() ?? 'Unknown Date'),
+                      status: (transaction['transactionStatus']?.toString() ?? 'N/A').toUpperCase(),
+                      type: transaction['type'] ?? 'LUMPSUM',
+                      fundName: transaction['companyName'] ?? 'N/A',
+                      amount: "₹${transaction['amount'] ?? '0'}",
+                    );
+                  },
                 ),
+
                 Center(
                   child: TextButton(
                     onPressed: () {
@@ -133,61 +162,57 @@ class _PortfolioState extends State<Portfolio> {
         ),
       ),
     );
+
   }
-
-
-  Widget _buildSummaryCard(String title, String value, Color backgroundColor) {
+  String formatDate(String dateString) {
+    try {
+      DateTime parsedDate = DateTime.parse(dateString);
+      return DateFormat('dd MMM yyyy').format(parsedDate);
+    } catch (e) {
+      return 'Invalid Date';
+    }
+  }
+  Widget _buildSummaryCard(String value, String title, Color backgroundColor, Widget page) {
     return GestureDetector(
       onTap: () {
-        if (value == "Completed") {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TransactionProgress()),
-          );
-        }
-        else if(value=="In Progress")
-        {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TransactionProgress()),
-          );
-        }
-        else{
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => TransactionProgress()),
-          );
-        }
-
+        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
       },
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        child: Column(
-          children: [
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.black87,
+      child: SizedBox(
+        width: 125, // Set fixed width
+        height:85, // Set fixed height
+        child: Container(
+          padding: const EdgeInsets.all(12.0),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // Center content vertically
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16.0,
+                  color: Colors.black87,
+                ),
               ),
-            ),
-            const SizedBox(height: 4.0),
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 14.0,
-                color: Colors.black54,
+              const SizedBox(height: 4.0),
+              Text(
+                value,
+                textAlign: TextAlign.center, // Center text horizontally
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
 
   Widget _buildTransactionItem({
     required String date,
@@ -197,6 +222,8 @@ class _PortfolioState extends State<Portfolio> {
     required String amount,
   }) {
     return Container(
+      width: 125, // Set fixed width
+      height:163,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
@@ -224,9 +251,9 @@ class _PortfolioState extends State<Portfolio> {
                 ),
               ),
               const SizedBox(width: 25.0),
-              _buildStatusBadge(status, Colors.red.shade100),
+              _buildStatusBadge(status, Colors.red.shade100,Colors.red),
               const SizedBox(width: 20.0),
-              _buildStatusBadge(type, Colors.blue.shade100),
+              _buildStatusBadge(type, Colors.blue.shade100, Colors.blue.shade900),
               const Spacer(),
               const Icon(
                 Icons.arrow_forward_ios_sharp,
@@ -239,14 +266,20 @@ class _PortfolioState extends State<Portfolio> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                fundName,
-                style: const TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
+              Expanded( // ✅ Allow fundName to take flexible space
+                child: Text(
+                  fundName,
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis, // ✅ Show "..." if text is too long
+                  softWrap: true, // ✅ Ensure text wraps properly
                 ),
               ),
+              const SizedBox(width: 10), // ✅ Add space between fundName and amount
               Text(
                 amount,
                 style: const TextStyle(
@@ -263,7 +296,7 @@ class _PortfolioState extends State<Portfolio> {
     );
   }
 
-  Widget _buildStatusBadge(String text, Color backgroundColor) {
+  Widget _buildStatusBadge(String text, Color backgroundColor, Color textColor) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
       decoration: BoxDecoration(
@@ -272,9 +305,9 @@ class _PortfolioState extends State<Portfolio> {
       ),
       child: Text(
         text,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 12.0,
-          color: Colors.black87,
+          color: textColor, // ✅ Use the correct text color
         ),
       ),
     );

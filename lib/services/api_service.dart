@@ -165,6 +165,7 @@ class ApiService {
       return [];
     }
   }
+
   static Future<List<Map<String, dynamic>>> getTransactions() async {
     try {
       User? currentUser = await fetchCurrentUser();
@@ -179,7 +180,6 @@ class ApiService {
         print("User ID is missing!");
         return [];
       }
-
       int userId = currentUser.id!;
       print("Current User ID: $userId");
 
