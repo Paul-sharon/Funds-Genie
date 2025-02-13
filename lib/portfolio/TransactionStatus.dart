@@ -216,11 +216,17 @@ class TransactionStatus extends StatelessWidget {
                       ),
                     ]
                     else if (transaction['transactionStatus']?.toString().toLowerCase() == 'failed') ...[
-                        const Center(
-                          child: Text(
-                            'Transaction Failed',
-                            style: TextStyle(color: Colors.red, fontSize: 16.0),
-                          ),
+                        _buildStatusTile(
+                          icon: Icons.check_circle,
+                          iconColor: Colors.green,
+                          title: 'Order placed with BSE',
+                          date: formatDate(transaction['investDate'] ?? 'N/A'),
+                        ),
+                        _buildStatusTile(
+                          icon: Icons.cancel,  // ❌ Circle with X
+                          iconColor: Colors.red,
+                          title: 'Payment Received Failed',
+                          showLine: false,
                         ),
                       ],
                   ],
