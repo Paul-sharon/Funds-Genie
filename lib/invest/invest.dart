@@ -325,8 +325,8 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                             ? Center(
                           child: Lottie.asset(
                             'assets/Loading3.json',  // Replace with your Lottie JSON file
-                            width: 150,
-                            height: 150,
+                            width: 140,
+                            height: 140,
                             fit: BoxFit.cover,
                           ),
                         )
