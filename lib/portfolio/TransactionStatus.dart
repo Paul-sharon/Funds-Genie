@@ -171,6 +171,23 @@ class TransactionStatus extends StatelessWidget {
                         title: 'Order placed with BSE',
                         date: formatDate(transaction['investDate'] ?? 'N/A'),
                       ),
+                      _buildStatusTile(
+                        icon: Icons.hourglass_top,
+                        iconColor: Colors.yellow,
+                        title: 'Payment Received (Processing...)',
+                        isInProgress: true, // ✅ Now works without error!
+                      ),
+                      _buildStatusTile(
+                        icon: Icons.circle_outlined,
+                        iconColor: Colors.grey,
+                        title: 'Order accepted by RTA',
+                      ),
+                      _buildStatusTile(
+                        icon: Icons.circle_outlined,
+                        iconColor: Colors.grey,
+                        title: 'Portfolio Updation',
+                        showLine: false,
+                      ),
                     ]
                     else if (transaction['transactionStatus']?.toString().toLowerCase() == 'completed') ...[
                       _buildStatusTile(
@@ -255,13 +272,23 @@ class TransactionStatus extends StatelessWidget {
     required String title,
     String? date,
     bool showLine = true,
+    bool isInProgress = false, // ✅ Add this parameter with default false
   }) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Column(
           children: [
-            Icon(icon, color: iconColor, size: 32), // ✅ Tick or 🕒 Clock icon
+            isInProgress
+                ? SizedBox(
+              height: 32,
+              width: 32,
+              child: CircularProgressIndicator(
+                color: iconColor, // Yellow for in-progress
+                strokeWidth: 3.0,
+              ),
+            )
+                : Icon(icon, color: iconColor, size: 32), // ✅ Tick or ⏳ Loader
             if (showLine)
               Container(height: 40.0, width: 2.0, color: iconColor), // Vertical line
           ],
@@ -286,4 +313,5 @@ class TransactionStatus extends StatelessWidget {
       ],
     );
   }
+
 }
