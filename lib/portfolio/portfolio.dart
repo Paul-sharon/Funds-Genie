@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mutualfund_gtl/portfolio/TransactionProgress.dart';
 import 'package:mutualfund_gtl/services/api_service.dart'; // Import API service
 import 'package:intl/intl.dart';
-
 import 'TransactionStatus.dart';
+import 'package:lottie/lottie.dart';
 
 class Portfolio extends StatefulWidget {
   @override
@@ -88,7 +88,18 @@ class _PortfolioState extends State<Portfolio> {
                 ),
                 const SizedBox(height: 10),
                 isLoading
-                    ? Center(child: CircularProgressIndicator()) // Show loader while fetching data
+                    ? Center(child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    SizedBox(height: 200),
+                    Lottie.asset("assets/Animation.json", width: 180,height: 180), // Download a Lottie JSON animation
+                    SizedBox(height: 250),
+                    Text(
+                      "Loading transactions...",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.blueGrey),
+                    ),
+                  ],
+                ),) // Show loader while fetching data
                     : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [

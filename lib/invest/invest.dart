@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'dart:async';
 import '../services/api_service.dart';
 import 'FundDetailsPage.dart';
-
+import 'package:lottie/lottie.dart';
 class Invest extends StatefulWidget {
   const Invest({super.key});
 
@@ -322,53 +322,54 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                       SizedBox(height: 16),
                       Flexible(
                         child: isLoading
-                            ? const Center(child: CircularProgressIndicator())
+                            ? Center(
+                          child: Lottie.asset(
+                            'assets/Loading3.json',  // Replace with your Lottie JSON file
+                            width: 150,
+                            height: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        )
                             : DefaultTabController(
-                                length: 5,
-                                child: Column(
+                          length: 5,
+                          child: Column(
+                            children: [
+                              const TabBar(
+                                isScrollable: true,
+                                indicatorColor: Colors.white,
+                                labelColor: Colors.white,
+                                unselectedLabelColor: Colors.white,
+                                tabAlignment: TabAlignment.start,
+                                indicatorWeight: 1,
+                                labelStyle: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                                unselectedLabelStyle: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.normal),
+                                tabs: [
+                                  Tab(text: 'Large Cap'),
+                                  Tab(text: ' Mid Cap '),
+                                  Tab(text: 'Small Cap'),
+                                  Tab(text: '   Debt  '),
+                                  Tab(text: '  Other  '),
+                                ],
+                              ),
+                              SizedBox(height: 15),
+                              Expanded(
+                                child: TabBarView(
                                   children: [
-                                    const TabBar(
-                                      isScrollable: true,
-                                      indicatorColor: Colors.white,
-                                      labelColor: Colors.white,
-                                      unselectedLabelColor: Colors.white,
-                                      tabAlignment: TabAlignment.start,
-                                      indicatorWeight: 1,
-                                      labelStyle: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
-                                      unselectedLabelStyle: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.normal),
-                                      tabs: [
-                                        Tab(text: 'Large Cap'),
-                                        Tab(text: ' Mid Cap '),
-                                        Tab(text: 'Small Cap'),
-                                        Tab(text: '   Debt  '),
-                                        Tab(text: '  Other  '),
-                                      ],
-                                    ),
-                                    SizedBox(height: 15),
-                                    Expanded(
-                                      child: TabBarView(
-                                        children: [
-                                          buildInvestmentList('l', investments,
-                                              context), // Large Cap
-                                          buildInvestmentList('m', investments,
-                                              context), // Mid Cap
-                                          buildInvestmentList('s', investments,
-                                              context), // Small Cap
-                                          buildInvestmentList('d', investments,
-                                              context), // Debt
-                                          buildInvestmentList('o', investments,
-                                              context), // Other
-                                        ],
-                                      ),
-                                    ),
+                                    buildInvestmentList('l', investments, context), // Large Cap
+                                    buildInvestmentList('m', investments, context), // Mid Cap
+                                    buildInvestmentList('s', investments, context), // Small Cap
+                                    buildInvestmentList('d', investments, context), // Debt
+                                    buildInvestmentList('o', investments, context), // Other
                                   ],
                                 ),
                               ),
-                      ),
+                            ],
+                          ),
+                        ),
+                      )
+
                     ],
                   ),
                 ),
