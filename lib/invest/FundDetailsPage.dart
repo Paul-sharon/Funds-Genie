@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:intl/intl.dart';
+import 'package:mutualfund_gtl/invest/OrderPlacement.dart';
 
 class FundDetailsPage extends StatelessWidget {
   final Map<String, dynamic> investment;
@@ -411,7 +412,7 @@ class FundDetailsPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text("Age", style: TextStyle(color: Colors.grey[400], fontSize: 17)),
-                        Text("14y 4m (since Aug 20, 2010)", style: TextStyle(color: Colors.white, fontSize: 17)),
+                        Text("15y 4m (since Aug 20, 2010)", style: TextStyle(color: Colors.white, fontSize: 17)),
                       ],
                     ),
                     Divider(color: Colors.grey[800]),
@@ -440,6 +441,12 @@ class FundDetailsPage extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OrderPlacement(investment: investment),
+                ),
+              );
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
