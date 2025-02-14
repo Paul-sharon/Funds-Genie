@@ -132,22 +132,30 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                child: TabBar(
-                  controller: _tabController,
-                  indicator: BoxDecoration(
-                    color: Colors.teal,
-                    borderRadius: BorderRadius.circular(25.0), // Adjust for smoother corners
+                child: Theme(
+                  data: ThemeData(
+                    tabBarTheme: TabBarTheme(
+                      dividerColor: Colors.transparent, // ✅ Removes the default underline
+                    ),
                   ),
-                  indicatorSize: TabBarIndicatorSize.tab, // Ensures full width of the tab
-                  labelPadding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust padding if needed
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.black,
-                  tabs: const [
-                    Tab(text: "SIP"),
-                    Tab(text: "One-time"),
-                  ],
+                  child: TabBar(
+                    controller: _tabController,
+                    indicator: BoxDecoration(
+                      color: Colors.teal,
+                      borderRadius: BorderRadius.circular(25.0), // Adjust for smoother corners
+                    ),
+                    indicatorSize: TabBarIndicatorSize.tab, // Ensures full width of the tab
+                    labelPadding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust padding if needed
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.black,
+                    tabs: const [
+                      Tab(text: "SIP"),
+                      Tab(text: "One-time"),
+                    ],
+                  ),
                 ),
               ),
+
               const SizedBox(height: 16), // Spacing between TabBar and content
 
               // TabBarView wrapped inside a fixed height container
