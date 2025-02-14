@@ -110,7 +110,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
         padding: const EdgeInsets.all(16.0),
         child: Container(
           width: 400,
-          height:350,// Set a fixed width for consistency
+          height: 300, // Set a fixed width for consistency
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: Colors.white, // White background for the entire block
@@ -126,7 +126,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           ),
           child: Column(
             children: [
-              // TabBar inside Container
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -155,12 +154,8 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                   ),
                 ),
               ),
-
-              const SizedBox(height: 16), // Spacing between TabBar and content
-
-              // TabBarView wrapped inside a fixed height container
-              SizedBox(
-                height: 250, // Adjust as needed
+              SizedBox(height:20),
+              Expanded(
                 child: TabBarView(
                   controller: _tabController,
                   children: [
@@ -173,6 +168,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           ),
         ),
       ),
+
 
 
 
@@ -243,7 +239,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     return Center(
       child: Container(
         width: 450, // Adjust to match the image
-        height: 180,
+        height: 200,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
           color: Color(0xFFDEF2F1), // Matches the card background in image
