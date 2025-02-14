@@ -8,7 +8,9 @@ import 'TransactionFailed.dart';
 import 'TransactionStatus.dart';
 
 class TransactionProgress extends StatefulWidget {
-  const TransactionProgress({Key? key}) : super(key: key);
+  final int initialTabIndex; // Added to control tab navigation
+
+  const TransactionProgress({Key? key, this.initialTabIndex = 1}) : super(key: key);
 
   @override
   _TransactionProgressState createState() => _TransactionProgressState();
@@ -46,6 +48,11 @@ class _TransactionProgressState extends State<TransactionProgress> {
       }
     } catch (e) {
       print("Error fetching transactions: $e");
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
 
@@ -53,7 +60,7 @@ class _TransactionProgressState extends State<TransactionProgress> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      initialIndex: 1, // Default to "In Progress"
+      initialIndex: widget.initialTabIndex, // Use dynamic tab selection
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -93,7 +100,7 @@ class _TransactionProgressState extends State<TransactionProgress> {
                 height: 300,
                 fit: BoxFit.cover,
               ),
-              const SizedBox(height: 40), // Correct placement
+              const SizedBox(height: 40),
             ],
           ),
         )
@@ -108,6 +115,7 @@ class _TransactionProgressState extends State<TransactionProgress> {
     );
   }
 }
+
 
 class TransactionsTab extends StatelessWidget {
   final List<Map<String, dynamic>> transactions;

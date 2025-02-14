@@ -109,21 +109,37 @@ class _PortfolioState extends State<Portfolio> {
                       children: [
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard(completedTransactions.length.toString(),
-                              "Completed", Colors.green.shade100, Colors.green.shade700 ,TransactionProgress()),
+                          child: _buildSummaryCard(
+                            completedTransactions.length.toString(),
+                            "Completed",
+                            Colors.green.shade100,
+                            Colors.green.shade700,
+                            0,  // Pass index 0 for Completed
+                          ),
                         ),
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard(inProgressTransactions.length.toString(),
-                              "In Progress", Colors.orange.shade100,  Colors.orange ,TransactionProgress()),
+                          child: _buildSummaryCard(
+                            inProgressTransactions.length.toString(),
+                            "In Progress",
+                            Colors.orange.shade100,
+                            Colors.orange,
+                            1,  // Pass index 1 for In Progress
+                          ),
                         ),
                         Flexible(
                           flex: 1,
-                          child: _buildSummaryCard(failedTransactions.length.toString(),
-                              "Failed", Colors.red.shade100, Colors.redAccent , TransactionProgress()),
+                          child: _buildSummaryCard(
+                            failedTransactions.length.toString(),
+                            "Failed",
+                            Colors.red.shade100,
+                            Colors.redAccent,
+                            2,  // Pass index 2 for Failed
+                          ),
                         ),
                       ],
                     ),
+
                     Container(
                       color: Colors.red, // Debug color
                       child: const SizedBox(height: 2.0),
@@ -188,14 +204,19 @@ class _PortfolioState extends State<Portfolio> {
       return 'Invalid Date';
     }
   }
-  Widget _buildSummaryCard(String value, String title, Color backgroundColor,Color textColor, Widget page) {
+  Widget _buildSummaryCard(String value, String title, Color backgroundColor, Color textColor, int tabIndex) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => page));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TransactionProgress(initialTabIndex: tabIndex), // Navigate to specific tab
+          ),
+        );
       },
       child: SizedBox(
-        width: 122, // Set fixed width
-        height:88, // Set fixed height
+        width: 122, // Fixed width
+        height: 88, // Fixed height
         child: Container(
           padding: const EdgeInsets.all(12.0),
           decoration: BoxDecoration(
@@ -210,6 +231,7 @@ class _PortfolioState extends State<Portfolio> {
                 style: const TextStyle(
                   fontSize: 16.0,
                   color: Colors.black87,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 4.0),
@@ -228,6 +250,7 @@ class _PortfolioState extends State<Portfolio> {
       ),
     );
   }
+
 
 
   Widget _buildTransactionItem({
