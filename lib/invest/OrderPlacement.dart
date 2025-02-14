@@ -114,7 +114,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
             color: Colors.white, // White background for the entire block
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(25.0),
             border: Border.all(color: Colors.grey.shade300), // Light border
             boxShadow: [
               BoxShadow(
@@ -130,7 +130,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
               Container(
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(10.0),
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
                 child: Theme(
                   data: ThemeData(
