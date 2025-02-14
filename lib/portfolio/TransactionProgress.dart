@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import '../services/api_service.dart';
 import 'TransactionCompleted.dart';
 import 'TransactionFailed.dart';
@@ -82,7 +83,20 @@ class _TransactionProgressState extends State<TransactionProgress> {
           ),
         ),
         body: isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Lottie.asset(
+                'assets/balls.json',  // Replace with your Lottie JSON file
+                width: 280,
+                height: 300,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 40), // Correct placement
+            ],
+          ),
+        )
             : TabBarView(
           children: [
             TransactionsTab(transactions: completedTransactions),

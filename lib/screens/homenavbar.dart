@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../components/custom_app_bar.dart';
-import 'ProfilePage.dart';
 import 'dashboard.dart';
 import '../invest/invest.dart';
 import '../portfolio/portfolio.dart';
@@ -8,14 +7,14 @@ import '../More/Morepage.dart';
 
 class Homenavbar extends StatefulWidget {
   final String username;
-  final String email;      // Add email field
-  final String phoneNumber; // Add phoneNumber field
+  final String email;
+  final String phoneNumber;
 
   const Homenavbar({
     Key? key,
     required this.username,
-    required this.email,      // Add email parameter to constructor
-    required this.phoneNumber, // Add phoneNumber parameter to constructor
+    required this.email,
+    required this.phoneNumber,
   }) : super(key: key);
 
   @override
@@ -25,31 +24,33 @@ class Homenavbar extends StatefulWidget {
 class _HomenavbarState extends State<Homenavbar> {
   int _currentIndex = 0;
 
-  final List<Widget> _pages = [
-    Dashboard(),
-    Portfolio(),
-    Invest(),
-    Morepage(),
-  ];
-
   String getInitials(String name) {
     List<String> words = name.trim().split(" ");
     if (words.isEmpty) return "?";
-
-    if (words.length == 1) {
-      return words[0][0].toUpperCase(); // Single word, take the first letter
-    } else {
-      return "${words[0][0]}${words[1][0]}".toUpperCase(); // Take first letter of first and second word
-    }
+    return words.length == 1
+        ? words[0][0].toUpperCase()
+        : "${words[0][0]}${words[1][0]}".toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Move _pages inside build to access widget properties
+    final List<Widget> _pages = [
+      Dashboard(
+        username: widget.username,
+        email: widget.email,
+        phoneNumber: widget.phoneNumber,
+      ),
+      Portfolio(),
+      Invest(),
+      Morepage(),
+    ];
+
     return Scaffold(
       appBar: CustomAppBar(
         username: widget.username,
-        email: widget.email,       // Pass email to CustomAppBar
-        phoneNumber: widget.phoneNumber, // Pass phoneNumber to CustomAppBar
+        email: widget.email,
+        phoneNumber: widget.phoneNumber,
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 
 class TransactionStatus extends StatelessWidget {
   final List<Map<String, dynamic>> transactions;
@@ -287,14 +288,14 @@ class TransactionStatus extends StatelessWidget {
           children: [
             isInProgress
                 ? SizedBox(
-              height: 32,
-              width: 32,
-              child: CircularProgressIndicator(
-                color: iconColor, // Yellow for in-progress
-                strokeWidth: 3.0,
+              height: 38,
+              width: 38,
+              child: Lottie.asset(
+                'assets/Loading3.json',  // Replace with your Lottie JSON file
+                fit: BoxFit.cover,
               ),
             )
-                : Icon(icon, color: iconColor, size: 32), // ✅ Tick or ⏳ Loader
+                : Icon(icon, color: iconColor, size: 38), // ✅ Tick or ⏳ Loader
             if (showLine)
               Container(height: 40.0, width: 2.0, color: iconColor), // Vertical line
           ],

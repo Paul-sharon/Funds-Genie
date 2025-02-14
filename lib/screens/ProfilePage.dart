@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import '../More/SIPCalculator.dart';
 import '../RiskAssessment/Riskassessment.dart';
 import '../components/custom_app_bar.dart';
 import '../portfolio/Folioupdates.dart';
 import '../portfolio/MandatesPage.dart';
 import '../portfolio/TransactionProgress.dart';
-import '../portfolio/portfolio.dart';
 import '../services/api_service.dart';
 import 'loginpage.dart';
 
@@ -74,21 +74,23 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height: 20),
                   // Image from Assets
                   Container(
-                    height: 150,
+                    height: 250,
                     width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
-                      child: Image.asset(
-                        'assets/Investers.png', // Ensure this asset is added in pubspec.yaml
-                        fit: BoxFit.cover,
+                      child: Lottie.asset(
+                        'assets/Invest.json', // Replace with your actual animation file path
+                        width: 300, // Increased size
+                        height: 300,
+                        fit: BoxFit.contain,
                       ),
                     ),
+
                   ),
                   const SizedBox(height: 16.0),
                   const Text(

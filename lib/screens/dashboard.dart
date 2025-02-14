@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import '../portfolio/portfolio.dart';
+import 'ProfilePage.dart';
 import 'dynamicasset.dart';
 import 'dart:async';
 
 class Dashboard extends StatefulWidget {
-  const Dashboard({super.key});
+  final String username;
+  final String email;
+  final String phoneNumber;
+
+  const Dashboard({
+    Key? key,
+    required this.username,
+    required this.email,
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
   State<Dashboard> createState() => _DashboardState();
@@ -133,25 +145,46 @@ class _DashboardState extends State<Dashboard> {
                   style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 const SizedBox(height: 15),
-                ElevatedButton(
-                  onPressed: () {
-                    // Navigate to portfolio analysis screen
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
+                Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ProfilePage(
+                              username: widget.username,
+                              email: widget.email,
+                              phoneNumber: widget.phoneNumber,
+                            ),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+                      ),
+                      child: const Text(
+                        "Analyze Profile",
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
                     ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 12),
-                  ),
-                  child: const Text(
-                    "Analyze Portfolio",
-                    style: TextStyle(color: Colors.black, fontSize: 14),
-                  ),
+                    const SizedBox(width: 15), // Space between button and animation
+                    Lottie.asset(
+                      'assets/bottle.json', // Replace with your actual animation file path
+                      width: 65, // Adjust size as needed
+                      height:70,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
                 ),
               ],
             ),
+
+
           ),
           const SizedBox(width: 10), // Space between text and image
 
