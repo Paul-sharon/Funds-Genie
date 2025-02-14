@@ -242,31 +242,29 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   Widget _investmentCard(String type) {
     return Center(
       child: Container(
-        width: 330, // Adjust to match the image
+        width: 450, // Adjust to match the image
+        height: 180,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: Colors.white, // Matches the card background in image
+          color: Color(0xFFDEF2F1), // Matches the card background in image
           borderRadius: BorderRadius.circular(15.0),
           border: Border.all(color: Colors.grey.shade300), // Light border
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
               "Amount you want to invest",
-              style: TextStyle(fontSize: 16.0, color: Colors.black54),
+              style: TextStyle(fontSize: 16.0, color: Colors.black),
             ),
             const SizedBox(height: 10),
             Text(
               "₹${widget.investment['amount'] ?? '5000'}",
-              style: const TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 28.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.black, // Set text color to black
+              ),
             ),
             const SizedBox(height: 15),
             Container(
@@ -280,7 +278,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
               child: Text(
                 "Minimum $type investment : ₹5000",
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 14.0, color: Colors.black45),
+                style: const TextStyle(fontSize: 14.0, color: Colors.black),
               ),
             ),
           ],
