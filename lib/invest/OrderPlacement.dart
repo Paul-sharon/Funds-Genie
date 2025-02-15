@@ -17,13 +17,14 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 1); // Start at "One-time"
     _tabController.addListener(() {
       setState(() {
         selectedTabIndex = _tabController.index;
       });
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
