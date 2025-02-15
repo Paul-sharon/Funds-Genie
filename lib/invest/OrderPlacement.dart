@@ -169,9 +169,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
         ),
       ),
 
-
-
-
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         decoration: const BoxDecoration(
