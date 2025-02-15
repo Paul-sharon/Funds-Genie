@@ -118,7 +118,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             border: Border.all(color: Colors.grey.shade300), // Light border
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black,
                 blurRadius: 10,
                 spreadRadius: 2,
               ),
