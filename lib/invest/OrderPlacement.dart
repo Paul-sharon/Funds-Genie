@@ -111,7 +111,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
         child: Container(
           width: 400,
           height: 300, // Set a fixed width for consistency
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
           decoration: BoxDecoration(
             color: Colors.white, // White background for the entire block
             borderRadius: BorderRadius.circular(25.0),
