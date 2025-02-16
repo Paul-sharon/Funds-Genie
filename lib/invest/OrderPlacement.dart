@@ -14,6 +14,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   late TabController _tabController;
   int selectedTabIndex = 1; // Default: "One-time"
 
+  DateTime? selectedDate;
+  String selectedDuration = "Until I stop"; // Default duration option
+
   @override
   void initState() {
     super.initState();
@@ -25,12 +28,76 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     });
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  String _formatDate(DateTime? date) {
+    if (date == null) return "Select Date";
+    String suffix = "th";
+    int day = date.day;
+    if (day == 1 || day == 21 || day == 31) {
+      suffix = "st";
+    } else if (day == 2 || day == 22) {
+      suffix = "nd";
+    } else if (day == 3 || day == 23) {
+      suffix = "rd";
+    }
+    return "$day$suffix of every month";
+  }
+
+  void _showDurationOptions() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ListTile(
+                title: const Text("Until I stop"),
+                trailing: selectedDuration == "Until I stop" ? const Icon(Icons.radio_button_checked) : const Icon(Icons.radio_button_off),
+                onTap: () {
+                  setState(() {
+                    selectedDuration = "Until I stop";
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text("Number of Months"),
+                trailing: selectedDuration == "Number of Months" ? const Icon(Icons.radio_button_checked) : const Icon(Icons.radio_button_off),
+                onTap: () {
+                  setState(() {
+                    selectedDuration = "Number of Months";
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // ✅ Ensures entire background is white
+      backgroundColor: Colors.black,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(185), // Increased height
+        preferredSize: const Size.fromHeight(185),
         child: Container(
           color: const Color(0xFF2A2E34),
           padding: const EdgeInsets.only(top: 20.0, left: 15.0, right: 15.0),
@@ -163,8 +230,8 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 ],
               ),
             ),
-            const SizedBox(height: 20), // Added spacing
-            _sipSelectionSection(), // Moved SIP selection section into a method
+            const SizedBox(height: 20),
+            _sipSelectionSection(),
           ],
         ),
       ),
@@ -230,12 +297,13 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       ),
     );
   }
+
   Widget _sipSelectionSection() {
     return Container(
       width: 350,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: Colors.white,  // Changed to white
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -245,52 +313,58 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           const Text(
             "Select monthly installment date",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,  // Changed to black
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: Colors.grey[800],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "5th of every month",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                Icon(Icons.calendar_today, color: Colors.white),
-              ],
+          GestureDetector(
+            onTap: () => _selectDate(context),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],  // Light background for contrast
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    _formatDate(selectedDate),
+                    style: const TextStyle(color: Colors.black, fontSize: 16),  // Black text
+                  ),
+                  const Icon(Icons.calendar_today, color: Colors.black),  // Black icon
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 16),
           const Text(
             "How long should this SIP run?",
             style: TextStyle(
-              color: Colors.white,
+              color: Colors.black,  // Changed to black
               fontSize: 14,
             ),
           ),
           const SizedBox(height: 8),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: Colors.grey[800],
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
-                  "Until I stop",
-                  style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                Icon(Icons.arrow_drop_down, color: Colors.white),
-              ],
+          GestureDetector(
+            onTap: _showDurationOptions,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],  // Light background for contrast
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    selectedDuration,
+                    style: const TextStyle(color: Colors.black, fontSize: 16),  // Black text
+                  ),
+                  const Icon(Icons.arrow_drop_down, color: Colors.black),  // Black icon
+                ],
+              ),
             ),
           ),
         ],
