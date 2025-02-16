@@ -25,10 +25,10 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black, // ✅ Ensures entire background is white
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(185), // Increased height
         child: Container(
@@ -106,70 +106,68 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           ),
         ),
       ),
-
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          width: 400,
-          height: 300, // Set a fixed width for consistency
-          padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
-          decoration: BoxDecoration(
-            color: Colors.white, // White background for the entire block
-            borderRadius: BorderRadius.circular(25.0),
-            border: Border.all(color: Colors.grey.shade300), // Light border
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black,
-                blurRadius: 10,
-                spreadRadius: 2,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.fromLTRB(2, 10, 2, 10),
+        child: Column(
+          children: [
+            Container(
+              constraints: const BoxConstraints(minHeight: 300),
+              padding: const EdgeInsets.fromLTRB(8, 25, 8, 8),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(25.0),
+                border: Border.all(color: Colors.grey.shade300),
               ),
-            ],
-          ),
-          child: Column(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(25.0),
-                ),
-                child: Theme(
-                  data: ThemeData(
-                    tabBarTheme: TabBarTheme(
-                      dividerColor: Colors.transparent, // ✅ Removes the default underline
+              child: Column(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(25.0),
+                    ),
+                    child: Theme(
+                      data: ThemeData(
+                        tabBarTheme: const TabBarTheme(
+                          dividerColor: Colors.transparent,
+                        ),
+                      ),
+                      child: TabBar(
+                        controller: _tabController,
+                        indicator: BoxDecoration(
+                          color: Colors.teal,
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        labelPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        labelStyle: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                        labelColor: Colors.white,
+                        unselectedLabelColor: Colors.black,
+                        tabs: const [
+                          Tab(text: "SIP"),
+                          Tab(text: "One-time"),
+                        ],
+                      ),
                     ),
                   ),
-                  child: TabBar(
-                    controller: _tabController,
-                    indicator: BoxDecoration(
-                      color: Colors.teal,
-                      borderRadius: BorderRadius.circular(25.0), // Adjust for smoother corners
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    height: 220,
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: [
+                        _investmentCard("SIP"),
+                        _investmentCard("One-time"),
+                      ],
                     ),
-                    indicatorSize: TabBarIndicatorSize.tab, // Ensures full width of the tab
-                    labelPadding: EdgeInsets.symmetric(horizontal: 8.0), // Adjust padding if needed
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.black,
-                    tabs: const [
-                      Tab(text: "SIP"),
-                      Tab(text: "One-time"),
-                    ],
                   ),
-                ),
+                ],
               ),
-              SizedBox(height:20),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: [
-                    _investmentCard("SIP"),
-                    _investmentCard("One-time"),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+            const SizedBox(height: 20), // Added spacing
+            _sipSelectionSection(), // Moved SIP selection section into a method
+          ],
         ),
       ),
-
       bottomNavigationBar: Container(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         decoration: const BoxDecoration(
@@ -232,17 +230,85 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       ),
     );
   }
+  Widget _sipSelectionSection() {
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Select monthly installment date",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  "5th of every month",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                Icon(Icons.calendar_today, color: Colors.white),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            "How long should this SIP run?",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              color: Colors.grey[800],
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  "Until I stop",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                Icon(Icons.arrow_drop_down, color: Colors.white),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Widget _investmentCard(String type) {
     return Center(
       child: Container(
-        width: 450, // Adjust to match the image
+        width: 450,
         height: 200,
         padding: const EdgeInsets.all(20.0),
         decoration: BoxDecoration(
-          color: Color(0xFFDEF2F1), // Matches the card background in image
+          color: const Color(0xFFDEF2F1),
           borderRadius: BorderRadius.circular(15.0),
-          border: Border.all(color: Colors.grey.shade300), // Light border
+          border: Border.all(color: Colors.grey.shade300),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -257,7 +323,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
               style: const TextStyle(
                 fontSize: 28.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Set text color to black
+                color: Colors.black,
               ),
             ),
             const SizedBox(height: 15),
