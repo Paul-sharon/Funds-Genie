@@ -300,7 +300,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
 
   Widget _sipSelectionSection() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,  // Changed to white
         borderRadius: BorderRadius.circular(16),
@@ -313,14 +313,14 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             "Select monthly installment date",
             style: TextStyle(
               color: Colors.black,  // Changed to black
-              fontSize: 14,
+              fontSize: 18,
             ),
           ),
           const SizedBox(height: 8),
           GestureDetector(
             onTap: () => _selectDate(context),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               decoration: BoxDecoration(
                 color: Colors.grey[200],  // Light background for contrast
                 borderRadius: BorderRadius.circular(12),
@@ -330,9 +330,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 children: [
                   Text(
                     _formatDate(selectedDate),
-                    style: const TextStyle(color: Colors.black, fontSize: 16),  // Black text
+                    style: const TextStyle(color: Colors.black, fontSize: 18),  // Black text
                   ),
-                  const Icon(Icons.calendar_today, color: Colors.black),  // Black icon
+                  const Icon(Icons.calendar_month_outlined, color: Colors.black,size: 32,),  // Black icon
                 ],
               ),
             ),
