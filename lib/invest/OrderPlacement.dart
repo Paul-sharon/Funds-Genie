@@ -397,22 +397,23 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             Text(
               "₹$displayAmount",  // Updated to show ₹500 for SIP
               style: const TextStyle(
-                fontSize: 28.0,
+                fontSize:40.0,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 25),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
               decoration: const BoxDecoration(
                 border: Border(
                   top: BorderSide(color: Colors.grey, width: 0.5),
                 ),
               ),
+
               child: Text(
-                "Minimum SIP Amount : $displayAmount",
+                "Minimum $type investment : $displayAmount",
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 14.0, color: Colors.black),
               ),
