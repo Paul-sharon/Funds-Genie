@@ -230,8 +230,8 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 ],
               ),
             ),
-            const SizedBox(height: 20),
-            _sipSelectionSection(),
+            const SizedBox(height: 10),
+            if (selectedTabIndex == 0) _sipSelectionSection(),
           ],
         ),
       ),
@@ -342,7 +342,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             "How long should this SIP run?",
             style: TextStyle(
               color: Colors.black,  // Changed to black
-              fontSize: 14,
+              fontSize: 18,
             ),
           ),
           const SizedBox(height: 8),
@@ -359,9 +359,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 children: [
                   Text(
                     selectedDuration,
-                    style: const TextStyle(color: Colors.black, fontSize: 16),  // Black text
+                    style: const TextStyle(color: Colors.black, fontSize: 18),  // Black text
                   ),
-                  const Icon(Icons.arrow_drop_down, color: Colors.black),  // Black icon
+                  const Icon(Icons.arrow_drop_down, color: Colors.black,size: 34,),  // Black icon
                 ],
               ),
             ),
@@ -373,6 +373,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
 
 
   Widget _investmentCard(String type) {
+    int baseAmount = (widget.investment['amount'] ?? 5000).toInt();
+    int displayAmount = selectedTabIndex == 0 ? (baseAmount ~/ 10) : baseAmount; // ₹500 for SIP, ₹5000 for One-time
+
     return Center(
       child: Container(
         width: 450,
@@ -392,7 +395,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             ),
             const SizedBox(height: 10),
             Text(
-              "₹${widget.investment['amount'] ?? '5000'}",
+              "₹$displayAmount",  // Updated to show ₹500 for SIP
               style: const TextStyle(
                 fontSize: 28.0,
                 fontWeight: FontWeight.bold,
@@ -409,7 +412,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 ),
               ),
               child: Text(
-                "Minimum $type investment : ₹5000",
+                "Minimum SIP Amount : $displayAmount",
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 14.0, color: Colors.black),
               ),
