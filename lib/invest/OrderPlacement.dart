@@ -300,7 +300,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
 
   Widget _sipSelectionSection() {
     return Container(
-      width: 350,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,  // Changed to white
