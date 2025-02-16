@@ -59,15 +59,27 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   void _showDurationOptions() {
     showModalBottomSheet(
       context: context,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25)), // Border radius added
+      ),
       builder: (BuildContext context) {
         return Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // Background color set to white
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25)), // Border radius added
+          ),
           padding: const EdgeInsets.all(16),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: const Text("Until I stop"),
-                trailing: selectedDuration == "Until I stop" ? const Icon(Icons.radio_button_checked) : const Icon(Icons.radio_button_off),
+                title: const Text(
+                  "Until I stop",
+                  style: TextStyle(color: Colors.black), // Text color set to black
+                ),
+                trailing: selectedDuration == "Until I stop"
+                    ? const Icon(Icons.radio_button_checked, color: Colors.black) // Black icon
+                    : const Icon(Icons.radio_button_off, color: Colors.black), // Black icon
                 onTap: () {
                   setState(() {
                     selectedDuration = "Until I stop";
@@ -76,8 +88,13 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 },
               ),
               ListTile(
-                title: const Text("Number of Months"),
-                trailing: selectedDuration == "Number of Months" ? const Icon(Icons.radio_button_checked) : const Icon(Icons.radio_button_off),
+                title: const Text(
+                  "Number of Months",
+                  style: TextStyle(color: Colors.black), // Text color set to black
+                ),
+                trailing: selectedDuration == "Number of Months"
+                    ? const Icon(Icons.radio_button_checked, color: Colors.black) // Black icon
+                    : const Icon(Icons.radio_button_off, color: Colors.black), // Black icon
                 onTap: () {
                   setState(() {
                     selectedDuration = "Number of Months";
