@@ -244,11 +244,33 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                       ],
                     ),
                   ),
+
                 ],
               ),
+
             ),
             const SizedBox(height: 10),
             if (selectedTabIndex == 0) _sipSelectionSection(),
+            SizedBox(height: selectedTabIndex == 0 ? 40 : 290), // Conditional height
+            const Text.rich(
+              TextSpan(
+                text: "By Continuing, you agree to the fund’s ",
+                style: TextStyle(
+                  color: Colors.white, // Adjust color based on your background
+                  fontSize: 14, // Adjust as needed
+                ),
+                children: [
+                  TextSpan(
+                    text: "T&Cs",
+                    style: TextStyle(
+                      color: Colors.white, // You can change this to blue or another highlight color
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline, // Optional underline effect
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -440,4 +462,5 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       ),
     );
   }
+
 }
