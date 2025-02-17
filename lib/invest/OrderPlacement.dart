@@ -13,6 +13,9 @@ class OrderPlacement extends StatefulWidget {
 }
 
 class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProviderStateMixin {
+  int orderNo = 558490961;
+  int folioNo= 1043916066;
+  String transactionStatus= "In progress";
   late TabController _tabController;
   int selectedTabIndex = 1; // Default: "One-time"
 
@@ -364,13 +367,23 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                 print("Company Image: ${widget.investment['companyImg'] ?? ''}"); // Base64 string
                 print("NAV Rate: ${widget.investment['navRate'] ?? 0.0}");
                 print("NAV Date: ${widget.investment['date'] ?? ''}");
-                print("Investment Date: ${DateTime.now().toIso8601String()}");
-                print("Order No: ${widget.investment['orderNo'] ?? ''}");
-                print("Units: ${widget.investment['units'] ?? 0.0}");
-                print("Folio No: ${widget.investment['folioNo'] ?? ''}");
-                print("Transaction Status: Pending");
-                print("Amount: ${widget.investment['amount'] ?? 0.0}");
+                print("Investment Date: ${DateTime.now().toLocal().toString().split(' ')[0]}");
+                setState(() {
+                  orderNo++;  // Increment order number
+                });
+                print("Order No: $orderNo");
+                final amount = widget.investment['amount'] ?? 0.0;
+                final navRate = widget.investment['navRate'] ?? 0.0;
+                final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
+                print("Units: $units");
+                setState(() {
+                  folioNo++;  // Increment order number
+                });
+                print("Folio No: $folioNo");
+                print("Transaction Status: $transactionStatus");
+                print("Amount: $amount");
               },
+
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
