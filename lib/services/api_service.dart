@@ -228,5 +228,29 @@ class ApiService {
       return "Error: ${e.toString()}";
     }
   }
+  static Future<int?> getUserId() async {
+    try {
+      User? currentUser = await fetchCurrentUser();
+
+      if (currentUser == null) {
+        print("User not logged in.");
+        return null;
+      }
+
+      // ✅ Check if id is null
+      if (currentUser.id == null) {
+        print("User ID is missing!");
+        return null;
+      }
+      int userId = currentUser.id!;
+      print("Current User ID: $userId");
+
+      return userId;
+    } catch (e) {
+      print("Error fetching user ID: $e");
+      return null;
+    }
+  }
+
 
 }

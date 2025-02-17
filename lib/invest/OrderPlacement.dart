@@ -19,9 +19,13 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   DateTime? selectedDate;
   String selectedDuration = "Until I stop"; // Default duration option
 
+
+
+
   @override
   void initState() {
     super.initState();
+    getid();
     _tabController = TabController(length: 2, vsync: this, initialIndex: 1); // Start at "One-time"
     _tabController.addListener(() {
       setState(() {
@@ -29,6 +33,21 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       });
     });
   }
+
+  Future<void> getid() async {
+    try {
+      final userId = await ApiService.getUserId();
+
+      if (userId != null) {
+        print("Final User ID: $userId");
+      } else {
+        print("No User ID found.");
+      }
+    } catch (e) {
+      print("Error fetching User ID: $e");
+    }
+  }
+
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -111,78 +130,51 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     );
   }
   void _createTransaction() async {
-    try {
-      // Show initial investment initiated message
+    print("Investment Data: ${widget.investment}");  // Debugging
+
+    if (widget.investment['id'] == null ||   // Check if id is actually userId
+        widget.investment['companyName'] == null ||
+        widget.investment['amount'] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            "Investment initiated. May take up to 24 hours to process.",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-          ),
-          backgroundColor: Colors.blueGrey,
-          duration: Duration(seconds: 3),
-        ),
+        const SnackBar(content: Text("Transaction failed: Missing required fields")),
       );
+      return;
+    }
 
-      // Wait for 4 seconds before showing progress message
-      Future.delayed(const Duration(seconds: 4), () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Track progress in the 'In-progress' section of your portfolio.",
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 3),
-          ),
-        );
-      });
+    final transaction = Transaction(
+      userId: widget.investment['id'] ?? "Unknown",   // Change 'id' to 'userId'
+      companyName: widget.investment['companyName'] ?? "Unknown",
+      companyImg: widget.investment['companyImg'] ?? "",  // Ensure API handles Base64 images
+      navRate: widget.investment['navRate'] ?? 0.0,
+      navDate: widget.investment['navDate'] ?? "",
+      investDate: DateTime.now().toIso8601String(),
+      orderNo: widget.investment['orderNo'] ?? "",
+      units: widget.investment['units'] ?? 0.0,
+      folioNo: widget.investment['folioNo'] ?? "",
+      transactionStatus: "Pending",
+      amount: widget.investment['amount'] ?? 0.0,
+    );
 
-      // Extracting values dynamically from widget.investment
-      final transaction = Transaction(
-        userId: widget.investment['userId'],
-        companyName: widget.investment['companyName'],
-        companyImg: widget.investment['companyImg'],
-        navRate: widget.investment['navRate'],
-        navDate: widget.investment['navDate'],
-        investDate: DateTime.now().toIso8601String(),
-        orderNo: widget.investment['orderNo'],
-        units: widget.investment['units'],
-        folioNo: widget.investment['folioNo'],
-        transactionStatus: "Pending",
-        amount: widget.investment['amount'],
-      );
-
+    try {
       final response = await ApiService.createTransaction(transaction);
 
-      // Show response in SnackBar
       if (response.contains("successful")) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Transaction Successful",
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            backgroundColor: Colors.green,
-            duration: Duration(seconds: 3),
-          ),
+          const SnackBar(content: Text("Transaction Successful")),
         );
-
-        // Navigate to success page
-        // Navigator.pushReplacement(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => OrderSuccessPage()), // Replace with your success page
-        // );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Transaction failed: $response")),
         );
       }
     } catch (e) {
-      // In case of an error, show the error in SnackBar
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Transaction failed: $e")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Transaction failed: $e")),
+      );
     }
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -364,7 +356,21 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           child: SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: _createTransaction, // Only keep this one
+              onPressed: () async {
+                final userId = await ApiService.getUserId();
+                print("Investment Details:");
+                print("User ID: ${userId ?? 'Unknown'}");
+                print("Company Name: ${widget.investment['companyName'] ?? 'Unknown'}");
+                print("Company Image: ${widget.investment['companyImg'] ?? ''}"); // Base64 string
+                print("NAV Rate: ${widget.investment['navRate'] ?? 0.0}");
+                print("NAV Date: ${widget.investment['date'] ?? ''}");
+                print("Investment Date: ${DateTime.now().toIso8601String()}");
+                print("Order No: ${widget.investment['orderNo'] ?? ''}");
+                print("Units: ${widget.investment['units'] ?? 0.0}");
+                print("Folio No: ${widget.investment['folioNo'] ?? ''}");
+                print("Transaction Status: Pending");
+                print("Amount: ${widget.investment['amount'] ?? 0.0}");
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent,
                 shadowColor: Colors.transparent,
