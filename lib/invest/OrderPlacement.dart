@@ -285,7 +285,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             begin: Alignment.centerRight,
             end: Alignment.centerLeft,
           ),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+          borderRadius: BorderRadius.all(Radius.circular(30)),
         ),
         child: SizedBox(
           width: double.infinity,
