@@ -135,7 +135,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   void _createTransaction() async {
     print("Investment Data: ${widget.investment}");  // Debugging
 
-    if (widget.investment['id'] == null ||   // Check if id is actually userId
+    final userId = await ApiService.getUserId(); // Fetch userId dynamically
+
+    if (userId == null ||  // Check if userId is actually present
         widget.investment['companyName'] == null ||
         widget.investment['amount'] == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -144,19 +146,31 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       return;
     }
 
+    setState(() {
+      orderNo++;  // Increment order number
+      folioNo++;  // Increment folio number
+    });
+
+    final amount = widget.investment['amount'] ?? 0.0;
+    final navRate = widget.investment['navRate'] ?? 0.0;
+    final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
+
+    // Create the transaction object with updated values
     final transaction = Transaction(
-      userId: widget.investment['id'] ?? "Unknown",   // Change 'id' to 'userId'
+      userId: userId,   // Use dynamically fetched userId
       companyName: widget.investment['companyName'] ?? "Unknown",
       companyImg: widget.investment['companyImg'] ?? "",  // Ensure API handles Base64 images
-      navRate: widget.investment['navRate'] ?? 0.0,
-      navDate: widget.investment['navDate'] ?? "",
-      investDate: DateTime.now().toIso8601String(),
-      orderNo: widget.investment['orderNo'] ?? "",
-      units: widget.investment['units'] ?? 0.0,
-      folioNo: widget.investment['folioNo'] ?? "",
-      transactionStatus: "Pending",
-      amount: widget.investment['amount'] ?? 0.0,
+      navRate: navRate,
+      navDate: widget.investment['date'] ?? "",
+      investDate: DateTime.now().toLocal().toString().split(' ')[0], // Only date
+      orderNo: orderNo,  // Use incremented order number
+      units: units,  // Dynamically calculated units
+      folioNo: folioNo,  // Use incremented folio number
+      transactionStatus: "In progress",
+      amount: amount,
     );
+
+    print("Final Transaction Data: $transaction");  // Debugging
 
     try {
       final response = await ApiService.createTransaction(transaction);
@@ -360,6 +374,7 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             width: double.infinity,
             child: ElevatedButton(
               onPressed: () async {
+                _createTransaction();
                 final userId = await ApiService.getUserId();
                 print("Investment Details:");
                 print("User ID: ${userId ?? 'Unknown'}");
