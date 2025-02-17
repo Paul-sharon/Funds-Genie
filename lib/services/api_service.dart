@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
-import '../models/user.dart'; // Ensure consistent import of User model
+import '../models/user.dart';
+import '../models/transaction.dart';
 
 class ApiService {
   static const String baseUrl = "http://10.0.2.2:8093/gtl-ws/api";
@@ -210,7 +211,22 @@ class ApiService {
       return [];
     }
   }
+  static Future<String> createTransaction(Transaction transaction) async {
+    try {
+      final response = await _dio.post(
+        '$baseUrl/transactions',
+        data: transaction.toJson(),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
 
-
+      if (response.statusCode == 200) {
+        return "Investment successful!";
+      } else {
+        return "Failed to process investment.";
+      }
+    } catch (e) {
+      return "Error: ${e.toString()}";
+    }
+  }
 
 }

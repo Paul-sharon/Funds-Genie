@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import '../models/transaction.dart';
+import '../services/api_service.dart';
 
 class OrderPlacement extends StatefulWidget {
   final Map<String, dynamic> investment;
@@ -108,7 +110,79 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       },
     );
   }
+  void _createTransaction() async {
+    try {
+      // Show initial investment initiated message
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            "Investment initiated. May take up to 24 hours to process.",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+          backgroundColor: Colors.blueGrey,
+          duration: Duration(seconds: 3),
+        ),
+      );
 
+      // Wait for 4 seconds before showing progress message
+      Future.delayed(const Duration(seconds: 4), () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Track progress in the 'In-progress' section of your portfolio.",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+      });
+
+      // Extracting values dynamically from widget.investment
+      final transaction = Transaction(
+        userId: widget.investment['userId'],
+        companyName: widget.investment['companyName'],
+        companyImg: widget.investment['companyImg'],
+        navRate: widget.investment['navRate'],
+        navDate: widget.investment['navDate'],
+        investDate: DateTime.now().toIso8601String(),
+        orderNo: widget.investment['orderNo'],
+        units: widget.investment['units'],
+        folioNo: widget.investment['folioNo'],
+        transactionStatus: "Pending",
+        amount: widget.investment['amount'],
+      );
+
+      final response = await ApiService.createTransaction(transaction);
+
+      // Show response in SnackBar
+      if (response.contains("successful")) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Transaction Successful",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        // Navigate to success page
+        // Navigator.pushReplacement(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => OrderSuccessPage()), // Replace with your success page
+        // );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Transaction failed: $response")),
+        );
+      }
+    } catch (e) {
+      // In case of an error, show the error in SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Transaction failed: $e")));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,66 +348,42 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xFF004D40),
-              Color(0xFF66B7B0),
-            ],
-            begin: Alignment.centerRight,
-            end: Alignment.centerLeft,
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Color(0xFF004D40),
+                Color(0xFF66B7B0),
+              ],
+              begin: Alignment.centerRight,
+              end: Alignment.centerLeft,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(30)),
           ),
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-        ),
-        child: SizedBox(
-          width: double.infinity,
-          child: ElevatedButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text(
-                    "Investment initiated. May take up to 24 hours to process.",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                  ),
-                  backgroundColor: Colors.blueGrey,
-                  duration: Duration(seconds: 3),
+          child: SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: _createTransaction, // Only keep this one
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(25.0),
                 ),
-              );
-
-              Future.delayed(const Duration(seconds: 4), () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      "Track progress in the 'In-progress' section of your portfolio.",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                    backgroundColor: Colors.green,
-                    duration: Duration(seconds: 3),
-                  ),
-                );
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent,
-              shadowColor: Colors.transparent,
-              padding: const EdgeInsets.symmetric(vertical: 16.0),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(25.0),
               ),
-            ),
-            child: const Text(
-              "Continue",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              child: const Text(
+                "Continue",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
-        ),
-      ),
+        )
     );
   }
 
