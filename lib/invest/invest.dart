@@ -4,6 +4,7 @@ import 'dart:async';
 import '../services/api_service.dart';
 import 'FundDetailsPage.dart';
 import 'package:lottie/lottie.dart';
+
 class Invest extends StatefulWidget {
   const Invest({super.key});
 
@@ -18,6 +19,7 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
   late Animation<double> _fadeAnimation;
   int currentPage = 0;
   bool isLoading = true;
+  Timer? _autoScrollTimer;
 
   @override
   void initState() {
@@ -37,13 +39,14 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
 
   @override
   void dispose() {
+    _autoScrollTimer?.cancel(); // Cancel timer to prevent memory leaks
     _pageController.dispose();
     _fadeController.dispose();
     super.dispose();
   }
 
   void _startAutoScroll() {
-    Timer.periodic(const Duration(seconds: 3), (Timer timer) {
+    _autoScrollTimer = Timer.periodic(const Duration(seconds: 3), (Timer timer) {
       if (!mounted) return;
       setState(() {
         currentPage = (currentPage + 1) % 4;
@@ -58,19 +61,16 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
 
   Future<void> fetchInvestments() async {
     final data = await ApiService.getInvestments();
-    if (data != null) {
-      setState(() {
-        investments = data;
-        isLoading = false;
-      });
-    } else {
-      setState(() {
-        isLoading = false;
-      });
-    }
+    if (!mounted) return; // Prevent state updates after widget disposal
+
+    setState(() {
+      investments = data ?? [];
+      isLoading = false;
+    });
   }
 
-  @override
+
+@override
   Widget build(BuildContext context) {
     return FadeTransition(
         opacity: _fadeAnimation,
