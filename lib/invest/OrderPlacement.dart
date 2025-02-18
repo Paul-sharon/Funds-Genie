@@ -190,7 +190,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
             duration: Duration(seconds: 3),
           ),
         );
-
         Future.delayed(const Duration(seconds: 4), () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
