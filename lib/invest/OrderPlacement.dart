@@ -179,6 +179,30 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Transaction Successful")),
         );
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              "Investment initiated. May take up to 24 hours to process.",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+            ),
+            backgroundColor: Colors.blueGrey,
+            duration: Duration(seconds: 3),
+          ),
+        );
+
+        Future.delayed(const Duration(seconds: 4), () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "Track progress in the 'In-progress' section of your portfolio.",
+                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+              ),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 3),
+            ),
+          );
+        });
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Transaction failed: $response")),
@@ -186,9 +210,10 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Transaction failed: $e")),
+        SnackBar(content: Text("An error occurred: $e")),
       );
     }
+
   }
   @override
   Widget build(BuildContext context) {
