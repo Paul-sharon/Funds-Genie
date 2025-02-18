@@ -190,8 +190,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       );
     }
   }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
