@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import '../services/api_service.dart';
-import 'TransactionCompleted.dart';
-import 'TransactionFailed.dart';
 import 'TransactionStatus.dart';
 
 class TransactionProgress extends StatefulWidget {

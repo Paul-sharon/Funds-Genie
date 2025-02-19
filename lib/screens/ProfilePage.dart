@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../More/SIPCalculator.dart';
 import '../RiskAssessment/Riskassessment.dart';
 import '../components/custom_app_bar.dart';
-import '../portfolio/Folioupdates.dart';
-import '../portfolio/MandatesPage.dart';
 import '../portfolio/TransactionProgress.dart';
 import '../services/api_service.dart';
 import 'NoDataPage.dart';
@@ -524,27 +521,35 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-              decoration: BoxDecoration(
-                color: Color(0xFF2A2E34), // Dark Gray Background
-                borderRadius: BorderRadius.circular(15), // Rounded Corners
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.settings_outlined, color: Colors.white, size: 24), // Settings Icon
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: Text(
-                      "Settings",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NoDataPage()),
+                );
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Color(0xFF2A2E34), // Dark Gray Background
+                  borderRadius: BorderRadius.circular(15), // Rounded Corners
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.settings_outlined, color: Colors.white, size: 24), // Settings Icon
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        "Settings",
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
                     ),
-                  ),
-                  const Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 24), // Right Arrow
-                ],
+                    const Icon(Icons.arrow_forward_ios_sharp, color: Colors.white, size: 24), // Right Arrow
+                  ],
+                ),
               ),
             ),
-             const SizedBox(height: 10),
+            const SizedBox(height: 10),
             GestureDetector(
               onTap: () {
                 _logout(); // Call the logout function when tapped

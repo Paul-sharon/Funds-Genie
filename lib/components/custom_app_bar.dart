@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/ProfilePage.dart';
+import '../screens/SearchNotFound.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String username;
@@ -72,7 +73,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ],
           ),
           const Spacer(),
-          const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
+          IconButton(
+            icon: const Icon(Icons.search_rounded, color: Colors.white, size: 36.0),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SearchNotFound()),
+              );
+            },
+          ),
+
         ],
       ),
     );

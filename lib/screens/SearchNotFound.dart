@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class NoDataPage extends StatelessWidget {
+class SearchNotFound extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +13,7 @@ class NoDataPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context), // Go back
         ),
         // title: Text(
-        //   "No Data Available",
+        //   "Search Not Found",
         //   style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         // ),
         // centerTitle: true,
@@ -26,11 +26,11 @@ class NoDataPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Lottie.asset(
-              'assets/nodata.json', // Replace with your Lottie file
+              'assets/search.json', // Replace with your search animation Lottie file
               width: MediaQuery.of(context).size.width * 0.8, // 80% of screen width
               height: MediaQuery.of(context).size.height * 0.4, // 40% of screen height
               fit: BoxFit.contain,
-              repeat: true,
+              repeat: true, // Make animation repeat continuously
             ),
           ),
 
@@ -38,7 +38,7 @@ class NoDataPage extends StatelessWidget {
 
           // Message
           Text(
-            "Oops! No Data Found",
+            "No Search Results",
             style: TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class NoDataPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 40.0),
             child: Text(
-              "We couldn't find any data to display. Try again later!",
+              "We couldn't find any matching results. Try a different search!",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.black54),
             ),
@@ -80,4 +80,3 @@ class NoDataPage extends StatelessWidget {
     );
   }
 }
-

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:async';
+import '../screens/NoDataPage.dart';
 import '../services/api_service.dart';
 import 'FundDetailsPage.dart';
 import 'package:lottie/lottie.dart';
@@ -219,7 +220,10 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                           DotsIndicator(currentIndex: currentPage),
                           ElevatedButton(
                             onPressed: () {
-                              // Add your sync action here
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => NoDataPage()),
+                              );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent, // Transparent background
@@ -258,6 +262,7 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
+
                     ],
                   ),
                 ),
