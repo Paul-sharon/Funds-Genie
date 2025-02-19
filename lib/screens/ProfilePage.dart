@@ -7,6 +7,7 @@ import '../portfolio/Folioupdates.dart';
 import '../portfolio/MandatesPage.dart';
 import '../portfolio/TransactionProgress.dart';
 import '../services/api_service.dart';
+import 'NoDataPage.dart';
 import 'loginpage.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -120,12 +121,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 120),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => NoDataPage()),
+                      );
+                    },
                     child: const Text(
                       "Activate Now",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -326,8 +333,12 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Add nominee action
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => NoDataPage()),
+                          );
                         },
+
                         child: Column(
                           children: [
                             Row(
@@ -505,10 +516,10 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: Column(
                 children: [
-                  _buildMenuItem(context, "My SIPs", Icons.calendar_month, Sipcalculator()),
-                  _buildMenuItem(context, "Mandates", Icons.assignment, MandatesPage()),
+                  _buildMenuItem(context, "My SIPs", Icons.calendar_month, NoDataPage()),
+                  _buildMenuItem(context, "Mandates", Icons.assignment, NoDataPage()),
                   _buildMenuItem(context, "Transactions", Icons.swap_horiz_sharp, TransactionProgress()),
-                  _buildMenuItem(context, "Folio Updations", Icons.work, Folioupdates()),
+                  _buildMenuItem(context, "Folio Updations", Icons.work, NoDataPage()),
                 ],
               ),
             ),
