@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
+import 'NoDataPage.dart';
 import 'dashboard.dart';
 import 'package:flutter/services.dart';
 
@@ -321,7 +323,12 @@ class FundCard extends StatelessWidget {
               Align(
                 alignment: Alignment.centerRight,
                 child: OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => NoDataPage()), // Navigate to NoDataPage
+                    );
+                  },
                   style: OutlinedButton.styleFrom(
                     side: BorderSide(color: Colors.teal),
                     padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
@@ -332,6 +339,7 @@ class FundCard extends StatelessWidget {
                   child: Text('Invest Now', style: TextStyle(color: Colors.teal)),
                 ),
               ),
+
             ],
           ),
         ),

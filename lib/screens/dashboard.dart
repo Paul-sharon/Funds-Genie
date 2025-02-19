@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../portfolio/portfolio.dart';
+import 'NoDataPage.dart';
 import 'ProfilePage.dart';
 import 'dynamicasset.dart';
 import 'dart:async';
@@ -45,6 +46,7 @@ class _DashboardState extends State<Dashboard> {
       }
     });
   }
+
   @override
   void dispose() {
     _timer?.cancel(); // Cancel the timer when the widget is removed
@@ -53,31 +55,31 @@ class _DashboardState extends State<Dashboard> {
 
   final Map<int, List<Map<String, dynamic>>> _categoryGrids = {
     0: [
-      {"icon": Icons.trending_up, "label": "Large Cap", "page": DynamicAssetAllocation()},
-      {"icon": Icons.show_chart, "label": "Mid Cap", "page": DynamicAssetAllocation()},
-      {"icon": Icons.bar_chart, "label": "Small Cap", "page": DynamicAssetAllocation()},
-      {"icon": Icons.pie_chart, "label": "Multi Cap", "page": DynamicAssetAllocation()},
-      {"icon": Icons.stacked_line_chart, "label": "Flexi Cap", "page": DynamicAssetAllocation()},
-      {"icon": Icons.savings, "label": "ELSS (Tax Savings)", "page": DynamicAssetAllocation()},
-      {"icon": Icons.arrow_forward, "label": "View all", "page": DynamicAssetAllocation()},
+      {"icon": Icons.trending_up, "label": "Large Cap", "page": NoDataPage()},
+      {"icon": Icons.show_chart, "label": "Mid Cap", "page": NoDataPage()},
+      {"icon": Icons.bar_chart, "label": "Small Cap", "page": NoDataPage()},
+      {"icon": Icons.pie_chart, "label": "Multi Cap", "page": NoDataPage()},
+      {"icon": Icons.stacked_line_chart, "label": "Flexi Cap", "page": NoDataPage()},
+      {"icon": Icons.savings, "label": "ELSS (Tax Savings)", "page": NoDataPage()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": NoDataPage()},
     ],
     1: [
       {"icon": Icons.savings, "label": "Dynamic assets", "page": DynamicAssetAllocation()},
-      {"icon": Icons.bar_chart, "label": "Balanced allocation", "page": BalancedAllocation()},
-      {"icon": Icons.pie_chart, "label": "Multi asset Allocation", "page": MultiAssetAllocation()},
-      {"icon": Icons.trending_up, "label": "Aggressive Allocation", "page": AggressiveAllocation()},
-      {"icon": Icons.credit_card, "label": "Equity saving", "page": EquitySavings()},
-      {"icon": Icons.graphic_eq, "label": "Arbitrage Fund", "page": ArbitrageFund()},
-      {"icon": Icons.arrow_forward, "label": "View all", "page": ViewAll()},
+      {"icon": Icons.bar_chart, "label": "Balanced allocation", "page": NoDataPage()},
+      {"icon": Icons.pie_chart, "label": "Multi asset Allocation", "page": NoDataPage()},
+      {"icon": Icons.trending_up, "label": "Aggressive Allocation", "page": NoDataPage()},
+      {"icon": Icons.credit_card, "label": "Equity saving", "page": NoDataPage()},
+      {"icon": Icons.graphic_eq, "label": "Arbitrage Fund", "page": NoDataPage()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": NoDataPage()},
     ],
     2: [
-      {"icon": Icons.water_drop, "label": "Liquid", "page": DynamicAssetAllocation()},
-      {"icon": Icons.timeline, "label": "Short Duration", "page": DynamicAssetAllocation()},
-      {"icon": Icons.business, "label": "Corporate Bond", "page": DynamicAssetAllocation()},
-      {"icon": Icons.warning, "label": "Credit Risk", "page": DynamicAssetAllocation()},
-      {"icon": Icons.account_balance, "label": "Government Bond", "page": DynamicAssetAllocation()},
-      {"icon": Icons.autorenew, "label": "Dynamic Bond", "page": DynamicAssetAllocation()},
-      {"icon": Icons.arrow_forward, "label": "View all", "page": DynamicAssetAllocation()},
+      {"icon": Icons.water_drop, "label": "Liquid", "page": NoDataPage()},
+      {"icon": Icons.timeline, "label": "Short Duration", "page": NoDataPage()},
+      {"icon": Icons.business, "label": "Corporate Bond", "page": NoDataPage()},
+      {"icon": Icons.warning, "label": "Credit Risk", "page": NoDataPage()},
+      {"icon": Icons.account_balance, "label": "Government Bond", "page": NoDataPage()},
+      {"icon": Icons.autorenew, "label": "Dynamic Bond", "page": NoDataPage()},
+      {"icon": Icons.arrow_forward, "label": "View all", "page": NoDataPage()},
     ]
   };
 
@@ -312,7 +314,12 @@ class _DashboardState extends State<Dashboard> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NoDataPage()),
+              );
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.black,
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
@@ -322,6 +329,7 @@ class _DashboardState extends State<Dashboard> {
               style: TextStyle(color: Colors.white),
             ),
           ),
+
           const SizedBox(height: 10),
         ],
       ),
@@ -379,66 +387,6 @@ class _DashboardState extends State<Dashboard> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class BalancedAllocation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Balanced Allocation')),
-      body: Center(child: Text('Balanced Allocation Page')),
-    );
-  }
-}
-
-class MultiAssetAllocation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Multi Asset Allocation')),
-      body: Center(child: Text('Multi Asset Allocation Page')),
-    );
-  }
-}
-
-class AggressiveAllocation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Aggressive Allocation')),
-      body: Center(child: Text('Aggressive Allocation Page')),
-    );
-  }
-}
-
-class EquitySavings extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Equity Savings')),
-      body: Center(child: Text('Equity Savings Page')),
-    );
-  }
-}
-
-class ArbitrageFund extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Arbitrage Fund')),
-      body: Center(child: Text('Arbitrage Fund Page')),
-    );
-  }
-}
-
-class ViewAll extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('View All Funds')),
-      body: Center(child: Text('View All Funds Page')),
     );
   }
 }
