@@ -116,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 20),
                         Center(
                           child: Image.asset(
-                            'assets/FundGenie.png',
+                            'assets/FG.png',
                             // Make sure this file exists in your assets folder
                             width: 700, // Adjust size as needed
                             height: 200,
