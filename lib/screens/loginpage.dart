@@ -26,7 +26,8 @@ class _LoginPageState extends State<LoginPage> {
       //print('Attempting login with email: $email and password: $password');
       final String result = await ApiService.loginUser(email, password);
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(result)));
 
       if (result == 'Login successful!') {
         //print('Login successful, fetching user details...');
@@ -37,11 +38,13 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => Homenavbar(
-                username: user.name ?? 'User',
-                email: user.email ?? 'Email not available',
-                phoneNumber: user.phoneNumber ?? 'Phone number not available',
-              ),
+              builder: (context) =>
+                  Homenavbar(
+                    username: user.name ?? 'User',
+                    email: user.email ?? 'Email not available',
+                    phoneNumber: user.phoneNumber ??
+                        'Phone number not available',
+                  ),
             ),
           );
         } else {
@@ -75,7 +78,8 @@ class _LoginPageState extends State<LoginPage> {
                 begin: Alignment.topCenter, // Start from the top
                 end: Alignment.bottomCenter, // End at the bottom
               ),
-              borderRadius: BorderRadius.circular(25), // Rounded corners with radius 25
+              borderRadius: BorderRadius.circular(
+                  25), // Rounded corners with radius 25
             ),
             child: const Padding(
               padding: EdgeInsets.only(top: 60.0, left: 22),
@@ -112,8 +116,9 @@ class _LoginPageState extends State<LoginPage> {
                         const SizedBox(height: 20),
                         Center(
                           child: Image.asset(
-                            'assets/FundGenie.png',  // Make sure this file exists in your assets folder
-                            width: 700,  // Adjust size as needed
+                            'assets/FundGenie.png',
+                            // Make sure this file exists in your assets folder
+                            width: 700, // Adjust size as needed
                             height: 200,
                             fit: BoxFit.contain,
                           ),
@@ -124,7 +129,8 @@ class _LoginPageState extends State<LoginPage> {
                           controller: _usernameController,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                            labelText: "Email", // Label above input field
+                            labelText: "Email",
+                            // Label above input field
                             labelStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black, // Black label text
@@ -134,15 +140,18 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.grey, // Light gray hint text
                             ),
                             filled: true,
-                            fillColor: Colors.white, // White background
+                            fillColor: Colors.white,
+                            // White background
                             suffixIcon: const Icon(
                               Icons.email,
                               color: Colors.grey,
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners
                               borderSide: BorderSide(
-                                color: Colors.grey.shade300, // Light gray border
+                                color: Colors.grey
+                                    .shade300, // Light gray border
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -163,7 +172,8 @@ class _LoginPageState extends State<LoginPage> {
                             if (value == null || value.isEmpty) {
                               return "Email cannot be empty.";
                             }
-                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(
+                                value)) {
                               return "Enter a valid email address.";
                             }
                             return null;
@@ -176,7 +186,8 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: !_isPasswordVisible,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                            labelText: "Password", // Label above input
+                            labelText: "Password",
+                            // Label above input
                             labelStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black, // Black label
@@ -186,10 +197,12 @@ class _LoginPageState extends State<LoginPage> {
                               color: Colors.grey, // Light gray hint text
                             ),
                             filled: true,
-                            fillColor: Colors.white, // White background
+                            fillColor: Colors.white,
+                            // White background
                             suffixIcon: IconButton(
                               icon: Icon(
-                                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                                _isPasswordVisible ? Icons.visibility : Icons
+                                    .visibility_off,
                                 color: Colors.grey,
                               ),
                               onPressed: () {
@@ -199,9 +212,11 @@ class _LoginPageState extends State<LoginPage> {
                               },
                             ),
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners
                               borderSide: BorderSide(
-                                color: Colors.grey.shade300, // Light gray border
+                                color: Colors.grey
+                                    .shade300, // Light gray border
                               ),
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -232,7 +247,8 @@ class _LoginPageState extends State<LoginPage> {
                             // Navigate to ForgotPasswordPage
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) => ForgotPasswordScreen()),
                             );
                           },
                           child: const Align(
@@ -257,14 +273,19 @@ class _LoginPageState extends State<LoginPage> {
                             decoration: const BoxDecoration(
                               gradient: LinearGradient(
                                 colors: [
-                                  Color(0xFF88D8D2), // Lighter shade of teal (left)
-                                  Color(0xFF66B7B0), // Medium teal (middle)
-                                  Color(0xFF155F54), // Darker shade of teal (right)
+                                  Color(0xFF88D8D2),
+                                  // Lighter shade of teal (left)
+                                  Color(0xFF66B7B0),
+                                  // Medium teal (middle)
+                                  Color(0xFF155F54),
+                                  // Darker shade of teal (right)
                                 ],
-                                begin: Alignment.centerRight, // Start from the left
-                                end: Alignment.centerLeft,  // End at the right
+                                begin: Alignment.centerRight,
+                                // Start from the left
+                                end: Alignment.centerLeft, // End at the right
                               ),
-                              borderRadius: BorderRadius.all(Radius.circular(25)),
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(25)),
                             ),
                             child: const Center(
                               child: Text(

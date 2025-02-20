@@ -7,13 +7,13 @@ class FundDetailsPage extends StatelessWidget {
   final Map<String, dynamic> investment;
   String formatDate(String dateString) {
     try {
-      print("Received date: $dateString"); // Debugging log
+      //print("Received date: $dateString"); // Debugging log
       DateTime parsedDate = DateTime.parse(dateString);
       String formattedDate = DateFormat('MMM dd, yyyy').format(parsedDate);
-      print("Formatted date: $formattedDate"); // Debugging log
+      //print("Formatted date: $formattedDate"); // Debugging log
       return formattedDate;
     } catch (e) {
-      print("Error formatting date: $e"); // Debugging log
+      //print("Error formatting date: $e"); // Debugging log
       return 'Invalid Date';
     }
   }

@@ -42,12 +42,12 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       final userId = await ApiService.getUserId();
 
       if (userId != null) {
-        print("Final User ID: $userId");
+        //print("Final User ID: $userId");
       } else {
-        print("No User ID found.");
+        //print("No User ID found.");
       }
     } catch (e) {
-      print("Error fetching User ID: $e");
+      //print("Error fetching User ID: $e");
     }
   }
 
@@ -133,87 +133,99 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     );
   }
   void _createTransaction() async {
-    print("Investment Data: ${widget.investment}");  // Debugging
+    if (!mounted) return; // Check before proceeding
 
     final userId = await ApiService.getUserId(); // Fetch userId dynamically
 
-    if (userId == null ||  // Check if userId is actually present
+    if (!mounted) return; // Ensure widget is still active
+
+    if (userId == null ||
         widget.investment['companyName'] == null ||
         widget.investment['amount'] == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Transaction failed: Missing required fields")),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Transaction failed: Missing required fields")),
+        );
+      }
       return;
     }
 
     setState(() {
-      orderNo++;  // Increment order number
-      folioNo++;  // Increment folio number
+      orderNo++;
+      folioNo++;
     });
 
     final amount = widget.investment['amount'] ?? 0.0;
     final navRate = widget.investment['navRate'] ?? 0.0;
-    final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
+    final units = (navRate != 0.0) ? amount / navRate : 0.0;
 
-    // Create the transaction object with updated values
     final transaction = Transaction(
-      userId: userId,   // Use dynamically fetched userId
+      userId: userId,
       companyName: widget.investment['companyName'] ?? "Unknown",
-      companyImg: widget.investment['companyImg'] ?? "",  // Ensure API handles Base64 images
+      companyImg: widget.investment['companyImg'] ?? "",
       navRate: navRate,
       navDate: widget.investment['date'] ?? "",
-      investDate: DateTime.now().toLocal().toString().split(' ')[0], // Only date
-      orderNo: orderNo,  // Use incremented order number
-      units: units,  // Dynamically calculated units
-      folioNo: folioNo,  // Use incremented folio number
+      investDate: DateTime.now().toLocal().toString().split(' ')[0],
+      orderNo: orderNo,
+      units: units,
+      folioNo: folioNo,
       transactionStatus: "In progress",
       amount: amount,
     );
 
-    print("Final Transaction Data: $transaction");  // Debugging
-
     try {
       final response = await ApiService.createTransaction(transaction);
 
-      if (response.contains("successful")) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Transaction Successful")),
-        );
+      if (!mounted) return; // Check before UI updates
 
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              "Investment initiated. May take up to 24 hours to process.",
-              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            backgroundColor: Colors.blueGrey,
-            duration: Duration(seconds: 3),
-          ),
-        );
-        Future.delayed(const Duration(seconds: 4), () {
+      if (response.contains("successful")) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Transaction Successful")),
+          );
+
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
-                "Track progress in the 'In-progress' section of your portfolio.",
+                "Investment initiated. May take up to 24 hours to process.",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              backgroundColor: Colors.green,
+              backgroundColor: Colors.blueGrey,
               duration: Duration(seconds: 3),
             ),
           );
+        }
+
+        Future.delayed(const Duration(seconds: 4), () {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text(
+                  "Track progress in the 'In-progress' section of your portfolio.",
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                ),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 3),
+              ),
+            );
+          }
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Transaction failed: $response")),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Transaction failed: $response")),
+          );
+        }
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An error occurred: $e")),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("An error occurred: $e")),
+        );
+      }
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -398,27 +410,27 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
               onPressed: () async {
                 _createTransaction();
                 final userId = await ApiService.getUserId();
-                print("Investment Details:");
-                print("User ID: ${userId ?? 'Unknown'}");
-                print("Company Name: ${widget.investment['companyName'] ?? 'Unknown'}");
-                print("Company Image: ${widget.investment['companyImg'] ?? ''}"); // Base64 string
-                print("NAV Rate: ${widget.investment['navRate'] ?? 0.0}");
-                print("NAV Date: ${widget.investment['date'] ?? ''}");
-                print("Investment Date: ${DateTime.now().toLocal().toString().split(' ')[0]}");
+                //print("Investment Details:");
+                //print("User ID: ${userId ?? 'Unknown'}");
+                //print("Company Name: ${widget.investment['companyName'] ?? 'Unknown'}");
+                //print("Company Image: ${widget.investment['companyImg'] ?? ''}"); // Base64 string
+                //print("NAV Rate: ${widget.investment['navRate'] ?? 0.0}");
+                //print("NAV Date: ${widget.investment['date'] ?? ''}");
+                //print("Investment Date: ${DateTime.now().toLocal().toString().split(' ')[0]}");
                 setState(() {
                   orderNo++;  // Increment order number
                 });
-                print("Order No: $orderNo");
+                //print("Order No: $orderNo");
                 final amount = widget.investment['amount'] ?? 0.0;
                 final navRate = widget.investment['navRate'] ?? 0.0;
                 final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
-                print("Units: $units");
+                //print("Units: $units");
                 setState(() {
                   folioNo++;  // Increment order number
                 });
-                print("Folio No: $folioNo");
-                print("Transaction Status: $transactionStatus");
-                print("Amount: $amount");
+                //print("Folio No: $folioNo");
+                //print("Transaction Status: $transactionStatus");
+                //print("Amount: $amount");
               },
 
               style: ElevatedButton.styleFrom(
