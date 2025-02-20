@@ -23,8 +23,6 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
   String selectedDuration = "Until I stop"; // Default duration option
 
 
-
-
   @override
   void initState() {
     super.initState();
