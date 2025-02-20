@@ -41,7 +41,7 @@ class _PortfolioState extends State<Portfolio> {
         });
       }
     } catch (e) {
-      print("Error fetching transactions: $e");
+      //print("Error fetching transactions: $e");
     }
   }
 

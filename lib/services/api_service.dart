@@ -53,7 +53,7 @@ class ApiService {
         // Store the token after a successful login
         _token = response.data['token'];
 
-        print("Login successful. Token saved: $_token");
+        //print("Login successful. Token saved: $_token");
         return response.data['message'] ?? "Login successful!";
       } else if (response.statusCode == 401) {
         return response.data['error'] ?? "Invalid email or password.";
@@ -62,7 +62,7 @@ class ApiService {
       }
     } catch (e) {
       // Log the error for debugging purposes
-      print("Error during login: $e");
+      //print("Error during login: $e");
       return "An error occurred. Please check your internet connection.";
     }
   }
@@ -70,7 +70,7 @@ class ApiService {
   // Fetch Current User Details
   static Future<User?> fetchCurrentUser() async {
     if (_token == null) {
-      print("No token available. Please log in first.");
+      //print("No token available. Please log in first.");
       return null; // Token is null, return early
     }
 
@@ -89,7 +89,7 @@ class ApiService {
         final data = response.data;
 
         // Debug: Log the response data
-        print("Current user data: $data");
+        //print("Current user data: $data");
 
         // Extract the 'user' object from the response data
         if (data != null && data['user'] != null) {
@@ -98,18 +98,18 @@ class ApiService {
           // Now create the User object from the 'user' data
           return User.fromJson(userData); // Assuming the 'User' class can handle this data
         } else {
-          print("Invalid user data: $data");
+          //print("Invalid user data: $data");
           return null;
         }
       } else if (response.statusCode == 401) {
-        print("Unauthorized: ${response.data}");
+        //print("Unauthorized: ${response.data}");
         return null;
       } else {
-        print("Unexpected error: ${response.data}");
+        //print("Unexpected error: ${response.data}");
         return null;
       }
     } catch (e) {
-      print("Exception during fetchCurrentUser: $e");
+      //print("Exception during fetchCurrentUser: $e");
       return null;
     }
   }
@@ -129,15 +129,15 @@ class ApiService {
       if (response.statusCode == 200) {
         // Clear token or session data if needed
         _token = null;
-        print("Logout successful.");
+        //print("Logout successful.");
         return response.data['message'] ?? "Logout successful!";
       } else {
-        print("Logout failed with status code: ${response.statusCode}");
+        //print("Logout failed with status code: ${response.statusCode}");
         return response.data['error'] ?? "Logout failed. Please try again.";
       }
     } catch (e) {
       // Handle network or other unexpected errors
-      print("Error in logoutUser: $e");
+      //print("Error in logoutUser: $e");
       return "An error occurred. Please check your internet connection.";
     }
   }
@@ -151,18 +151,18 @@ class ApiService {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        print("Investments fetched successfully.");
+        //print("Investments fetched successfully.");
 
         // Ensure all values inside the list are non-null
         return List<Map<String, dynamic>>.from(
           (response.data as List).map((item) => item ?? {}).toList(),
         );
       } else {
-        print("Failed to fetch investments: ${response.data}");
+        //print("Failed to fetch investments: ${response.data}");
         return [];
       }
     } catch (e) {
-      print("Error fetching investments: $e");
+      //print("Error fetching investments: $e");
       return [];
     }
   }
@@ -172,20 +172,20 @@ class ApiService {
       User? currentUser = await fetchCurrentUser();
 
       if (currentUser == null) {
-        print("User not logged in.");
+        //print("User not logged in.");
         return [];
       }
 
       // ✅ Check if id is null
       if (currentUser.id == null) {
-        print("User ID is missing!");
+        //print("User ID is missing!");
         return [];
       }
       int userId = currentUser.id!;
-      print("Current User ID: $userId");
+      //print("Current User ID: $userId");
 
       if (_token == null) {
-        print("No token found, user needs to log in again.");
+        //print("No token found, user needs to log in again.");
         return [];
       }
 
@@ -200,14 +200,14 @@ class ApiService {
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        print("Transactions fetched successfully.");
+        //print("Transactions fetched successfully.");
         return List<Map<String, dynamic>>.from(response.data as List);
       } else {
-        print("Failed to fetch transactions: ${response.data}");
+        //print("Failed to fetch transactions: ${response.data}");
         return [];
       }
     } catch (e) {
-      print("Error fetching transactions: $e");
+      //print("Error fetching transactions: $e");
       return [];
     }
   }
@@ -233,21 +233,21 @@ class ApiService {
       User? currentUser = await fetchCurrentUser();
 
       if (currentUser == null) {
-        print("User not logged in.");
+        //print("User not logged in.");
         return null;
       }
 
       // ✅ Check if id is null
       if (currentUser.id == null) {
-        print("User ID is missing!");
+        //print("User ID is missing!");
         return null;
       }
       int userId = currentUser.id!;
-      print("Current User ID: $userId");
+      //print("Current User ID: $userId");
 
       return userId;
     } catch (e) {
-      print("Error fetching user ID: $e");
+      //print("Error fetching user ID: $e");
       return null;
     }
   }

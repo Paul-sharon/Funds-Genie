@@ -262,7 +262,6 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-
                     ],
                   ),
                 ),
