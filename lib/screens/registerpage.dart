@@ -103,7 +103,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         Center(
                           child: Image.asset(
                             'assets/geniea.png',  // Make sure this file exists in your assets folder
-                            width: 140,  // Adjust size as needed
+                            width: 120,  // Adjust size as needed
                             height: 160,
                             fit: BoxFit.contain,
                           ),
