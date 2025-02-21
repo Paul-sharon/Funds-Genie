@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import '../portfolio/portfolio.dart';
 import 'NoDataPage.dart';
 import 'ProfilePage.dart';
 import 'dynamicasset.dart';

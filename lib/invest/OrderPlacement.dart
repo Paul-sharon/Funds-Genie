@@ -419,9 +419,9 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
                   orderNo++;  // Increment order number
                 });
                 //print("Order No: $orderNo");
-                final amount = widget.investment['amount'] ?? 0.0;
-                final navRate = widget.investment['navRate'] ?? 0.0;
-                final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
+                //final amount = widget.investment['amount'] ?? 0.0;
+                //final navRate = widget.investment['navRate'] ?? 0.0;
+                //final units = (navRate != 0.0) ? amount / navRate : 0.0;  // Avoid division by zero
                 //print("Units: $units");
                 setState(() {
                   folioNo++;  // Increment order number

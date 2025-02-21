@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../screens/ProfilePage.dart';
-
 class Question {
   final String questionText;
   final List<Option> options;

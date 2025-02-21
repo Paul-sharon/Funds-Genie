@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'NoDataPage.dart';
-import 'dashboard.dart';
+
 import 'package:flutter/services.dart';
 
 class DynamicAssetAllocation extends StatefulWidget {

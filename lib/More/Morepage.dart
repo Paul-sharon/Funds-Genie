@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import '../portfolio/portfolio.dart';
-import '../screens/dashboard.dart';
-import '../invest/invest.dart';
-import '../screens/loginpage.dart';
 import 'SIPCalculator.dart';
 import 'WealthCalculator.dart';
-import '../services/api_service.dart';
+
 
 class Morepage extends StatefulWidget {
   @override
@@ -13,32 +9,6 @@ class Morepage extends StatefulWidget {
 }
 
 class _MorepageState extends State<Morepage> {
-  void _logout() async {
-    try {
-      // Call the logout API
-      final String result = await ApiService.logoutUser();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
-
-      if (result.contains('successful')) {
-        // Navigate to LoginPage on successful logout
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-              (Route<dynamic> route) => false, // Clears all previous routes
-        );
-      } else {
-        // Display error message if logout fails
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Logout failed: $result")),
-        );
-      }
-    } catch (e) {
-      // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An error occurred: $e")),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
