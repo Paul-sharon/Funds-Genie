@@ -18,47 +18,101 @@ class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false; // To manage password visibility
 
   // Login function using ApiService
+  void _showCustomPopup(String message) {
+    OverlayEntry overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: 50, // Adjust this for how high it appears
+        left: 20,
+        right: 20,
+        child: SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 1),
+            end: const Offset(0, 0),
+          ).animate(CurvedAnimation(
+            parent: AnimationController(
+              duration: const Duration(milliseconds: 400),
+              vsync: Navigator.of(context),
+            )..forward(),
+            curve: Curves.easeOut,
+          )),
+          child: Container(
+            height: 55,
+            width: 370,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFF88D8D2), // Lighter shade of teal
+                  Color(0xFF66B7B0), // Medium teal
+                  Color(0xFF155F54), // Darker shade of teal
+                ],
+                begin: Alignment.centerRight,
+                end: Alignment.centerLeft,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
+            ),
+            child: Center(
+              child: Text(
+                message,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold, // Stronger for impact
+                  fontSize: 22, // Slightly larger for readability
+                  color: Colors.white,
+                  fontFamily: 'SF Pro Display', // Premium Apple-style font
+                  letterSpacing: 1.5, // Extra spacing for a luxury feel
+                  wordSpacing: 2.0, // Makes it more premium
+                  shadows: [
+                    Shadow(
+                      blurRadius: 4.0,
+                      color: Colors.black45, // Subtle shadow for depth
+                      offset: Offset(2, 2),
+                    ),
+                  ],
+                  decoration: TextDecoration.none, // No underline
+                ),
+              ),
+            ),
+
+          ),
+        ),
+      ),
+    );
+
+    Overlay.of(context).insert(overlayEntry);
+
+    // Remove after 2 seconds
+    Future.delayed(const Duration(seconds: 2), () {
+      overlayEntry.remove();
+    });
+  }
+
   void _login() async {
     if (_formKey.currentState!.validate()) {
       final String email = _usernameController.text.trim();
       final String password = _passwordController.text.trim();
 
-      //print('Attempting login with email: $email and password: $password');
       final String result = await ApiService.loginUser(email, password);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(result)));
-
       if (result == 'Login successful!') {
-        //print('Login successful, fetching user details...');
         final model_user.User? user = await ApiService.fetchCurrentUser();
-
         if (user != null) {
-          //print('User details fetched: ${user.name}');
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  Homenavbar(
-                    username: user.name ?? 'User',
-                    email: user.email ?? 'Email not available',
-                    phoneNumber: user.phoneNumber ??
-                        'Phone number not available',
-                  ),
+              builder: (context) => Homenavbar(
+                username: user.name ?? 'User',
+                email: user.email ?? 'Email not available',
+                phoneNumber: user.phoneNumber ?? 'Phone number not available',
+              ),
             ),
           );
         } else {
-          //print('Failed to fetch user details.');
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Failed to fetch user details.")),
-          );
+          _showCustomPopup("Failed to fetch user details.");
         }
       } else {
-        //print('Login failed with message: $result');
+        _showCustomPopup("Invalid email or password.");
       }
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,12 +125,13 @@ class _LoginPageState extends State<LoginPage> {
             decoration: BoxDecoration(
               gradient: const LinearGradient(
                 colors: [
-                  Color(0xFF88D8D2), // Lighter shade of teal (top)
-                  Color(0xFF66B7B0), // Medium teal (middle)
-                  Color(0xFF155F54), // Darker shade of teal (bottom)
+                  Color(0xFF88D8D2),
+                  Color(0xFF66B7B0),
+                  Color(0xFF155F54),
+                  // Darker shade of teal (right)
                 ],
-                begin: Alignment.topCenter, // Start from the top
-                end: Alignment.bottomCenter, // End at the bottom
+                begin: Alignment.centerRight, // Start from the top
+                end: Alignment.centerLeft, // End at the bottom
               ),
               borderRadius: BorderRadius.circular(
                   25), // Rounded corners with radius 25
