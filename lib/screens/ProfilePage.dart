@@ -24,32 +24,100 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  void _showCustomPopup(String message) {
+    OverlayEntry? overlayEntry;
+    final overlay = Overlay.of(context);
+    final animationController = AnimationController(
+      duration: Duration(milliseconds: 300), // Smooth entrance
+      vsync: Navigator.of(context),
+    );
+    final animation = Tween<Offset>(
+      begin: Offset(0, 1), // Start from bottom
+      end: Offset(0, 0), // Move up
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: 80,
+        left: MediaQuery.of(context).size.width * 0.25,
+        right: MediaQuery.of(context).size.width * 0.25,
+        child: Material(
+          color: Colors.transparent,
+          child: SlideTransition(
+            position: animation,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Color(0xFF4A4A4A),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: IntrinsicWidth(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/lampy.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    overlay.insert(overlayEntry);
+    animationController.forward(); // Start appearing animation
+
+    Future.delayed(Duration(seconds: 3), () {
+      animationController.reverse().then((_) {
+        overlayEntry?.remove();
+      });
+    });
+  }
+
   void _logout() async {
     try {
-      // Call the logout API
       final String result = await ApiService.logoutUser();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(result)));
 
       if (result.contains('successful')) {
-        // Navigate to LoginPage on successful logout
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
-              (Route<dynamic> route) => false, // Clears all previous routes
-        );
+        _showCustomPopup("Logout successful");
+
+        // Wait for popup animation before navigating
+        Future.delayed(const Duration(milliseconds: 1200), () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+                (Route<dynamic> route) => false, // Clears all previous routes
+          );
+        });
       } else {
-        // Display error message if logout fails
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Logout failed: $result")),
-        );
+        _showCustomPopup("Logout failed: $result");
       }
     } catch (e) {
-      // Handle unexpected errors
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("An error occurred: $e")),
-      );
+      _showCustomPopup("An error occurred: $e");
     }
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
