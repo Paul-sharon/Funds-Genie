@@ -130,20 +130,96 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
       },
     );
   }
+  void _showCustomPopupSequence(List<String> messages) {
+    if (messages.isEmpty) return;
+
+    void showNextPopup(int index) {
+      if (index >= messages.length) return; // Stop when all messages are shown
+
+      OverlayEntry? overlayEntry;
+      final overlay = Overlay.of(context);
+      final animationController = AnimationController(
+        duration: const Duration(milliseconds: 300), // Smooth entrance
+        vsync: Navigator.of(context),
+      );
+      final animation = Tween<Offset>(
+        begin: const Offset(0, 1), // Start from bottom
+        end: const Offset(0, 0), // Move up
+      ).animate(CurvedAnimation(
+        parent: animationController,
+        curve: Curves.easeInOut,
+      ));
+
+      overlayEntry = OverlayEntry(
+        builder: (context) => Positioned(
+          bottom: 80,
+          left: MediaQuery.of(context).size.width * 0.05, // Less padding for more width
+          right: MediaQuery.of(context).size.width * 0.05, // Less padding for more width
+          child: Material(
+            color: Colors.transparent,
+            child: SlideTransition(
+              position: animation,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4A4A4A),
+                  borderRadius: BorderRadius.circular(14),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Image.asset(
+                      'assets/lampy.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        messages[index],
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        softWrap: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      );
+
+      overlay.insert(overlayEntry);
+      animationController.forward(); // Show popup
+
+      Future.delayed(const Duration(seconds: 3), () {
+        animationController.reverse().then((_) {
+          overlayEntry?.remove();
+          showNextPopup(index + 1); // Show next popup
+        });
+      });
+    }
+
+    showNextPopup(0); // Start with the first message
+  }
+
+
   void _createTransaction() async {
-    if (!mounted) return; // Check before proceeding
+    if (!mounted) return;
 
-    final userId = await ApiService.getUserId(); // Fetch userId dynamically
+    final userId = await ApiService.getUserId();
 
-    if (!mounted) return; // Ensure widget is still active
+    if (!mounted) return;
 
     if (userId == null ||
         widget.investment['companyName'] == null ||
         widget.investment['amount'] == null) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Transaction failed: Missing required fields")),
-        );
+        _showCustomPopupSequence(["Transaction failed: Missing required fields"]);
       }
       return;
     }
@@ -174,55 +250,29 @@ class _OrderPlacementState extends State<OrderPlacement> with SingleTickerProvid
     try {
       final response = await ApiService.createTransaction(transaction);
 
-      if (!mounted) return; // Check before UI updates
+      if (!mounted) return;
 
       if (response.contains("successful")) {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Transaction Successful")),
-          );
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text(
-                "Investment initiated. May take up to 24 hours to process.",
-                style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-              backgroundColor: Colors.blueGrey,
-              duration: Duration(seconds: 3),
-            ),
-          );
+          _showCustomPopupSequence([
+            "Transaction Successful",
+            "Investment initiated. Processing may take up to 24 hours.",
+            "Track progress in 'In-progress' section of portfolio."
+          ]);
         }
-
-        Future.delayed(const Duration(seconds: 4), () {
-          if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  "Track progress in the 'In-progress' section of your portfolio.",
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-                backgroundColor: Colors.green,
-                duration: Duration(seconds: 3),
-              ),
-            );
-          }
-        });
       } else {
         if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Transaction failed: $response")),
-          );
+          _showCustomPopupSequence(["Transaction failed: $response"]);
         }
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("An error occurred: $e")),
-        );
+        _showCustomPopupSequence(["An error occurred: $e"]);
       }
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
