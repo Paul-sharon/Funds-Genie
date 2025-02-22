@@ -42,8 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         bottom: 80,
-        left: MediaQuery.of(context).size.width * 0.25,
-        right: MediaQuery.of(context).size.width * 0.25,
+        left: MediaQuery.of(context).size.width * 0.15,
+        right: MediaQuery.of(context).size.width * 0.15,
         child: Material(
           color: Colors.transparent,
           child: SlideTransition(
