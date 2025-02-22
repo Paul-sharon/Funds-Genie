@@ -18,72 +18,79 @@ class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false; // To manage password visibility
 
   // Login function using ApiService
+
   void _showCustomPopup(String message) {
-    OverlayEntry overlayEntry = OverlayEntry(
+    OverlayEntry? overlayEntry;
+    final overlay = Overlay.of(context);
+    final animationController = AnimationController(
+      duration: Duration(milliseconds: 300), // Smooth entrance
+      vsync: Navigator.of(context),
+    );
+    final animation = Tween<Offset>(
+      begin: Offset(0, 1), // Start from bottom
+      end: Offset(0, 0), // Move up
+    ).animate(CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    ));
+
+    overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        bottom: 50, // Adjust this for how high it appears
-        left: 20,
-        right: 20,
-        child: SlideTransition(
-          position: Tween<Offset>(
-            begin: const Offset(0, 1),
-            end: const Offset(0, 0),
-          ).animate(CurvedAnimation(
-            parent: AnimationController(
-              duration: const Duration(milliseconds: 400),
-              vsync: Navigator.of(context),
-            )..forward(),
-            curve: Curves.easeOut,
-          )),
-          child: Container(
-            height: 55,
-            width: 370,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xFF88D8D2), // Lighter shade of teal
-                  Color(0xFF66B7B0), // Medium teal
-                  Color(0xFF155F54), // Darker shade of teal
-                ],
-                begin: Alignment.centerRight,
-                end: Alignment.centerLeft,
+        bottom: 80,
+        left: MediaQuery.of(context).size.width * 0.25,
+        right: MediaQuery.of(context).size.width * 0.25,
+        child: Material(
+          color: Colors.transparent,
+          child: SlideTransition(
+            position: animation,
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              decoration: BoxDecoration(
+                color: Color(0xFF4A4A4A),
+                borderRadius: BorderRadius.circular(12),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-            ),
-            child: Center(
-              child: Text(
-                message,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold, // Stronger for impact
-                  fontSize: 22, // Slightly larger for readability
-                  color: Colors.white,
-                  fontFamily: 'SF Pro Display', // Premium Apple-style font
-                  letterSpacing: 1.5, // Extra spacing for a luxury feel
-                  wordSpacing: 2.0, // Makes it more premium
-                  shadows: [
-                    Shadow(
-                      blurRadius: 4.0,
-                      color: Colors.black45, // Subtle shadow for depth
-                      offset: Offset(2, 2),
+              child: IntrinsicWidth(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/lampy.png',
+                      width: 40,
+                      height: 40,
+                    ),
+                    SizedBox(width: 5),
+                    Flexible(
+                      child: Text(
+                        message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        softWrap: true,
+                      ),
                     ),
                   ],
-                  decoration: TextDecoration.none, // No underline
                 ),
               ),
             ),
-
           ),
         ),
       ),
     );
 
-    Overlay.of(context).insert(overlayEntry);
+    overlay.insert(overlayEntry);
+    animationController.forward(); // Start appearing animation
 
-    // Remove after 2 seconds
-    Future.delayed(const Duration(seconds: 2), () {
-      overlayEntry.remove();
+    Future.delayed(Duration(seconds: 3), () {
+      animationController.reverse().then((_) {
+        overlayEntry?.remove();
+      });
     });
   }
+
+
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -95,24 +102,30 @@ class _LoginPageState extends State<LoginPage> {
       if (result == 'Login successful!') {
         final model_user.User? user = await ApiService.fetchCurrentUser();
         if (user != null) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Homenavbar(
-                username: user.name ?? 'User',
-                email: user.email ?? 'Email not available',
-                phoneNumber: user.phoneNumber ?? 'Phone number not available',
+          _showCustomPopup("Login successful");
+
+          // Wait for popup animation before navigating
+          Future.delayed(const Duration(milliseconds: 1200), () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Homenavbar(
+                  username: user.name ?? 'User',
+                  email: user.email ?? 'Email not available',
+                  phoneNumber: user.phoneNumber ?? 'Phone number not available',
+                ),
               ),
-            ),
-          );
+            );
+          });
         } else {
           _showCustomPopup("Failed to fetch user details.");
         }
       } else {
-        _showCustomPopup("Invalid email or password.");
+        _showCustomPopup("Login failed");
       }
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
