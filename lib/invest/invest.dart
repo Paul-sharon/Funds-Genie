@@ -133,125 +133,135 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                         itemCount: lastFiveInvestments.length,
                         itemBuilder: (context, index) {
                           final investment = lastFiveInvestments[index];
-                          return AnimatedContainer(
-                            duration: const Duration(milliseconds: 500),
-                            curve: Curves.easeInOut,
-                            width: 346,
-                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(16),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      if (investment['companyImg'] != null)
-                                        ClipRRect(
-                                          borderRadius: BorderRadius.circular(8),
-                                          child: Image.memory(
-                                            base64Decode(investment['companyImg']),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FundDetailsPage(investment: investment),
+                                ),
+                              );
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                              width: 346,
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        if (investment['companyImg'] != null)
+                                          ClipRRect(
+                                            borderRadius: BorderRadius.circular(8),
+                                            child: Image.memory(
+                                              base64Decode(investment['companyImg']),
+                                              width: 40,
+                                              height: 40,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        else
+                                          Container(
                                             width: 40,
                                             height: 40,
-                                            fit: BoxFit.cover,
+                                            color: Colors.grey[300],
                                           ),
-                                        )
-                                      else
-                                        Container(
-                                          width: 40,
-                                          height: 40,
-                                          color: Colors.grey[300],
+                                        const SizedBox(width: 15),
+                                        Flexible(
+                                          child: Text(
+                                            investment['companyName'] ?? 'Default Company Name',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         ),
-                                      const SizedBox(width: 15),
-                                      Flexible(
-                                        child: Text(
-                                          investment['companyName'] ?? 'Default Company Name',
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Row(
+                                      children: const [
+                                        SizedBox(width: 40),
+                                        Text(
+                                          "Equity other",
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      children: const [
+                                        Text(
+                                          "Open date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        SizedBox(width: 30),
+                                        Text(
+                                          "Close date",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                        SizedBox(width: 40),
+                                        Text(
+                                          "Risk",
+                                          style: TextStyle(fontSize: 15, color: Colors.grey),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(width: 3),
+                                        Text(
+                                          formattedDate(investment['date'] ?? 'Unknown Date'),
                                           style: const TextStyle(
                                             fontSize: 16,
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold,
                                           ),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height:10),
-                                  Row(
-                                    children: [
-                                      const SizedBox(width: 40),
-                                      const Text(
-                                        "Equity other",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          color: Colors.grey,
+                                        const SizedBox(width: 45),
+                                        const Text(
+                                          "12 Dec",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      const Text(
-                                        "Open date",
-                                        style: TextStyle(fontSize: 15, color: Colors.grey),
-                                      ),
-                                      const SizedBox(width: 30),
-                                      const Text(
-                                        "Close date",
-                                        style: TextStyle(fontSize: 15, color: Colors.grey),
-                                      ),
-                                      const SizedBox(width: 40),
-                                      const Text(
-                                        "Risk",
-                                        style: TextStyle(fontSize: 15, color: Colors.grey),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: [
-                                      const SizedBox(width: 3),
-                                      Text(
-                                        formattedDate(investment['date'] ?? 'Unknown Date'),
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
+                                        const SizedBox(width: 63),
+                                        Text(
+                                          investment['riskType'] ?? 'N/A',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                      ),
-                                      const SizedBox(width: 45),
-                                      const Text(
-                                        "12 Dec",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 63),
-                                      const Text(
-                                        "||| very High",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-
-                                  // Add more details if needed
-                                ],
+                                      ],
+                                    ),
+                                    // Add more details if needed
+                                  ],
+                                ),
                               ),
                             ),
                           );
                         },
                       ),
                     ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
