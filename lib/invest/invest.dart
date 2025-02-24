@@ -77,7 +77,14 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
     // Customize as needed
     return dateString;
   }
-
+  String formattedDate(String dateString) {
+    try {
+      DateTime date = DateTime.parse(dateString);
+      return DateFormat('d MMM').format(date); // e.g. "10 Feb"
+    } catch (e) {
+      return dateString; // fallback to original string if parsing fails
+    }
+  }
   @override
   Widget build(BuildContext context) {
     // Reverse the list to get latest investments first
@@ -208,9 +215,9 @@ class _InvestState extends State<Invest> with TickerProviderStateMixin {
                                   Row(
                                     children: [
                                       const SizedBox(width: 3),
-                                      const Text(
-                                        "28 Nov",
-                                        style: TextStyle(
+                                      Text(
+                                        formattedDate(investment['date'] ?? 'Unknown Date'),
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold,
