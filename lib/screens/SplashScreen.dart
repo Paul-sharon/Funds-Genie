@@ -60,8 +60,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
             ),
           ),
-
-          // Centered Content
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
