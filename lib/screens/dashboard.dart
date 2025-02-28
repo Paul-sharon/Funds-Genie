@@ -20,7 +20,6 @@ class Dashboard extends StatefulWidget {
   @override
   State<Dashboard> createState() => _DashboardState();
 }
-
 class _DashboardState extends State<Dashboard> {
   int _selectedCategoryIndex = 1;
   Color _borderColor = Colors.blueGrey;
