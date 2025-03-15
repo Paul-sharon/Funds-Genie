@@ -59,7 +59,6 @@ class NoDataPage extends StatelessWidget {
           ),
 
           SizedBox(height: 30),
-
           // Go Back Button
           ElevatedButton(
             onPressed: () => Navigator.pop(context), // Go back

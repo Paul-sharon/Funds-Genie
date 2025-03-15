@@ -20,7 +20,6 @@ class ApiService {
           headers: {'Content-Type': 'application/json'},
         ),
       );
-
       if (response.statusCode == 201) {
         return response.data['message'] ?? "Registration successful!";
       } else if (response.statusCode == 400 || response.statusCode == 422) {
